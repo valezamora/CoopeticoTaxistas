@@ -1,0 +1,4 @@
+En esta carpeta van los componentes que se usan varias veces a lo largo de la app.
+Basicamente debería estar todo lo que hay en la pagina componentes de figma.
+Además, deberia revisar si algunas cosas de sus vistas podrian convertirse en componentes, pues hay varias cosas que se repiten
+y no lo son.
