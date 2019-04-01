@@ -1,6 +1,6 @@
-# startup_namer
+# Coopetico mobile app
 
-A new Flutter project.
+Aplicación móvil para usuarios de Coopetico. 
 
 ## Getting Started
 
