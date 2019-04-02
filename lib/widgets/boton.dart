@@ -9,17 +9,14 @@ class Boton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox (
-      width: 250,
+    return SizedBox(
+      width: 200,
       height: 30,
       child: RaisedButton(
         child: Center(
           child: Text(
             '$texto',
-            style: TextStyle(
-                fontFamily: "Roboto",
-                fontSize: 14.0
-            ),
+            style: TextStyle(fontFamily: "Roboto", fontSize: 14.0),
           ),
         ),
         color: color,

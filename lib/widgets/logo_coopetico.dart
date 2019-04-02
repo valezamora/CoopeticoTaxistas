@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 
 class LogoCoopetico extends StatelessWidget {
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Image.asset(
       'assets/logo-coopetico.png',
       width: 250.0,
