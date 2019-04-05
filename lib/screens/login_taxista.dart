@@ -40,6 +40,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
               child: Boton(
                   "Iniciar sesión",
                   Paleta.Naranja,
+                  Paleta.Blanco,
                   onPressed: () {
                     print("TO DO");
                   }),
@@ -49,7 +50,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
             ),*/
             BotonPlano(
               "Recuperar contraseña",
-              Paleta.Azul,
+              Paleta.Gris,
               TamanoLetra.H3,
               onPressed: (){
                 print("TO DO");
