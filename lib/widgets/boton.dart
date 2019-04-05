@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import '../util/tamano_letra.dart';
 
 //Asegurarse que al implementarlo esté dentro de un scaffold para que no se le cambie el tamaño.
 class Boton extends StatelessWidget {
   final texto;
   final color;
   final onPressed; //Lo que sucede al ser presionado.
-  Boton(this.texto, this.color, {@required this.onPressed});
+  Boton(this.texto, this.color, {@required this.onPressed}); //Si el onPressed se pasa nulo, el botón es gris y no es presionable.
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class Boton extends StatelessWidget {
         child: Center(
           child: Text(
             '$texto',
-            style: TextStyle(fontFamily: "Roboto", fontSize: 14.0),
+            style: TextStyle(fontSize: TamanoLetra.H2),
           ),
         ),
         color: color,
