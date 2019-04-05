@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
-import './screens/login_taxista.dart';
+import './screens/login_usuario.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.white,
         fontFamily: "Roboto"
       ),
-      home: LoginTaxista(titulo: "Login Taxista.")//RandomWords(),
+      home: LoginUsuario(titulo: "Login Usuario.")//RandomWords(),
     );
   }
 }
