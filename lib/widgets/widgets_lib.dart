@@ -4,6 +4,7 @@
 library widgets_lib;
 
 export "boton.dart";
+export "boton_plano.dart";
 export "entrada_texto.dart";
 export "etiqueta.dart";
 export "logo_coopetico.dart";
