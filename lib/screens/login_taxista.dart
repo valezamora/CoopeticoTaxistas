@@ -14,7 +14,7 @@ class LoginTaxista extends StatefulWidget {
 
 class _LoginTaxistaState extends State<LoginTaxista> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  final String regExpCorreo = r"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$";
+  final String regExpCorreo = r"^([a-zA-Z0-9_\-\.]+)\@([a-zA-Z0-9_\-]+)\.([a-zA-Z]{2,5})$";
   final String regExpContrasena = r"^[^(\-\-|\;|\—)]+$";
   @override
   Widget build(BuildContext context) {
