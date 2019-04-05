@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 //Entradas diseñadas para meterlas en un formulario y validar su contenido.
 class EntradaTexto extends StatelessWidget {
-  final texto;
+  final String texto;
 
   EntradaTexto(this.texto);
 

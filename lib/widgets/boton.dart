@@ -3,8 +3,8 @@ import '../util/tamano_letra.dart';
 
 //Asegurarse que al implementarlo esté dentro de un scaffold para que no se le cambie el tamaño.
 class Boton extends StatelessWidget {
-  final texto;
-  final color;
+  final String texto;
+  final Color color;
   final onPressed; //Lo que sucede al ser presionado.
   Boton(this.texto, this.color, {@required this.onPressed}); //Si el onPressed se pasa nulo, el botón es gris y no es presionable.
 
