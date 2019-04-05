@@ -36,7 +36,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
             EntradaTexto("Correo"),
             EntradaTexto("Contraseña"),
             Container(
-              padding: const EdgeInsets.only(top: 60.0),
+              padding: const EdgeInsets.only(top: 60.0, bottom: 30.0),
               child: Boton(
                   "Iniciar sesión",
                   Paleta.Naranja,
@@ -47,7 +47,14 @@ class _LoginTaxistaState extends State<LoginTaxista> {
             /*],
               )
             ),*/
-            //Falta recuperar contraseña
+            BotonPlano(
+              "Recuperar contraseña",
+              Paleta.Azul,
+              TamanoLetra.H3,
+              onPressed: (){
+                print("TO DO");
+              },
+            )
           ],
         ),
       ),
