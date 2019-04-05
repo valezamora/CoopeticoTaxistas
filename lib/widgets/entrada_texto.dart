@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 //Entradas diseñadas para meterlas en un formulario y validar su contenido.
 class EntradaTexto extends StatelessWidget {
   final String texto;
+  final validator;
 
-  EntradaTexto(this.texto);
+  EntradaTexto(this.texto, {@required this.validator});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,7 @@ class EntradaTexto extends StatelessWidget {
             child: TextFormField(
               decoration: InputDecoration(
                   hintText: '$texto'),
+              validator: validator
             )));
   }
 }
