@@ -5,8 +5,9 @@ import '../util/tamano_letra.dart';
 class Boton extends StatelessWidget {
   final String texto;
   final Color color;
+  final Color colorTexto;
   final onPressed; //Lo que sucede al ser presionado.
-  Boton(this.texto, this.color, {@required this.onPressed}); //Si el onPressed se pasa nulo, el botón es gris y no es presionable.
+  Boton(this.texto, this.color, this.colorTexto, {@required this.onPressed}); //Si el onPressed se pasa nulo, el botón es gris y no es presionable.
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class Boton extends StatelessWidget {
         child: Center(
           child: Text(
             '$texto',
-            style: TextStyle(fontSize: TamanoLetra.H2),
+            style: TextStyle(fontSize: TamanoLetra.H2, color: colorTexto),
           ),
         ),
         color: color,
