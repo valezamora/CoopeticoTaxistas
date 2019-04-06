@@ -43,8 +43,9 @@ class _LoginUsuarioState extends State<LoginUsuario> {
                     ),
                     Container(
                       padding: const EdgeInsets.only(top: 60.0, bottom: 30.0),
-                      child: Boton("Iniciar sesión", Paleta.Naranja,
-                          onPressed: () {
+                      child:
+                          Boton("Iniciar sesión", Paleta.Naranja, Paleta.Blanco,
+                              onPressed: () {
                         if (_formKey.currentState.validate()) {
                           print("Formato válido");
                         }
@@ -54,7 +55,7 @@ class _LoginUsuarioState extends State<LoginUsuario> {
                 )),
             BotonPlano(
               "Recuperar contraseña",
-              Paleta.Azul,
+              Paleta.Gris,
               TamanoLetra.H3,
               onPressed: () {
                 print("TO DO");
@@ -63,7 +64,7 @@ class _LoginUsuarioState extends State<LoginUsuario> {
             Container(
                 padding: const EdgeInsets.only(top: 15.0),
                 child:
-                    BotonPlano("Crear una cuenta", Paleta.Azul, TamanoLetra.H3,
+                    BotonPlano("Crear una cuenta", Paleta.Gris, TamanoLetra.H3,
                         onPressed: () {
                   print("TO DO");
                 }))
