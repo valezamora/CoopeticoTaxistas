@@ -61,13 +61,14 @@ class _LoginUsuarioState extends State<LoginUsuario> {
                 print("TO DO");
               },
             ),
-            Container(
-                padding: const EdgeInsets.only(top: 15.0),
-                child:
-                    BotonPlano("Crear una cuenta", Paleta.Gris, TamanoLetra.H3,
-                        onPressed: () {
+            BotonPlano(
+              "Crear una cuenta",
+              Paleta.Gris,
+              TamanoLetra.H3,
+              onPressed: () {
                   print("TO DO");
-                }))
+              }
+            ),
           ],
         ),
       ),
