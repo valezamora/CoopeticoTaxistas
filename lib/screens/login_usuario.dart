@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:CoopeticoApp/widgets/widgets_lib.dart';
 import 'package:CoopeticoApp/util/util_lib.dart';
-import 'package:CoopeticoApp/services/network_service.dart';
 import 'package:CoopeticoApp/services/rest_service.dart';
+import 'package:CoopeticoApp/widgets/dialogo_alerta.dart';
 
 class LoginUsuario extends StatefulWidget {
   final String titulo;
@@ -15,6 +15,16 @@ class LoginUsuario extends StatefulWidget {
 }
 
 class _LoginUsuarioState extends State<LoginUsuario> {
+  final String ERROR = "Error";
+  final String ERRORDECONECCION = "Error de conexión";
+  final String OK = "OK";
+  final String ERRORAUTH = "Hubo un error tratando de autenticar su cuenta.\n"
+                         + "Por favor, inténtelo de nuevo.";
+  final String ERRORCONN = "Hubo un error tratando de realizar la conexión.\n"
+                         + "Por favor, verifique su conexión a internet e inténtelo de nuevo.";
+  final String DATOSINCORRECTOS = "Datos incorrectos";
+  final String BADLOGIN = "El usuario o contraseña que ingresó es incorrecto.";
+
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final String regExpCorreo =
       r"^([a-zA-Z0-9_\-\.]+)\@([a-zA-Z0-9_\-]+)\.([a-zA-Z]{2,5})$";
@@ -121,15 +131,14 @@ class _LoginUsuarioState extends State<LoginUsuario> {
     try{
       String respuesta = await _restService.login(_correo, _contrasena);
       if(respuesta == "error"){
-        print("error");
+        DialogoAlerta.mostrarAlerta(context, ERROR, ERRORAUTH, OK);
       }else if(respuesta == "noauth"){
-        print("noauth");
+        DialogoAlerta.mostrarAlerta(context, DATOSINCORRECTOS, BADLOGIN, OK);
       }else{
-        print(respuesta);
+        print(respuesta); //Guardar token
       }
     }catch(e){
-      print("Error desconocido");
-    }
+      DialogoAlerta.mostrarAlerta(context, ERRORDECONECCION, ERRORCONN, OK);    }
 
   }
 
