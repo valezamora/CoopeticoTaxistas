@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
-import './screens/login_usuario.dart';
+import 'package:CoopeticoApp/routes.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.white,
         fontFamily: "Roboto"
       ),
-      home: LoginUsuario(titulo: "Login Usuario.")//RandomWords(),
+      routes: routes,
+      //home: LoginUsuario(titulo: "Login Usuario.")//RandomWords(),
     );
   }
 }
