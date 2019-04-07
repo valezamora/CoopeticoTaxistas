@@ -1,8 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/widgets_lib.dart';
-import '../util/util_lib.dart';
+import 'package:CoopeticoApp/widgets/widgets_lib.dart';
+import 'package:CoopeticoApp/util/util_lib.dart';
+import 'package:CoopeticoApp/services/network_service.dart';
+import 'package:CoopeticoApp/services/rest_service.dart';
 
 class LoginUsuario extends StatefulWidget {
   final String titulo;
@@ -17,6 +19,13 @@ class _LoginUsuarioState extends State<LoginUsuario> {
   final String regExpCorreo =
       r"^([a-zA-Z0-9_\-\.]+)\@([a-zA-Z0-9_\-]+)\.([a-zA-Z]{2,5})$";
   final String regExpContrasena = r"^[^(\-\-|\;|\—)]+$";
+
+  String _correo = "";
+  String _contrasena = "";
+  String _token = "";
+
+  RestService _restService = new RestService();
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -47,7 +56,7 @@ class _LoginUsuarioState extends State<LoginUsuario> {
                           Boton("Iniciar sesión", Paleta.Naranja, Paleta.Blanco,
                               onPressed: () {
                         if (_formKey.currentState.validate()) {
-                          print("Formato válido");
+                          validarUsuario();
                         }
                       }),
                     ),
@@ -84,6 +93,7 @@ class _LoginUsuarioState extends State<LoginUsuario> {
       if (!regExp.hasMatch(value)) {
         mensajeError = "Correo inválido.";
       } else {
+        this._correo = value;
         mensajeError = null;
       }
     }
@@ -100,10 +110,27 @@ class _LoginUsuarioState extends State<LoginUsuario> {
       if (!regExp.hasMatch(value)) {
         mensajeError = "Contraseña inválida.";
       } else {
+        this._contrasena = value;
         mensajeError = null;
       }
     }
-
     return mensajeError;
   }
+
+  void validarUsuario() async {
+    try{
+      String respuesta = await _restService.login(_correo, _contrasena);
+      if(respuesta == "error"){
+        print("error");
+      }else if(respuesta == "noauth"){
+        print("noauth");
+      }else{
+        print(respuesta);
+      }
+    }catch(e){
+      print("Error desconocido");
+    }
+
+  }
+
 }
