@@ -13,7 +13,7 @@ class TokenService{
    * REQ: Recibir un string JSON con formato válido.
    * REQ: Todos los permisos deben ser Strings.
    */
-  void guardarTokenLogin(String respuesta) async {
+  static void guardarTokenLogin(String respuesta) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     Map respuestaJSON = jsonDecode(respuesta);
 
@@ -33,7 +33,7 @@ class TokenService{
   /**
    * Se debe ejecutar al hacer logout de la aplicación.
    */
-  void borrarToken() async {
+  static void borrarToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.remove('sub');
     await preferences.remove('permisos');
@@ -42,33 +42,48 @@ class TokenService{
     await preferences.remove('exp');
   }
 
-  Future<String> getSub() async{
+  static Future<String> getSub() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return await preferences.getString("sub");
   }
 
-  Future<List<String>> getPermisos() async{
+  static Future<List<String>> getPermisos() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return await preferences.getStringList("permisos");
 
   }
 
-  Future<String> getRol() async{
+  static Future<String> getRol() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return await preferences.getString("rol");
 
   }
 
-  Future<int> getIat() async{
+  static Future<int> getIat() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return await preferences.getInt("iat");
 
   }
 
-  Future<int> getExp() async{
+  static Future<int> getExp() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return await preferences.getInt("exp");
 
   }
 
+  static Future<bool> existeTokenValido() async{
+    bool existeTokenValido = false;
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    String sub = await preferences.getString("sub");
+    int exp = await preferences.getInt("exp");
+    exp = exp * 1000;
+
+    if(sub != null && DateTime.fromMillisecondsSinceEpoch(exp).isAfter(DateTime.now())){ //Si existe un token y no ha expirado.
+      existeTokenValido = true;
+    }
+
+    return existeTokenValido;
+  }
 }
