@@ -36,7 +36,7 @@ class _LoginUsuarioState extends State<LoginUsuario> {
   String _token = "";
 
   RestService _restService = new RestService();
-  TokenService _tokenService = new TokenService();
+  //TokenService _tokenService = new TokenService();
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +53,12 @@ class _LoginUsuarioState extends State<LoginUsuario> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    EntradaTexto("Correo", validator: (value) {
+                    EntradaTexto("Correo", false, validator: (value) {
                       return validarCorreo(value);
                     }),
                     EntradaTexto(
                       "Contraseña",
+                      true,
                       validator: (value) {
                         return validarContrasena(value);
                       },
@@ -137,7 +138,8 @@ class _LoginUsuarioState extends State<LoginUsuario> {
       }else if(respuesta == "noauth"){
         DialogoAlerta.mostrarAlerta(context, DATOSINCORRECTOS, BADLOGIN, OK);
       }else{
-        _tokenService.guardarTokenLogin(respuesta);
+        TokenService.guardarTokenLogin(respuesta);
+        Navigator.of(context).pushReplacementNamed('/home');
       }
     }catch(e){
       DialogoAlerta.mostrarAlerta(context, ERRORDECONECCION, ERRORCONN, OK);
