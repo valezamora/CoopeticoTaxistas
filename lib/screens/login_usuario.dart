@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:CoopeticoApp/widgets/widgets_lib.dart';
 import 'package:CoopeticoApp/util/util_lib.dart';
 import 'package:CoopeticoApp/services/rest_service.dart';
+import 'package:CoopeticoApp/services/token_service.dart';
 import 'package:CoopeticoApp/widgets/dialogo_alerta.dart';
 
 class LoginUsuario extends StatefulWidget {
@@ -35,6 +36,7 @@ class _LoginUsuarioState extends State<LoginUsuario> {
   String _token = "";
 
   RestService _restService = new RestService();
+  TokenService _tokenService = new TokenService();
 
   @override
   Widget build(BuildContext context) {
@@ -135,11 +137,11 @@ class _LoginUsuarioState extends State<LoginUsuario> {
       }else if(respuesta == "noauth"){
         DialogoAlerta.mostrarAlerta(context, DATOSINCORRECTOS, BADLOGIN, OK);
       }else{
-        print(respuesta); //Guardar token
+        _tokenService.guardarTokenLogin(respuesta);
       }
     }catch(e){
-      DialogoAlerta.mostrarAlerta(context, ERRORDECONECCION, ERRORCONN, OK);    }
-
+      DialogoAlerta.mostrarAlerta(context, ERRORDECONECCION, ERRORCONN, OK);
+    }
   }
 
 }
