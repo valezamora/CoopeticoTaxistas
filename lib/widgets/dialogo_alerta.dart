@@ -1,7 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
+///Widget de un Diálogo de Alerta reutilizable.
+///Este díalogo oscurece el fondo de el contexto donde se encuentre.
 class DialogoAlerta {
+
+  ///Método hace que aparezca el diálogo de alerta.
   static void mostrarAlerta(BuildContext context, String titulo, String texto, String textoBoton) {
     // flutter defined function
     showDialog(
