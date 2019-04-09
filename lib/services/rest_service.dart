@@ -6,8 +6,8 @@ import 'package:CoopeticoApp/services/network_service.dart';
 /// Clase para la comunicación con el backend mediante el REST API.
 class RestService {
   NetworkService _networkService = new NetworkService();
-  static final URL_BACKEND = "http://localhost:8080";
-  static final URL_LOGIN = URL_BACKEND + "/auth/signin";
+  static const URL_BACKEND = "http://localhost:8080";
+  static const URL_LOGIN = URL_BACKEND + "/auth/signin";
 
   /// Este método envía un POST al backend con un JSON en el cuerpo del request.
   ///
