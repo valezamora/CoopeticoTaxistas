@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import '../util/tamano_letra.dart';
 
-//Asegurarse que al implementarlo esté dentro de un scaffold para que no se le cambie el tamaño.
+import 'package:CoopeticoApp/util/tamano_letra.dart';
+
+/// Widget de Botón reutilizable.
+///
+/// Hay que asegurarse de que el botón esté contenido dentro
+/// de un Scaffold porque si no se le cambia el tamaño.
 class Boton extends StatelessWidget {
   final String texto;
   final Color color;

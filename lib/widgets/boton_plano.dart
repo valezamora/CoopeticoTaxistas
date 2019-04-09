@@ -1,12 +1,12 @@
-//Es como un hyperlink.
 import 'package:flutter/material.dart';
 
+/// Widget de Boton plano reutilizable, que es similar a un Hyperlink.
 class BotonPlano extends StatelessWidget {
   final String texto;
   final Color color;
   final double tamano;
   final onPressed; //Lo que sucede al ser presionado.
-  BotonPlano(this.texto, this.color, this.tamano, {@required this.onPressed}); //Si el onPressed se pasa nulo, el botón es gris y no es presionable.
+  BotonPlano(this.texto, this.color, this.tamano, {@required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

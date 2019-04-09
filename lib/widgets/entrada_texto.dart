@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-//Entradas diseñadas para meterlas en un formulario y validar su contenido.
+/// Widget de entradas de texto reutilizables.
+/// Son entradas de texto diseñadas para meterlas en un formulario y validar su contenido.
 class EntradaTexto extends StatelessWidget {
   final String texto;
+  final bool obscuredText; //Esto debe ser true si queremos censurar el contenido.
   final validator;
 
-  EntradaTexto(this.texto, {@required this.validator});
+  EntradaTexto(this.texto, this.obscuredText, {@required this.validator});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,9 @@ class EntradaTexto extends StatelessWidget {
             height: 30.0,
             child: TextFormField(
               decoration: InputDecoration(
-                  hintText: '$texto'),
+                  hintText: '$texto'
+              ),
+              obscureText: obscuredText,
               validator: validator
             )));
   }
