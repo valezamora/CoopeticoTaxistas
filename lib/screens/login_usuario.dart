@@ -57,6 +57,7 @@ class _LoginUsuarioState extends State<LoginUsuario> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
