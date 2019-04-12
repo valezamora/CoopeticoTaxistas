@@ -1,34 +1,34 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
-import 'package:CoopeticoApp/util/paleta.dart';
-import 'package:CoopeticoApp/util/tamano_letra.dart';
+import 'package:CoopeticoTaxiApp/util/paleta.dart';
+import 'package:CoopeticoTaxiApp/util/tamano_letra.dart';
 
-import 'package:CoopeticoApp/services/rest_service.dart';
-import 'package:CoopeticoApp/services/token_service.dart';
+import 'package:CoopeticoTaxiApp/services/rest_service.dart';
+import 'package:CoopeticoTaxiApp/services/token_service.dart';
 
-import 'package:CoopeticoApp/widgets/dialogo_alerta.dart';
-import 'package:CoopeticoApp/widgets/logo_coopetico.dart';
-import 'package:CoopeticoApp/widgets/entrada_texto.dart';
-import 'package:CoopeticoApp/widgets/boton.dart';
-import 'package:CoopeticoApp/widgets/boton_plano.dart';
+import 'package:CoopeticoTaxiApp/widgets/dialogo_alerta.dart';
+import 'package:CoopeticoTaxiApp/widgets/logo_coopetico.dart';
+import 'package:CoopeticoTaxiApp/widgets/entrada_texto.dart';
+import 'package:CoopeticoTaxiApp/widgets/boton.dart';
+import 'package:CoopeticoTaxiApp/widgets/boton_plano.dart';
 
-/// Ventana Stateful de login de usuario.
-class LoginUsuario extends StatefulWidget {
+/// Ventana Stateful de login de taxista.
+class LoginTaxista extends StatefulWidget {
   final String titulo;
-  LoginUsuario({Key key, this.titulo}) : super(key: key);
+  LoginTaxista({Key key, this.titulo}) : super(key: key);
 
   @override
-  _LoginUsuarioState createState() => new _LoginUsuarioState();
+  _LoginTaxistaState createState() => new _LoginTaxistaState();
 }
 
-/// Ventana Stateles de login de usuario.
+/// Ventana Stateles de login de taxista.
 ///
 /// Implementa:
 ///             - Validación de correo válido.
 ///             - Validación de contraseña válida.
 ///             - Autenticación de usuario contra el backend mediante REST.
-class _LoginUsuarioState extends State<LoginUsuario> {
+class _LoginTaxistaState extends State<LoginTaxista> {
   static const String ERROR = "Error";
   static const String ERRORDECONECCION = "Error de conexión";
   static const String OK = "OK";

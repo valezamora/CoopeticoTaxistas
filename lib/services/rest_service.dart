@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:CoopeticoApp/services/network_service.dart';
+import 'package:CoopeticoTaxiApp/services/network_service.dart';
 
 /// Clase para la comunicación con el backend mediante el REST API.
 class RestService {

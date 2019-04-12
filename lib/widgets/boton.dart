@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:CoopeticoApp/util/tamano_letra.dart';
+import 'package:CoopeticoTaxiApp/util/tamano_letra.dart';
 
 /// Widget de Botón reutilizable.
 ///

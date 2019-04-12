@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:CoopeticoApp/widgets/boton.dart';
-import 'package:CoopeticoApp/services/token_service.dart';
+import 'package:CoopeticoTaxiApp/widgets/boton.dart';
+import 'package:CoopeticoTaxiApp/services/token_service.dart';
 
 class Home extends StatelessWidget{
   @override

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
-import 'package:CoopeticoApp/routes.dart';
+import 'package:CoopeticoTaxiApp/routes.dart';
 
-import 'package:CoopeticoApp/services/token_service.dart';
+import 'package:CoopeticoTaxiApp/services/token_service.dart';
 
-import 'package:CoopeticoApp/screens/login_usuario.dart';
-import 'package:CoopeticoApp/screens/home.dart';
+import 'package:CoopeticoTaxiApp/screens/login_taxista.dart';
+import 'package:CoopeticoTaxiApp/screens/home.dart';
 
-void main() => runApp(CoopeticoAppUsuario());
+void main() => runApp(CoopeticoTaxiApp());
 
 ///
 /// CoopeticoAppUsuario es el front end de la aplicación de CoopeTico.
 ///
-class CoopeticoAppUsuario extends StatelessWidget {
-  Widget home = new LoginUsuario(titulo: "Login Usuario");
+class CoopeticoTaxiApp extends StatelessWidget {
+  Widget home = new LoginTaxista(titulo: "Login Taxista");
 
-  CoopeticoAppUsuario(){
+  CoopeticoAppTaxista(){
     _setHome();
   }
 
@@ -29,7 +29,7 @@ class CoopeticoAppUsuario extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Coopetico App',
+      title: 'Coopetico Taxi App',
       theme: new ThemeData(
         primaryColor: Colors.white,
         fontFamily: "Roboto"
