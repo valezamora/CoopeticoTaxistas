@@ -1,3 +1,3 @@
-# Coopetico mobile app
+# CoopeticoTaxi mobile app
 
-Aplicación móvil para usuarios de Coopetico. 
+Aplicación móvil para taxistas de Coopetico. 
