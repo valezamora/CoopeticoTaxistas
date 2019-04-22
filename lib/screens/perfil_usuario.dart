@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:CoopeticoTaxiApp/util/paleta.dart';
 import 'package:CoopeticoTaxiApp/widgets/flecha_atras.dart';
 import 'package:CoopeticoTaxiApp/widgets/foto_usuario.dart';
-import 'package:CoopeticoTaxiApp/widgets/boton_editar.dart';
 import 'package:CoopeticoTaxiApp/widgets/info_usuario.dart';
 import 'package:CoopeticoTaxiApp/services/token_service.dart';
 
@@ -63,8 +62,5 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
           ],
         )
     );
-  }
-
-  void getData() {
   }
 }
