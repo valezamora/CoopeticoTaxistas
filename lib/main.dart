@@ -15,22 +15,22 @@ void main() async{
     home = new Home();
   }
 
-  runApp(CoopeticoAppUsuario(home));
+  runApp(CoopeticoAppTaxista(home));
 }
 
 
 ///
 /// CoopeticoAppUsuario es el front end de la aplicación de CoopeTico.
 ///
-class CoopeticoAppUsuario extends StatelessWidget {
+class CoopeticoAppTaxista extends StatelessWidget {
   final Widget home;
 
-  CoopeticoAppUsuario(this.home);
+  CoopeticoAppTaxista(this.home);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Coopetico App',
+      title: 'Coopetico Taxi App',
       theme: new ThemeData(primaryColor: Colors.white, fontFamily: "Roboto"),
       home: home,
       routes: routes,
