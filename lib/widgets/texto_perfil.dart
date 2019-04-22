@@ -21,7 +21,8 @@ class TextoPerfil extends StatelessWidget {
             width: double.infinity,
             child: Container(
               padding: new EdgeInsets.only(left: 20.0),
-              child: Text(id,
+              child: Text(
+                  id,
                   textAlign: TextAlign.left,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -35,7 +36,15 @@ class TextoPerfil extends StatelessWidget {
             width: double.infinity,
             child: Container(
               padding: new EdgeInsets.only(left: 35.0, top: 10.0),
-              child: Text(texto, textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.normal, color: Paleta.Gris, fontSize: TamanoLetra.H2)),
+              child: Text(
+                  texto,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: Paleta.Gris,
+                      fontSize: TamanoLetra.H2
+                  )
+              ),
             )
         ),
       ],
