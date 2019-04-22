@@ -75,35 +75,6 @@ class RestService {
     return decriptado;
   }
 
-  /// Método envía un POST al backend con un JSON en el cuerpo del request para agregar un usuario.
-  ///
-  /// Autor: Valeria Zamora
-  Future<int> signup(String correo, String nombre, String apellidos,
-      String telefono, String contrasena) {
-    String body = jsonEncode(
-        {
-          "pkCorreo": correo,
-          "nombre": nombre,
-          "apellidos": apellidos,
-          "telefono": telefono,
-          "contrasena": contrasena
-        }
-    );
-
-    Map<String, String> header = {
-      "Accept": "application/json",
-      "content-type": "application/json"
-    };
-
-    return _networkService.httpPost(
-        URL_SIGNUP, body: body, header: header)
-        .then((dynamic res) {
-      var respuesta = res;
-
-      return respuesta.statusCode;
-    });
-  }
-
 
   /// Este método envía un GET al backend con el correo del usuario que se desea consultar.
   ///
@@ -130,51 +101,6 @@ class RestService {
   Future<void> obtenerTokenRecuperacionContrasena(String correo){
     return _networkService.httpGet(URL_BACKEND + '/usuarios/contrasenaToken?correo=' + correo);
   }
-
-  ///--------------------------------------------------------------------------
-  /// inicio del método editarPerfil
-  /// Método envía un POST al backend con un JSON 
-  /// de los datos que el usuario tiene editables.
-  ///
-  /// Autor: Joseph Rementería (b55824)
-  Future<String> editarPerfil(
-    String correo,
-    String nombre,
-    String apellidos,
-    String telefono
-  ) {
-    ///------------------------------------------------------------------------
-    /// Creando el json con los datos posiblemente modificados.
-    /// Será enviado como el body del mensaje.
-    String body = jsonEncode(
-        {
-          "pkCorreo": correo,
-          "nombre": nombre,
-          "apellidos": apellidos,
-          "telefono": telefono
-        }
-    );
-    ///------------------------------------------------------------------------
-    /// Creando el mapa para el header del mensaje
-    Map<String, String> header = {
-      "Accept": "application/json",
-      "content-type": "application/json"
-    };
-    ///------------------------------------------------------------------------
-    /// Envío del mensaje y regreso de la string correspondiente.
-    return _networkService.httpPost(
-      URL_SIGNUP, body: body, header: header
-    ).then(
-      (dynamic res)
-      {
-        var respuesta = res;
-        return respuesta;
-      }
-    );
-    ///------------------------------------------------------------------------
-  }
-  /// Final del método editarPerfil
-  ///--------------------------------------------------------------------------
 
   /// Envia un request al backend para borrar al usuario con [correo]
   /// 

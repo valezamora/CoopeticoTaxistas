@@ -1,17 +1,11 @@
 import 'dart:async';
 
-
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 // Google Maps
 
 //Widgets
 import 'package:CoopeticoTaxiApp/widgets/home_widgets/drawer.dart';
-import 'package:CoopeticoTaxiApp/widgets/home_widgets/car_pickup.dart';
-import 'package:CoopeticoTaxiApp/widgets/home_widgets/payment_method.dart';
-
-import 'package:CoopeticoTaxiApp/widgets/home_widgets/ride_picker.dart';
 
 //Models
 
@@ -21,7 +15,6 @@ import 'package:CoopeticoTaxiApp/models/step_res.dart';
 
 
 //Service
-
 import 'package:CoopeticoTaxiApp/services/google_maps_places.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:CoopeticoTaxiApp/services/token_service.dart';
@@ -40,8 +33,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
-
   var email = '';
   var nombreCompleto = '';
 
@@ -110,21 +101,8 @@ class _HomeState extends State<Home> {
 //                          },
 //                          child: IconButton(icon: Icon(icon), onPressed: null),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 0, left: 20, right: 20),
-                      child: RidePicker(onPlaceSelected,clearMarker),
-                    ),
                   ],
                 ),
-              ),
-
-              Positioned(left: 20, right: 20, bottom: 40,
-                height: 248,
-                child: CarPickup(_tripDistance),
-              ),
-              Positioned(left: 20, right: 20, bottom: 85,
-                height: 248,
-                child: PaymentMethod(_tripDistance),
               ),
 
             ],

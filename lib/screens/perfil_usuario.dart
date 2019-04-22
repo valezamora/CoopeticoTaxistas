@@ -21,9 +21,9 @@ class PerfilUsuario extends StatefulWidget {
 }
 
 class _PerfilUsuarioState extends State<PerfilUsuario> {
-  String nombre;
-  String telefono;
-  String correo;
+  String nombre = '';
+  String telefono = '';
+  String correo = '';
 
   @override
   void initState(){
@@ -58,7 +58,6 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
         ),
         body: ListView(
           children: <Widget>[
-            BotonEditar(),
             FotoUsuario(),
             InfoUsuario(correo, nombre, telefono),
           ],

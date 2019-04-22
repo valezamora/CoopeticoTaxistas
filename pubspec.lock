@@ -91,7 +91,7 @@ packages:
   google_maps_flutter:
     dependency: "direct main"
     description:
-      path: "vendors/google_maps_flutter"
+      path: "vendors\\google_maps_flutter"
       relative: true
     source: path
     version: "0.2.0+5"
