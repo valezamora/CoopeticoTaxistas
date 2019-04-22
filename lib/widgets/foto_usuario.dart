@@ -6,7 +6,9 @@ import 'package:CoopeticoTaxiApp/util/paleta.dart';
 /// Clase que muestra la foto del usuario
 /// NOTA: temporalmente muestra un icono solamente
 class FotoUsuario extends StatelessWidget {
-  FotoUsuario();
+  final String url;
+
+  FotoUsuario(this.url);
 
   @override
   Widget build(BuildContext context) {

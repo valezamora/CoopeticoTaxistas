@@ -7,7 +7,7 @@ import 'package:CoopeticoTaxiApp/widgets/foto_usuario.dart';
 import 'package:CoopeticoTaxiApp/widgets/info_usuario.dart';
 import 'package:CoopeticoTaxiApp/services/token_service.dart';
 
-/// Pantalla que muestra el perfil del usuario.
+/// Pantalla que muestra el perfil del taxista.
 ///
 /// Autor: Valeria Zamora
 class PerfilUsuario extends StatefulWidget {
@@ -23,6 +23,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
   String nombre = '';
   String telefono = '';
   String correo = '';
+  String fotoURL = '';
 
   @override
   void initState(){
@@ -43,6 +44,11 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
         correo = respuesta;
       });
     });
+    TokenService.getFotoUrl().then((respuesta) {
+      setState(() {
+        fotoURL = respuesta;
+      });
+    });
   }
 
   @override
@@ -57,7 +63,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
         ),
         body: ListView(
           children: <Widget>[
-            FotoUsuario(),
+            FotoUsuario(fotoURL),
             InfoUsuario(correo, nombre, telefono),
           ],
         )

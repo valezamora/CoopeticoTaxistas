@@ -116,17 +116,8 @@ class _LoginTaxistaState extends State<LoginTaxista> {
               Paleta.Gris,
               TamanoLetra.H3,
               onPressed: () {
-                // TO DO
                 Navigator.pushNamed(context, '/recuperarContrasena');
               },
-            ),
-            BotonPlano(
-              "Crear una cuenta",
-              Paleta.Gris,
-              TamanoLetra.H3,
-              onPressed: () {
-                Navigator.pushNamed(context, '/registro');
-              }
             ),
           ],
         ),

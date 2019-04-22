@@ -85,22 +85,6 @@ class TokenService {
     return existeTokenValido;
   }
 
-  /// Metodo que guarda los datos del taxista para que puedan ser accedidos
-  /// sin hacer un llamado al backend.
-  /// Autor: Valeria Zamora
-  static void guardarDatosUsuario(String taxista) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    Map taxistaJSON = jsonDecode(taxista);
-
-    String nombreT = taxistaJSON["nombre"];
-    String apellidosT = taxistaJSON["apellidos"];
-    String telefonoT = taxistaJSON["telefono"];
-
-    await preferences.setString('nombreT', nombreT);
-    await preferences.setString('apellidosT', apellidosT);
-    await preferences.setString('telefonoT', telefonoT);
-  }
-
   /// Método que verifica si los datos del taxista ya fueron guardados.
   ///
   /// Autor: Valeria Zamora
