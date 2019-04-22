@@ -1,7 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' show Client;
 
 /// Autor: Marco Venegas.
 /// Clase para realizar pedidos HTTP de tipo Get y Post.
@@ -11,21 +10,12 @@ class NetworkService {
   NetworkService.internal();
   factory NetworkService() => _instance;
 
+  //Client se utiliza para poder reemplazarlo al hacer mocking.
+  Client http = new Client();
+
   /// [url] contiene la dirección a donde se realizará el request.
   Future<dynamic> httpGet(String url) {
-    return http.get(url).then((http.Response response) {
-      /*
-      final String res = response.body; //Se almacena la respuesta del get.
-      final int statusCode = response.statusCode;
-      String respuesta = "error";
-      if(json != null){
-        if(statusCode == 403){
-          respuesta = "noauth";
-        }else if(statusCode == 200){
-          respuesta = res; //En éxito se devuelve el body.
-        }
-      }
-      */
+    return http.get(url).then((response) {
       return response;
     });
   }
@@ -34,21 +24,19 @@ class NetworkService {
   Future<dynamic> httpPost(String url, {Map header, body, encoding}) {
     return http
         .post(url, body: body, headers: header, encoding: encoding)
-        .then((http.Response response) {
-      /*
-      final String res = response.body;
-      final int statusCode = response.statusCode;
-
-      String respuesta = "error";
-      if(json != null){
-        if(statusCode == 403){
-          respuesta = "noauth";
-        }else if(statusCode == 200){
-          respuesta = res; //En éxito se devuelve el body.
-        }
-      }
-      */
+        .then((response) {
       return response;
     });
+  }
+
+  /// [url] contiene la dirección a donde se realizará el request.
+  Future<dynamic> httpdelete(String url) {
+    return http.delete(url).then((response) {
+      return response;
+    });
+  }
+
+  void setClient(Client client){
+    this.http = client;
   }
 }

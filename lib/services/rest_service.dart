@@ -3,11 +3,15 @@ import 'dart:convert';
 
 import 'package:CoopeticoTaxiApp/services/network_service.dart';
 
+/// Autor: Marco Venegas.
 /// Clase para la comunicación con el backend mediante el REST API.
 class RestService {
   NetworkService _networkService = new NetworkService();
-  static const URL_BACKEND = "http://localhost:8080";
+  static const URL_BACKEND = "http://192.16.202.13:8080";  // 10.0.2.2 es para el emulador de android
   static const URL_LOGIN = URL_BACKEND + "/auth/signin";
+  static const URL_OBTENER_USUARIO = URL_BACKEND + "/clientes/obtenerUsuario/";
+  static const URL_SIGNUP = URL_BACKEND + "/clientes";
+  static const URL_EDITAR = URL_BACKEND + "/clientes/editar";
 
   /// Este método envía un POST al backend con un JSON en el cuerpo del request.
   ///
@@ -24,20 +28,25 @@ class RestService {
       "Accept": "application/json",
       "content-type": "application/json"
     };
-
     return _networkService.httpPost(
         URL_LOGIN, body: body, header: header)
         .then((dynamic res) {
-      String respuesta = res;
+      final String respuesta = res.body;
+      final int statusCode = res.statusCode;
 
-      if(respuesta != "error" && respuesta != "noauth"){ //Se obtuvo el token satisfactoriamente.
+      String resultado = "error";
+
+      if (statusCode == 200) { //Se obtuvo el token satisfactoriamente.
         var partes = respuesta.split('.');
         if (partes.length != 3) {
           throw Exception('Token inválido.');
         }
-        respuesta = _decodificarToken(partes[1]); //Decodifica la parte que nos interesa del token.
+        resultado = _decodificarToken(
+            partes[1]); //Decodifica la parte que nos interesa del token.
+      } else if (statusCode == 401){
+        resultado = "noauth";
       }
-      return respuesta;
+      return resultado;
     });
   }
 
@@ -64,5 +73,113 @@ class RestService {
 
     String decriptado = utf8.decode(base64Url.decode(intermedio));
     return decriptado;
+  }
+
+  /// Método envía un POST al backend con un JSON en el cuerpo del request para agregar un usuario.
+  ///
+  /// Autor: Valeria Zamora
+  Future<int> signup(String correo, String nombre, String apellidos,
+      String telefono, String contrasena) {
+    String body = jsonEncode(
+        {
+          "pkCorreo": correo,
+          "nombre": nombre,
+          "apellidos": apellidos,
+          "telefono": telefono,
+          "contrasena": contrasena
+        }
+    );
+
+    Map<String, String> header = {
+      "Accept": "application/json",
+      "content-type": "application/json"
+    };
+
+    return _networkService.httpPost(
+        URL_SIGNUP, body: body, header: header)
+        .then((dynamic res) {
+      var respuesta = res;
+
+      return respuesta.statusCode;
+    });
+  }
+
+
+  /// Este método envía un GET al backend con el correo del usuario que se desea consultar.
+  ///
+  /// Recibe en el cuerpo de la respuesta un string con los datos del usuario.
+  /// Retorna un MAP con los datos del usuario como JSON.
+  ///
+  /// Autor: Valeria Zamora
+  Future<String> obtenerUsuario(String correo) {
+    String url = URL_OBTENER_USUARIO + correo;
+    return _networkService.httpGet(url)
+        .then((dynamic res) {
+      var respuesta = res;
+      // recibe srtring con un json
+      return respuesta.body;
+    });
+  }
+
+  /// Solicita un token para recuperar la contraseña del usuario.
+  //
+  /// Envia un get al backend con el [correo} al endpoint
+  /// 'usuarios/contrasenaToken'.
+  ///
+  /// Autor: Kevin Jimenez
+  Future<void> obtenerTokenRecuperacionContrasena(String correo){
+    return _networkService.httpGet(URL_BACKEND + '/usuarios/contrasenaToken?correo=' + correo);
+  }
+
+  ///--------------------------------------------------------------------------
+  /// inicio del método editarPerfil
+  /// Método envía un POST al backend con un JSON 
+  /// de los datos que el usuario tiene editables.
+  ///
+  /// Autor: Joseph Rementería (b55824)
+  Future<String> editarPerfil(
+    String correo,
+    String nombre,
+    String apellidos,
+    String telefono
+  ) {
+    ///------------------------------------------------------------------------
+    /// Creando el json con los datos posiblemente modificados.
+    /// Será enviado como el body del mensaje.
+    String body = jsonEncode(
+        {
+          "pkCorreo": correo,
+          "nombre": nombre,
+          "apellidos": apellidos,
+          "telefono": telefono
+        }
+    );
+    ///------------------------------------------------------------------------
+    /// Creando el mapa para el header del mensaje
+    Map<String, String> header = {
+      "Accept": "application/json",
+      "content-type": "application/json"
+    };
+    ///------------------------------------------------------------------------
+    /// Envío del mensaje y regreso de la string correspondiente.
+    return _networkService.httpPost(
+      URL_SIGNUP, body: body, header: header
+    ).then(
+      (dynamic res)
+      {
+        var respuesta = res;
+        return respuesta;
+      }
+    );
+    ///------------------------------------------------------------------------
+  }
+  /// Final del método editarPerfil
+  ///--------------------------------------------------------------------------
+
+  /// Envia un request al backend para borrar al usuario con [correo]
+  /// 
+  /// Autor: Kevin Jimenez
+  void borrarUsuario(correo){
+    _networkService.httpdelete(URL_BACKEND+ '/usuarios/' + correo);
   }
 }

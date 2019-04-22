@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+/// Autor: Marco Venegas.
 /// Widget reutilizable con el logo de CoopeTico.
 class LogoCoopetico extends StatelessWidget {
   @override

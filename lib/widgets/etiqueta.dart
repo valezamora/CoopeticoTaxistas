@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+/// Autor: Marco Venegas.
 /// Widget de etiqueta de texto reutilizable.
 class Etiqueta extends StatelessWidget {
   final String texto;
@@ -9,13 +10,7 @@ class Etiqueta extends StatelessWidget {
   Etiqueta(this.texto, this.tamano, this.peso);
 
   @override
-  Widget build(BuildContext context){
-    return Text(
-        '$texto',
-        style: TextStyle(
-            fontSize: tamano,
-            fontWeight: peso
-        )
-    );
+  Widget build(BuildContext context) {
+    return Text('$texto', style: TextStyle(fontSize: tamano, fontWeight: peso));
   }
 }

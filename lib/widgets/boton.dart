@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:CoopeticoTaxiApp/util/tamano_letra.dart';
 
+/// Autor: Marco Venegas.
 /// Widget de Botón reutilizable.
 ///
 /// Hay que asegurarse de que el botón esté contenido dentro
@@ -11,7 +12,12 @@ class Boton extends StatelessWidget {
   final Color color;
   final Color colorTexto;
   final onPressed; //Lo que sucede al ser presionado.
-  Boton(this.texto, this.color, this.colorTexto, {@required this.onPressed}); //Si el onPressed se pasa nulo, el botón es gris y no es presionable.
+  Boton(
+      this.texto,
+      this.color,
+      this.colorTexto,
+      {@required
+          this.onPressed}); //Si el onPressed se pasa nulo, el botón es gris y no es presionable.
 
   @override
   Widget build(BuildContext context) {

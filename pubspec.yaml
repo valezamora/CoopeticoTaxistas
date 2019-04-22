@@ -21,17 +21,22 @@ dependencies:
     sdk: flutter
 
   http: ^0.12.0 #Para realizar http requests.
-  shared_preferences: ^0.5.1+2 #Para almacenar el token del usuario en el dispositivo.
+  shared_preferences: ^0.5.2 #Para almacenar el token del usuario en el dispositivo.
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  english_words: ^3.1.5
+
+  google_maps_flutter: #Dependencia para trabajar con Google Maps
+    path: ./vendors/google_maps_flutter
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  test: ^1.5.3 # Dependencia para unit tests en dart
+               # Es una versión más vieja para que sea compatible con la version de flutter.
+  mockito: ^4.0.0 # Dependencia para hacer mocks en las pruebas.
+  test_api: ^0.2.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -46,7 +51,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-  - assets/logo-coopetico.png
+  - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

@@ -8,4 +8,5 @@ class Paleta {
   static const Color Azul = Color(0xFF0000EE);
   static const Color Negro = Color(0x00000000);
   static const Color Blanco = Color(0xFFFFFFFF);
+  static const Color GrisClaro = Color(0xFFBDBDBD);
 }

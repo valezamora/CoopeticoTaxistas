@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Autor: Marco Venegas.
 /// Widget de Boton plano reutilizable, que es similar a un Hyperlink.
 class BotonPlano extends StatelessWidget {
   final String texto;
@@ -11,15 +12,15 @@ class BotonPlano extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlatButton(
-        //child: Center(
-          child: Text(
-            '$texto',
-            style: TextStyle(fontSize: tamano),
-          ),
-        //),
-        textColor: color,
-        onPressed: onPressed,
-        clipBehavior: Clip.none,
-      );
+      //child: Center(
+      child: Text(
+        '$texto',
+        style: TextStyle(fontSize: tamano),
+      ),
+      //),
+      textColor: color,
+      onPressed: onPressed,
+      clipBehavior: Clip.none,
+    );
   }
 }
