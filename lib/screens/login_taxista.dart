@@ -65,7 +65,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
             Container(
                 padding: const EdgeInsets.only(bottom: 30.0),
                 child: LogoCoopetico()),
-            Etiqueta("Taxistas", TamanoLetra.H2, FontWeight.bold);
+            Etiqueta("Taxistas", TamanoLetra.H2, FontWeight.bold),
             Form(
                 key: _formKey,
                 child: Column(
@@ -103,7 +103,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
                         Paleta.Blanco,
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            validarUsuario();
+                            validarTaxista();
                           }
                         }
                       ),

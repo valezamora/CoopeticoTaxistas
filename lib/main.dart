@@ -7,35 +7,35 @@ import 'package:CoopeticoTaxiApp/services/token_service.dart';
 import 'package:CoopeticoTaxiApp/screens/login_taxista.dart';
 import 'package:CoopeticoTaxiApp/screens/home.dart';
 
-void main() => runApp(CoopeticoTaxiApp());
+void main() async{
+  Widget home = new LoginTaxista(titulo: "Login Taxista");
+  //Se setea cual va a ser el home screen.
+  bool existeTokenValido = await TokenService.existeTokenValido();
+  if (existeTokenValido) {
+    home = new Home();
+  }
+
+  runApp(CoopeticoAppUsuario(home));
+}
+
 
 ///
 /// CoopeticoAppUsuario es el front end de la aplicación de CoopeTico.
 ///
-class CoopeticoTaxiApp extends StatelessWidget {
-  Widget home = new LoginTaxista(titulo: "Login Taxista");
+class CoopeticoAppUsuario extends StatelessWidget {
+  final Widget home;
 
-  CoopeticoAppTaxista(){
-    _setHome();
-  }
-
-  void _setHome() async{
-    bool existeTokenValido = await TokenService.existeTokenValido();
-    if(existeTokenValido){
-      home = new Home();
-    }
-  }
+  CoopeticoAppUsuario(this.home);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Coopetico Taxi App',
-      theme: new ThemeData(
-        primaryColor: Colors.white,
-        fontFamily: "Roboto"
-      ),
+      title: 'Coopetico App',
+      theme: new ThemeData(primaryColor: Colors.white, fontFamily: "Roboto"),
       home: home,
       routes: routes,
+      debugShowCheckedModeBanner: false,
+
     );
   }
 }
