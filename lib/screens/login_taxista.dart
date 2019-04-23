@@ -45,7 +45,11 @@ class _LoginTaxistaState extends State<LoginTaxista> {
   static const String DATOSINCORRECTOS = "Datos incorrectos";
   static const String BADLOGIN =
       "El usuario o contraseña que ingresó es incorrecto.";
-
+  static const String TITAPPEQUIVOCADA = "Aplicación equivocada";
+  static const String APPEQUIVOCADA = "No puede ingresar a la aplicación de taxistas con "
+                                    "credenciales registrados en otra aplicación de CoopeTico.\n"
+                                    "Descargue la aplicación correspondiente o ingrese credenciales "
+                                    "para la aplicación de taxistas.";
   RestService _restService = new RestService();
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
@@ -139,8 +143,11 @@ class _LoginTaxistaState extends State<LoginTaxista> {
       } else if (respuesta == "noauth") {
         DialogoAlerta.mostrarAlerta(context, DATOSINCORRECTOS, BADLOGIN, OK);
       } else {
-        TokenService.guardarTokenLogin(respuesta);
-        Navigator.of(context).pushReplacementNamed('/home'); //Redireccionar al home screen.
+        if(!(await TokenService.guardarTokenLogin(respuesta))){
+          DialogoAlerta.mostrarAlerta(context, TITAPPEQUIVOCADA, APPEQUIVOCADA, OK);
+        }else{
+          Navigator.of(context).pushReplacementNamed('/home'); //Redireccionar al home screen.
+        }
       }
     } catch (e) {
       DialogoAlerta.mostrarAlerta(context, ERRORDECONECCION, ERRORCONN, OK);

@@ -13,9 +13,15 @@ class TokenService {
   /// Requiere que todos los permisos en el JSON sean Strings.
   ///
   /// Autor: Marco Venegas
-  static void guardarTokenLogin(String respuesta) async {
+  static Future<bool> guardarTokenLogin(String respuesta) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     Map respuestaJSON = jsonDecode(respuesta);
+
+    String rolT = respuestaJSON["rol"];
+
+    if(rolT != "Taxista"){ //Si algun otro rol intenta ingresar en la aplicación de taxistas retorna false.
+      return false;
+    }
 
     String subT = respuestaJSON["sub"];
     String nombreT = respuestaJSON["nombre"];
@@ -23,7 +29,6 @@ class TokenService {
     String telefonoT = respuestaJSON["telefono"];
     String fotoUrlT = respuestaJSON["fotoUrl"];
     List<String> permisosT = new List<String>.from(respuestaJSON["permisos"]);
-    String rolT = respuestaJSON["rol"];
     int iatT = respuestaJSON["iat"];
     int expT = respuestaJSON["exp"];
 
@@ -36,6 +41,8 @@ class TokenService {
     await preferences.setString('rolT', rolT);
     await preferences.setInt('iatT', iatT);
     await preferences.setInt('expT', expT);
+
+    return true;
   }
 
   /// Método borra el token del dispositivo.
