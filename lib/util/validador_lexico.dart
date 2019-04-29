@@ -4,7 +4,7 @@
 /// Clase con métodos estáticos para realizar validaciones de entradas de texto.
 class ValidadorLexico{
   static final String _regExpCorreo =
-      r"^([a-zA-Z0-9_\-\.]+)\@([a-zA-Z0-9_\-]+)\.([a-zA-Z]{2,5})$";
+      r"^([a-zA-Z0-9_\-\.]+)\@([a-zA-Z0-9_\-]+)\.([a-zA-Z]{2,})(\.([a-zA-Z]{2,}))*$";
   static final String _regExpContrasena = r"^[^(\-\-|\;|\—)]+$";
 
   /// [value] contiene el correo al que se le desea validar el formato.
