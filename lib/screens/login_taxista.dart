@@ -15,7 +15,6 @@ import 'package:CoopeticoTaxiApp/widgets/boton.dart';
 import 'package:CoopeticoTaxiApp/widgets/boton_plano.dart';
 import 'package:CoopeticoTaxiApp/widgets/etiqueta.dart';
 
-
 /// Autor: Marco Venegas.
 /// Ventana Stateful de login de taxisa.
 class LoginTaxista extends StatefulWidget {
@@ -46,86 +45,83 @@ class _LoginTaxistaState extends State<LoginTaxista> {
   static const String BADLOGIN =
       "El usuario o contraseña que ingresó es incorrecto.";
   static const String TITAPPEQUIVOCADA = "Aplicación equivocada";
-  static const String APPEQUIVOCADA = "No puede ingresar a la aplicación de taxistas con "
-                                    "credenciales registrados en otra aplicación de CoopeTico.\n"
-                                    "Descargue la aplicación correspondiente o ingrese credenciales "
-                                    "para la aplicación de taxistas.";
+  static const String APPEQUIVOCADA =
+      "No puede ingresar a la aplicación de taxistas con "
+      "credenciales registrados en otra aplicación de CoopeTico.\n"
+      "Descargue la aplicación correspondiente o ingrese credenciales "
+      "para la aplicación de taxistas.";
   RestService _restService = new RestService();
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
-  String _correo = ""; //Se almacenan aquí las entradas de texto para validarlas al presionar el botón.
+  String _correo =
+      ""; //Se almacenan aquí las entradas de texto para validarlas al presionar el botón.
   String _contrasena = "";
 
   /// Definición de ventana Login Usuario
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-                padding: const EdgeInsets.only(bottom: 30.0),
-                child: LogoCoopetico()),
-            Etiqueta("Taxistas", TamanoLetra.H2, FontWeight.bold),
-            Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    EntradaTexto(
-                      "Correo",
-                      "Correo",
-                      false,
-                      validator: (value) {
+      resizeToAvoidBottomPadding: true,
+      body: ListView(children: <Widget>[
+        Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                  padding: const EdgeInsets.only(bottom: 30.0),
+                  child: LogoCoopetico()),
+              Etiqueta("Taxistas", TamanoLetra.H2, FontWeight.bold),
+              Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      EntradaTexto("Correo", "Correo", false,
+                          validator: (value) {
                         String error = ValidadorLexico.validarCorreo(value);
-                        if(error == null){
+                        if (error == null) {
                           this._correo = value;
                         }
                         return error;
-                      }
-                    ),
-                    EntradaTexto(
-                      "Contraseña",
-                      "Contraseña",
-                      true,
-                      validator: (value) {
-                        String error = ValidadorLexico.validarContrasena(value);
-                        if(error == null){
-                          this._contrasena = value;
-                        }
-                        return error;
-                      },
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(top: 60.0, bottom: 30.0),
-                      child: Boton(
-                        "Iniciar sesión",
-                        Paleta.Naranja,
-                        Paleta.Blanco,
-                        onPressed: () {
+                      }),
+                      EntradaTexto(
+                        "Contraseña",
+                        "Contraseña",
+                        true,
+                        validator: (value) {
+                          String error =
+                              ValidadorLexico.validarContrasena(value);
+                          if (error == null) {
+                            this._contrasena = value;
+                          }
+                          return error;
+                        },
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(top: 60.0, bottom: 30.0),
+                        child: Boton(
+                            "Iniciar sesión", Paleta.Naranja, Paleta.Blanco,
+                            onPressed: () {
                           if (_formKey.currentState.validate()) {
                             validarTaxista();
                           }
-                        }
+                        }),
                       ),
-                    ),
-                  ],
-                )
-            ),
-            BotonPlano(
-              "Recuperar contraseña",
-              Paleta.Gris,
-              TamanoLetra.H3,
-              onPressed: () {
-                Navigator.pushNamed(context, '/recuperarContrasena');
-              },
-            ),
-          ],
-        ),
-      ),
+                    ],
+                  )),
+              BotonPlano(
+                "Recuperar contraseña",
+                Paleta.Gris,
+                TamanoLetra.H3,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/recuperarContrasena');
+                },
+              ),
+            ],
+          ),
+        )
+      ]),
     );
   }
 
@@ -143,10 +139,12 @@ class _LoginTaxistaState extends State<LoginTaxista> {
       } else if (respuesta == "noauth") {
         DialogoAlerta.mostrarAlerta(context, DATOSINCORRECTOS, BADLOGIN, OK);
       } else {
-        if(!(await TokenService.guardarTokenLogin(respuesta))){
-          DialogoAlerta.mostrarAlerta(context, TITAPPEQUIVOCADA, APPEQUIVOCADA, OK);
-        }else{
-          Navigator.of(context).pushReplacementNamed('/home'); //Redireccionar al home screen.
+        if (!(await TokenService.guardarTokenLogin(respuesta))) {
+          DialogoAlerta.mostrarAlerta(
+              context, TITAPPEQUIVOCADA, APPEQUIVOCADA, OK);
+        } else {
+          Navigator.of(context)
+              .pushReplacementNamed('/home'); //Redireccionar al home screen.
         }
       }
     } catch (e) {
