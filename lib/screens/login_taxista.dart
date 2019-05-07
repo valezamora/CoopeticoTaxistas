@@ -50,6 +50,10 @@ class _LoginTaxistaState extends State<LoginTaxista> {
       "credenciales registrados en otra aplicación de CoopeTico.\n"
       "Descargue la aplicación correspondiente o ingrese credenciales "
       "para la aplicación de taxistas.";
+  static const String TITSUSPENDIDO = "Cuenta suspendida";
+  static const String SUSPENDIDO = "Su cuenta se encuentra suspendida.\n"
+  "Intente ingresar luego nuevamente.\n"
+  "Motivo de la suspensión:\n";
   RestService _restService = new RestService();
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
@@ -139,9 +143,15 @@ class _LoginTaxistaState extends State<LoginTaxista> {
       } else if (respuesta == "noauth") {
         DialogoAlerta.mostrarAlerta(context, DATOSINCORRECTOS, BADLOGIN, OK);
       } else {
-        if (!(await TokenService.guardarTokenLogin(respuesta))) {
-          DialogoAlerta.mostrarAlerta(
-              context, TITAPPEQUIVOCADA, APPEQUIVOCADA, OK);
+        String mensaje = await TokenService.guardarTokenLogin(respuesta);
+        if (mensaje != 'OK') {
+          if(mensaje == 'AppEquivocada'){
+            DialogoAlerta.mostrarAlerta(
+                context, TITAPPEQUIVOCADA, APPEQUIVOCADA, OK);
+          }else{
+            DialogoAlerta.mostrarAlerta(
+                context, TITSUSPENDIDO, SUSPENDIDO, OK);
+          }
         } else {
           Navigator.of(context)
               .pushReplacementNamed('/home'); //Redireccionar al home screen.
