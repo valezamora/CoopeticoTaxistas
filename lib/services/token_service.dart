@@ -13,24 +13,33 @@ class TokenService {
   /// Requiere que todos los permisos en el JSON sean Strings.
   ///
   /// Autor: Marco Venegas
-  static Future<bool> guardarTokenLogin(String respuesta) async {
+  static Future<String> guardarTokenLogin(String respuesta) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     Map respuestaJSON = jsonDecode(respuesta);
 
-    String rolT = respuestaJSON["rol"];
+    String rolT = respuestaJSON['rol'];
 
-    if(rolT != "Taxista"){ //Si algun otro rol intenta ingresar en la aplicación de taxistas retorna false.
-      return false;
+    String estadoTStr = respuestaJSON['estado'];
+    bool estadoT = estadoTStr == 'true'; //Casteo místico de string a bool.
+
+    String justificacionT = respuestaJSON['justificacion'];
+
+    if(rolT != 'Taxista'){ //Si algun otro rol intenta ingresar en la aplicación de taxistas retorna false.
+      return 'AppEquivocada';
     }
 
-    String subT = respuestaJSON["sub"];
-    String nombreT = respuestaJSON["nombre"];
-    String apellidosT = respuestaJSON["apellidos"];
-    String telefonoT = respuestaJSON["telefono"];
-    String fotoUrlT = respuestaJSON["fotoUrl"];
-    List<String> permisosT = new List<String>.from(respuestaJSON["permisos"]);
-    int iatT = respuestaJSON["iat"];
-    int expT = respuestaJSON["exp"];
+    if(!estadoT){ //Si el taxista se encuentra suspendido
+      return justificacionT;
+    }
+
+    String subT = respuestaJSON['sub'];
+    String nombreT = respuestaJSON['nombre'];
+    String apellidosT = respuestaJSON['apellidos'];
+    String telefonoT = respuestaJSON['telefono'];
+    String fotoUrlT = respuestaJSON['fotoUrl'];
+    List<String> permisosT = new List<String>.from(respuestaJSON['permisos']);
+    int iatT = respuestaJSON['iat'];
+    int expT = respuestaJSON['exp'];
 
     await preferences.setString('subT', subT);
     await preferences.setString('nombreT', nombreT);
@@ -42,7 +51,7 @@ class TokenService {
     await preferences.setInt('iatT', iatT);
     await preferences.setInt('expT', expT);
 
-    return true;
+    return 'OK';
   }
 
   /// Método borra el token del dispositivo.
@@ -71,15 +80,15 @@ class TokenService {
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    String subT = preferences.getString("subT");
-    String nombreT = preferences.getString("nombreT");
-    String apellidosT = preferences.getString("apellidosT");
-    String telefonoT = preferences.getString("telefonoT");
-    String fotoUrlT = preferences.getString("subT");
-    List<String> permisosT = preferences.getStringList("permisosT");
-    String rolT = preferences.getString("rolT");
-    int iatT = preferences.getInt("iatT");
-    int expT = preferences.getInt("expT");
+    String subT = preferences.getString('subT');
+    String nombreT = preferences.getString('nombreT');
+    String apellidosT = preferences.getString('apellidosT');
+    String telefonoT = preferences.getString('telefonoT');
+    String fotoUrlT = preferences.getString('subT');
+    List<String> permisosT = preferences.getStringList('permisosT');
+    String rolT = preferences.getString('rolT');
+    int iatT = preferences.getInt('iatT');
+    int expT = preferences.getInt('expT');
 
 
     if (subT != null && nombreT != null && apellidosT != null && telefonoT != null &&
@@ -100,10 +109,10 @@ class TokenService {
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    String correo = preferences.getString("subT");
-    String nombreT = preferences.getString("nombreT");
-    String apellidosT = preferences.getString("apellidosT");
-    String telefonoT = preferences.getString("telefonoT");
+    String correo = preferences.getString('subT');
+    String nombreT = preferences.getString('nombreT');
+    String apellidosT = preferences.getString('apellidosT');
+    String telefonoT = preferences.getString('telefonoT');
 
     if(correo != null && nombreT != null && apellidosT != null && telefonoT != null){
       datos = true;
@@ -116,70 +125,70 @@ class TokenService {
   /// Autor: Marco Venegas
   static Future<String> getSub() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString("subT");
+    return preferences.getString('subT');
   }
 
   /// Retorna el nombre del taxista
   /// Autor: Valeria Zamora
   static Future<String> getNombre() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString("nombreT");
+    return preferences.getString('nombreT');
   }
 
   /// Retorna los apellidos del taxista
   /// Autor: Valeria Zamora
   static Future<String> getApellidos() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString("apellidosT");
+    return preferences.getString('apellidosT');
   }
 
   /// Retorna el telefono del taxista
   /// Autor: Valeria Zamora
   static Future<String> getTelefono() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString("telefonoT");
+    return preferences.getString('telefonoT');
   }
 
   /// Retorna el Url de la foto del taxista.
   /// Autor: Marco Venegas
   static Future<String> getFotoUrl() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString("fotoUrlT");
+    return preferences.getString('fotoUrlT');
   }
 
   /// Retorna los permisos del taxista.
   /// Autor: Marco Venegas
   static Future<List<String>> getPermisos() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getStringList("permisosT");
+    return preferences.getStringList('permisosT');
   }
 
   /// Retorna el rol del taxista.
   /// Autor: Marco Venegas
   static Future<String> getRol() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString("rolT");
+    return preferences.getString('rolT');
   }
 
   /// Retorna el tiempo al que fue generado el token del taxista.
   /// Autor: Marco Venegas
   static Future<int> getIat() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getInt("iatT");
+    return preferences.getInt('iatT');
   }
 
   /// Retorna el momento del vencimiento del token del taxista.
   /// Autor: Marco Venegas
   static Future<int> getExp() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getInt("expT");
+    return preferences.getInt('expT');
   }
 
   /// Retorna el nombre completo del taxista
   /// Autor: Valeria Zamora
   static Future<String> getnombreCompleto() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString("nombreT") + " " + preferences.getString("apellidosT");
+    return preferences.getString('nombreT') + ' ' + preferences.getString('apellidosT');
   }
 
   ///--------------------------------------------------------------------------
