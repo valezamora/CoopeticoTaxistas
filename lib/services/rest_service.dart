@@ -10,6 +10,7 @@ class RestService {
   static const URL_BACKEND = "http://10.0.2.2:8080";  // 10.0.2.2 es para el emulador de android
   static const URL_LOGIN = URL_BACKEND + "/auth/signin";
   static const URL_OBTENER_USUARIO = URL_BACKEND + "/clientes/obtenerUsuario/";
+  static const URL_USUARIOS = URL_BACKEND + "/usuarios";
   static const URL_SIGNUP = URL_BACKEND + "/clientes";
   static const URL_EDITAR = URL_BACKEND + "/clientes/editar";
 
@@ -93,7 +94,6 @@ class RestService {
   }
 
   /// Solicita un token para recuperar la contraseña del usuario.
-  //
   /// Envia un get al backend con el [correo} al endpoint
   /// 'usuarios/contrasenaToken'.
   ///
@@ -107,5 +107,21 @@ class RestService {
   /// Autor: Kevin Jimenez
   void borrarUsuario(correo){
     _networkService.httpdelete(URL_BACKEND+ '/usuarios/' + correo);
+  }
+
+  /// Este método envía un GET al backend con el correo del taxista que se desea consultar su estado.
+  ///
+  /// Recibe en el cuerpo de la respuesta un booleano que indica si está suspendido.
+  /// Retorna un MAP con los datos del usuario como JSON.
+  ///
+  /// Autor: Marco Venegas
+  Future<String> obtenerEstadoTaxista(String correo) {
+    String url = URL_USUARIOS + correo + "/estado";
+    return _networkService.httpGet(url)
+        .then((dynamic res) {
+      var respuesta = res;
+      // recibe srtring con un json
+      return respuesta.body;
+    });
   }
 }
