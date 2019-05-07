@@ -69,7 +69,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Container(
-                  padding: const EdgeInsets.only(bottom: 30.0),
+                  padding: const EdgeInsets.only(bottom: 30.0, top: 128.0),
                   child: LogoCoopetico()),
               Etiqueta("Taxistas", TamanoLetra.H2, FontWeight.bold),
               Form(
