@@ -19,16 +19,14 @@ class TokenService {
 
     String rolT = respuestaJSON['rol'];
 
-    String estadoTStr = respuestaJSON['estado'];
-    bool estadoT = estadoTStr == 'true'; //Casteo místico de string a bool.
-
-    String justificacionT = respuestaJSON['justificacion'];
-
     if(rolT != 'Taxista'){ //Si algun otro rol intenta ingresar en la aplicación de taxistas retorna false.
       return 'AppEquivocada';
     }
 
+    bool estadoT = respuestaJSON['estado'];
+
     if(!estadoT){ //Si el taxista se encuentra suspendido
+      String justificacionT = respuestaJSON['justificacion'];
       return justificacionT;
     }
 
