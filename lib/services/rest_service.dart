@@ -17,6 +17,7 @@ class RestService {
   /// Este método envía un POST al backend con un JSON en el cuerpo del request.
   ///
   /// Genera un Exception si se recibe algo que no es un JWT.
+  /// Autor: Marco Venegas
   Future<String> login(String correo, String contrasena) {
     String body = jsonEncode(
         {
@@ -55,6 +56,7 @@ class RestService {
   /// [encriptado] recibe un string encriptado con Base64.
   ///
   /// Genera una Exception si se ingresa una string que no está encriptada con Base64.
+  /// Autor: Marco Venegas
   String _decodificarToken(String encriptado) {
     //"intermedio" pues se transforma el string antes de decriptarse.
     String intermedio = encriptado.replaceAll('-', '+').replaceAll('_', '/');
