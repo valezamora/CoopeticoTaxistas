@@ -1,3 +1,4 @@
+import 'package:CoopeticoTaxiApp/screens/direcci%C3%B3nOrigen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:CoopeticoTaxiApp/routes.dart';
@@ -8,7 +9,8 @@ import 'package:CoopeticoTaxiApp/screens/login_taxista.dart';
 import 'package:CoopeticoTaxiApp/screens/home.dart';
 
 void main() async{
-  Widget home = new LoginTaxista(titulo: "Login Taxista");
+  Widget home = ///new LoginTaxista(titulo: "Login Taxista");
+    DireccionOrigen();
   //Se setea cual va a ser el home screen.
   bool existeTokenValido = await TokenService.existeTokenValido();
   if (existeTokenValido) {

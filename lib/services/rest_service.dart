@@ -7,7 +7,7 @@ import 'package:CoopeticoTaxiApp/services/network_service.dart';
 /// Clase para la comunicación con el backend mediante el REST API.
 class RestService {
   NetworkService _networkService = new NetworkService();
-  static const URL_BACKEND = "http://10.0.2.2:8080";  // 10.0.2.2 es para el emulador de android
+  static const URL_BACKEND = "http://192.16.202.5:8080";  // 10.0.2.2 es para el emulador de android
   static const URL_LOGIN = URL_BACKEND + "/auth/signin";
   static const URL_OBTENER_USUARIO = URL_BACKEND + "/clientes/obtenerUsuario/";
   static const URL_SIGNUP = URL_BACKEND + "/clientes";
