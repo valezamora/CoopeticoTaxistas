@@ -7,11 +7,12 @@ import 'package:CoopeticoTaxiApp/services/network_service.dart';
 /// Clase para la comunicación con el backend mediante el REST API.
 class RestService {
   NetworkService _networkService = new NetworkService();
-  static const URL_BACKEND = "http://192.16.202.5:8080";  // 10.0.2.2 es para el emulador de android
+  static const URL_BACKEND = "http://192.16.202.9:8080";  // 10.0.2.2 es para el emulador de android
   static const URL_LOGIN = URL_BACKEND + "/auth/signin";
   static const URL_OBTENER_USUARIO = URL_BACKEND + "/clientes/obtenerUsuario/";
   static const URL_SIGNUP = URL_BACKEND + "/clientes";
   static const URL_EDITAR = URL_BACKEND + "/clientes/editar";
+  static const URL_VIAJES = URL_BACKEND + "/viajes";
 
   /// Este método envía un POST al backend con un JSON en el cuerpo del request.
   ///
@@ -107,5 +108,63 @@ class RestService {
   /// Autor: Kevin Jimenez
   void borrarUsuario(correo){
     _networkService.httpdelete(URL_BACKEND+ '/usuarios/' + correo);
+  }
+
+  ///--------------------------------------------------------------------------
+  /// Envía el JSON hacia el server para insertar los datos del
+  /// viaje en creación
+  ///
+  /// Autor: Joseph Rementería (b55824).
+  /// Fecha: 19-05-2019
+  ///--------------------------------------------------------------------------
+  Future<String> crearViaje(
+    String placa,
+    String correoTaxista,
+    String fechaInicio,
+    String origen,
+    String correoCliente
+  ) {
+    ///------------------------------------------------------------------------
+    /// Creación del "header" del "request"
+    Map<String, String> header = {
+      "Accept": "application/json",
+      "content-type": "application/json"
+    };
+    ///------------------------------------------------------------------------
+    /// Creación del cuerpo del "request"
+    String body = jsonEncode(
+        {
+          "placa"         : placa,
+          "correoTaxista" : correoTaxista,
+          "fechaInicio"   : fechaInicio,
+          "origen"        : origen,
+          "correoCliente" : correoCliente
+        }
+    );
+    ///------------------------------------------------------------------------
+    return _networkService.httpPost(
+      URL_VIAJES,
+      body: body,
+        header: header
+      ).then((dynamic res) {
+        ///--------------------------------------------------------------------
+        //final String respuesta = res.body;
+        final int codigo = res.statusCode;
+
+        String resultado = "error";
+
+        switch (codigo) {
+          case 200:
+            resultado = "ok";
+            break;
+          default:
+            /// TODO: list all the codes.
+            break;
+        }
+        return resultado;
+      ///--------------------------------------------------------------------
+      }
+    );
+    ///------------------------------------------------------------------------
   }
 }

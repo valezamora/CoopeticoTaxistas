@@ -14,5 +14,7 @@ final routes = {
   '/home'               : (BuildContext context) => new Home(),
   '/perfil'             : (BuildContext context) => new PerfilUsuario(),
   '/recuperarContrasena': (BuildContext context) => new RecuperarContrasena(),
-  '/direccionOrigen'    : (BuildContext context) => new DireccionOrigen(),
+  '/direccionOrigen'    : (BuildContext context)
+    /// TODO: get the name ot the class.
+    => new DireccionOrigen(/*Class datosIniciales*/),
 };

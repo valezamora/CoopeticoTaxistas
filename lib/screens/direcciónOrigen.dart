@@ -1,6 +1,7 @@
 ///----------------------------------------------------------------------------
 /// Imports
 import 'dart:async';
+import 'package:CoopeticoTaxiApp/services/rest_service.dart';
 import 'package:CoopeticoTaxiApp/widgets/boton.dart';
 ///----------------------------------------------------------------------------
 import 'package:flutter/widgets.dart';
@@ -30,42 +31,37 @@ import 'package:CoopeticoTaxiApp/util/paleta.dart';
 /// Autor: Joseph Rementería (b55824).
 /// Fecha: 18-05-2019.
 ///----------------------------------------------------------------------------
+///
 class DireccionOrigen extends StatefulWidget {
   @override
-  _DireccionOrigenState createState() => _DireccionOrigenState();
+  _DireccionOrigenState createState() => _DireccionOrigenState(
+    /*Class datosIniciales*/
+  );
 }
 ///----------------------------------------------------------------------------
 class _DireccionOrigenState extends State<DireccionOrigen> {
   ///--------------------------------------------------------------------------
   /// Variables globales.
-  /// TODO: delete this commented vars
-//  var email = '';
-//  var nombreCompleto = '';
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
-//  var _tripDistance = 0;
   final Map<String, Marker> _markers = <String, Marker>{};
   static const LatLng _center = const LatLng(9.901589, -84.009813);
   GoogleMapController _mapController;
-  ///--------------------------------------------------------------------------
-  /// Constructores
-  /// TODO: Delete this contructor
-//  @override
-//  void initState(){
-//    super.initState();
-//    TokenService.getSub().then( (val) => setState(() {
-//      email = val;
-//    }));
-//    TokenService.getnombreCompleto().then( (val) => setState(() {
-//      nombreCompleto = val;
-//    }));
-//  }
+  RestService _restService = new RestService();
+  /// TODO: get the name of the class.
+  /// Class datosIniciales = datosIniciales;
+  /// Datos en token necesarios para el viaje.
+  String correoTaxista;
   ///--------------------------------------------------------------------------
   /// Constructor del despliegue original
   @override
+  void initState(){
+    super.initState();
+    TokenService.getnombreCompleto().then( (val) => setState(() {
+      correoTaxista = val;
+    }));
+  }
+  @override
   Widget build(BuildContext context) {
-    ///------------------------------------------------------------------------
-    /// TODO: delete this print.
-    print("joe was here");
     ///------------------------------------------------------------------------
     return Scaffold(
       ///----------------------------------------------------------------------
@@ -77,30 +73,36 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
         color: Paleta.Blanco,
         ///--------------------------------------------------------------------
         child: Stack(
-          children: <Widget>[
-          GoogleMap(
-            onMapCreated: (GoogleMapController controller) {
-              _mapController = controller;
-            },
-            initialCameraPosition: CameraPosition(
-              target: _center,
-              zoom: 14.4746,
-            ),
-            myLocationEnabled: true,
-          ),
           ///------------------------------------------------------------------
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Boton(
+          alignment: Alignment.bottomCenter,
+          ///------------------------------------------------------------------
+          children: <Widget>[
+            ///----------------------------------------------------------------
+            /// Mapa de google.
+            GoogleMap(
+              onMapCreated: (GoogleMapController controller) {
+                _mapController = controller;
+              },
+              initialCameraPosition: CameraPosition(
+                target: _center,
+                zoom: 14.4746,
+              ),
+              myLocationEnabled: true,
+            ),
+            ///----------------------------------------------------------------
+            /// Botón de comenzar viaje.
+            Positioned(
+              bottom: 50,
+              child:  Boton(
                 'Comenzar Viaje',
                 Paleta.Verde,
                 Paleta.Blanco,
-                onPressed: () {print('This is a test');}
-              ///----------------------------------------------------------
+                onPressed: () {this._comenzarViaje();}
+                ///--------------------------------------------------------------
+              ),
             )
+
             ///----------------------------------------------------------------
-          )
-          ///------------------------------------------------------------------
           ],
           ///------------------------------------------------------------------
           )
@@ -243,6 +245,42 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
       /// TODO: delete this var
       /// _tripDistance = 0;
     });
+    ///------------------------------------------------------------------------
+  }
+  ///--------------------------------------------------------------------------
+  /// Envíá los datos necesarios al backend para crear una tupla en la tabla
+  /// viaje.
+  ///
+  /// Autor: Joseph Rementería (b55824)
+  /// Fecha: 19-05-2019
+  ///--------------------------------------------------------------------------
+  Future _comenzarViaje() async {
+    print("-----------------------------------------------------------------");
+    ///------------------------------------------------------------------------
+    /// Acá se recopilian los datos para crear la tupla.
+    /// TODO: get the card plate.
+    String placa;
+    placa = "AAA111";
+    ///print(this.correoTaxista);
+    this.correoTaxista = 'taxista1@taxista.com';
+    /// TODO: get the correct format for the hour.
+    String fechaInicio = DateTime.now().toString().split(' ')[0];
+    /// TODO: get this information from the endpoints
+    String origen;
+    origen = "dirrecion_ de_origen";
+    /// TODO: get this info from the
+    String  correoCliente;
+    correoCliente = "cliente@cliente.com";
+    ///------------------------------------------------------------------------
+    String codigo = await _restService.crearViaje(
+      placa,
+      this.correoTaxista,
+      fechaInicio,
+      origen,
+      correoCliente
+    );
+    print(codigo);
+    print("-----------------------------------------------------------------");
     ///------------------------------------------------------------------------
   }
   ///--------------------------------------------------------------------------
