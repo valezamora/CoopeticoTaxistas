@@ -24,7 +24,7 @@ void main(){
     expect(buscadorLogo, findsOneWidget);
     expect(buscadorEntradaTexto, findsNWidgets(2));
     expect(buscadorBoton, findsOneWidget);
-    expect(buscadorBotonPlano, findsNWidgets(2));
+    expect(buscadorBotonPlano, findsOneWidget);
 
   });
 
