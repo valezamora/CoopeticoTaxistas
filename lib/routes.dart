@@ -8,6 +8,7 @@ import 'package:CoopeticoTaxiApp/screens/login_taxista.dart';
 import 'package:CoopeticoTaxiApp/screens/home.dart';
 import 'package:CoopeticoTaxiApp/screens/perfil_usuario.dart';
 import 'package:CoopeticoTaxiApp/screens/recuperar_contrasena.dart';
+import 'package:CoopeticoTaxiApp/widgets/recibir_viaje.dart';
 
 final routes = {
   '/login'              : (BuildContext context) => new LoginTaxista(),
@@ -17,4 +18,5 @@ final routes = {
   '/direccionOrigen'    : (BuildContext context)
     /// TODO: get the name ot the class.
     => new DireccionOrigen(/*Class datosIniciales*/),
+  '/recibirViaje': (BuildContext context) => new RecibirViaje(),
 };

@@ -21,7 +21,7 @@ void main() async{
 
 
 ///
-/// CoopeticoAppUsuario es el front end de la aplicación de CoopeTico.
+/// CoopeticoAppTaxista es el front end de la aplicación de CoopeTico para taxistas.
 ///
 class CoopeticoAppTaxista extends StatelessWidget {
   final Widget home;
