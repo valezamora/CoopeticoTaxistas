@@ -1,6 +1,7 @@
 ///----------------------------------------------------------------------------
 /// Imports
 import 'dart:async';
+import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
 import 'package:CoopeticoTaxiApp/services/rest_service.dart';
 import 'package:CoopeticoTaxiApp/widgets/boton.dart';
 ///----------------------------------------------------------------------------
@@ -33,10 +34,15 @@ import 'package:CoopeticoTaxiApp/util/paleta.dart';
 ///----------------------------------------------------------------------------
 ///
 class DireccionOrigen extends StatefulWidget {
+  //---------------------------------------------------------------------------
+  // Los datos que se traen desde la pantalla anterior
+  final viajeComenzando datosIniciales;
+  //---------------------------------------------------------------------------
+  DireccionOrigen(this.datosIniciales);
+  //---------------------------------------------------------------------------
   @override
-  _DireccionOrigenState createState() => _DireccionOrigenState(
-    /*Class datosIniciales*/
-  );
+  _DireccionOrigenState createState() => _DireccionOrigenState(datosIniciales);
+//---------------------------------------------------------------------------
 }
 ///----------------------------------------------------------------------------
 class _DireccionOrigenState extends State<DireccionOrigen> {
@@ -47,12 +53,9 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   static const LatLng _center = const LatLng(9.901589, -84.009813);
   GoogleMapController _mapController;
   RestService _restService = new RestService();
-  /// TODO: get the name of the class.
-  /// Class datosIniciales = datosIniciales;
-  /// Datos en token necesarios para el viaje.
   String correoTaxista;
+  viajeComenzando datosIniciales;
   ///--------------------------------------------------------------------------
-  /// Constructor del despliegue original
   @override
   void initState(){
     super.initState();
@@ -60,6 +63,12 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
       correoTaxista = val;
     }));
   }
+  ///--------------------------------------------------------------------------
+  /// Constructor del despliegue original
+  _DireccionOrigenState (viajeComenzando datosIniciales) {
+    this.datosIniciales = datosIniciales;
+  }
+  ///--------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     ///------------------------------------------------------------------------
@@ -255,22 +264,17 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   /// Fecha: 19-05-2019
   ///--------------------------------------------------------------------------
   Future _comenzarViaje() async {
-    print("-----------------------------------------------------------------");
     ///------------------------------------------------------------------------
     /// Acá se recopilian los datos para crear la tupla.
-    /// TODO: get the card plate.
-    String placa;
-    placa = "AAA111";
+    /// TODO: la placa para este sprint no es algo que se pueda obtener.
+    String placa = "AAA111";
     ///print(this.correoTaxista);
     this.correoTaxista = 'taxista1@taxista.com';
     /// TODO: get the correct format for the hour.
-    String fechaInicio = DateTime.now().toString().split(' ')[0];
-    /// TODO: get this information from the endpoints
-    String origen;
-    origen = "dirrecion_ de_origen";
-    /// TODO: get this info from the
-    String  correoCliente;
-    correoCliente = "cliente@cliente.com";
+    var timestamp = DateTime.now().toString().split(' ');
+    String fechaInicio = timestamp[0] + "T" + timestamp[1].split(".")[0];
+    String origen = this.datosIniciales.origen;
+    String  correoCliente = this.datosIniciales.correoCliente;
     ///------------------------------------------------------------------------
     String codigo = await _restService.crearViaje(
       placa,
@@ -280,7 +284,6 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
       correoCliente
     );
     print(codigo);
-    print("-----------------------------------------------------------------");
     ///------------------------------------------------------------------------
   }
   ///--------------------------------------------------------------------------

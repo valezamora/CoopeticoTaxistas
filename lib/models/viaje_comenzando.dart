@@ -7,4 +7,15 @@ class viajeComenzando {
   String tipo;
   bool datafono;
   List<String> taxistasQueRechazaron;
+
+  viajeComenzando(
+    this.correoCliente,
+    this.origen,
+    //this.destino,
+    //this.tipo,
+    //this.datafono,
+    //this.taxistasQueRechazaron
+  );
+
+
 }

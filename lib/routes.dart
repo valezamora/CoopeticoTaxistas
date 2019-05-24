@@ -1,3 +1,4 @@
+import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
 import 'package:CoopeticoTaxiApp/screens/direcci%C3%B3nOrigen.dart';
 /// Documento de rutas de las ventanas.
 ///
@@ -17,6 +18,11 @@ final routes = {
   '/recuperarContrasena': (BuildContext context) => new RecuperarContrasena(),
   '/direccionOrigen'    : (BuildContext context)
     /// TODO: get the name ot the class.
-    => new DireccionOrigen(/*Class datosIniciales*/),
+    => new DireccionOrigen(
+      new viajeComenzando(
+        "cliente@cliente.com",
+        "direccion_origen"
+      )
+    ),
   '/recibirViaje': (BuildContext context) => new RecibirViaje(),
 };
