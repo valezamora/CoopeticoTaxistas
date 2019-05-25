@@ -189,7 +189,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
       } else {
         sLng = toLatLng.longitude;
         nLng = fromLatLng.longitude;
-      }
+      } PositionedTransition;
 
       LatLngBounds bounds = LatLngBounds(
           northeast: LatLng(nLat, nLng),
