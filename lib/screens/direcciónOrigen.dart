@@ -51,10 +51,12 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   /// Variables globales.
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
   final Map<String, Marker> _markers = <String, Marker>{};
+  /// Si el centro el San Diego, entonces hay un error al recibir la dir de org
   LatLng _center = LatLng(9.901589, -84.009813);
   GoogleMapController _mapController;
   RestService _restService = new RestService();
-  String correoTaxista;
+  /// TODO: obtener el correo del taxista actual.
+  String correoTaxista = 'taxista1@taxista.com';
   ViajeComenzando datosIniciales;
   double origenLatitud;
   double origenLongitud;
@@ -68,11 +70,11 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   @override
   void initState(){
     super.initState();
-    var timer = Timer.periodic(Duration(seconds: 1),
-      (Timer t) => this._dibujarRuta(context));
-    TokenService.getnombreCompleto().then( (val) => setState(() {
+    TokenService.getSub().then( (val) => setState(() {
       correoTaxista = val;
     }));
+    var timer = Timer.periodic(Duration(seconds: 5),
+      (Timer t) => this._dibujarRuta(context));
   }
   ///--------------------------------------------------------------------------
   /// Constructor del despliegue original
@@ -123,7 +125,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
                 Paleta.Verde,
                 Paleta.Blanco,
                 onPressed: () {this._comenzarViaje();}
-                ///--------------------------------------------------------------
+                ///------------------------------------------------------------
               )
             )
             ///----------------------------------------------------------------
@@ -281,7 +283,6 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
     /// Acá se recopilian los datos para crear la tupla.
     /// TODO: la placa para este sprint no es algo que se pueda obtener.
     String placa = "AAA111";
-    this.correoTaxista = 'taxista1@taxista.com';
     var timestamp = DateTime.now().toString().split(' ');
     String fechaInicio = timestamp[0] + "T" + timestamp[1].split(".")[0];
     String origen = this.datosIniciales.origen;
@@ -300,13 +301,12 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   ///--------------------------------------------------------------------------
   /// Dibuja la ruta y actualiza los puntos de dirección actual y dirección
   /// de origen.
+  ///
+  /// Autor: Joseph Rementería (b55824)
+  /// Fecha: 24-05-2019
   void _dibujarRuta(BuildContext context) async {
-//    var location =  await Geolocator().getCurrentPosition(
-//      desiredAccuracy: LocationAccuracy.high
-//    );
-//    print(location.latitude);
-//    print(location.longitude);
     ///------------------------------------------------------------------------
+    /// Dibuja el marcador de la ubicación de origen.
     this._addMarker(
       MARKER_ID_FIN,
       new PlaceItemRes(
@@ -317,14 +317,14 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
       )
     );
     ///------------------------------------------------------------------------
+    /// Calcula la ubicación actual del taxista.
     var ubicacion = new Location();
     ubicacion.onLocationChanged().listen((LocationData currentLocation) {
       this.currentLatitud = currentLocation.latitude;
       this.currentLongitud = currentLocation.longitude;
     });
     ///------------------------------------------------------------------------
-    print(currentLatitud);
-    print(currentLongitud);
+    /// Dibuja el marcador de la ubicación actual del taxista.
     this._addMarker(
       MARKER_ID_INICIO,
       new PlaceItemRes(
@@ -335,8 +335,10 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
       )
     );
     ///------------------------------------------------------------------------
+    /// Dibuja la línea desde el la ubicación actual hasta la de origen.
     this._checkDrawPolyline();
     ///------------------------------------------------------------------------
+    /// Envia al server la ubicación actual del taxista.
     _restService.actualizar(
       this.correoTaxista,
       this.currentLatitud.toString(),
