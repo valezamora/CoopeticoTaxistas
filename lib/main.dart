@@ -1,3 +1,4 @@
+import 'package:CoopeticoTaxiApp/screens/direcci%C3%B3nOrigen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:CoopeticoTaxiApp/routes.dart';
@@ -10,7 +11,7 @@ void main() async{
 
 
 ///
-/// CoopeticoAppUsuario es el front end de la aplicación de CoopeTico.
+/// CoopeticoAppTaxista es el front end de la aplicación de CoopeTico para taxistas.
 ///
 class CoopeticoAppTaxista extends StatelessWidget {
   final Widget home;

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:CoopeticoTaxiApp/widgets/boton.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 // Google Maps
@@ -78,6 +79,22 @@ class _HomeState extends State<Home> {
                 ),
                 myLocationEnabled: true,
               ),
+              ///--------------------------------------------------------------
+              /// TODO: este botón solo está para probar la funcionalidad de
+              /// TODO: recibir dirección de origen y crear viaje
+              Positioned(
+                bottom: 15,
+                child: Boton(
+                  'test',
+                  Paleta.Blanco,
+                  Paleta.Blanco,
+                  onPressed: () => {
+                    Navigator.of(context)
+                      .pushReplacementNamed('/direccionOrigen')
+                  }
+                )
+              ),
+              ///--------------------------------------------------------------
               Positioned(
                 left: 0,
                 top: 0,
@@ -93,7 +110,6 @@ class _HomeState extends State<Home> {
                             _scaffoldKey.currentState.openDrawer();
                           },
                       )
-//
 //                      FlatButton(
 //                          onPressed: () {
 //                            print("click menu");
@@ -109,6 +125,7 @@ class _HomeState extends State<Home> {
           )
         ),
     );
+//
   }
 
 //  // Métodos
