@@ -10,12 +10,14 @@ class RestService {
   static const URL_BACKEND = "http://10.0.2.2:8080";  // 10.0.2.2 es para el emulador de android
   static const URL_LOGIN = URL_BACKEND + "/auth/signin";
   static const URL_OBTENER_USUARIO = URL_BACKEND + "/clientes/obtenerUsuario/";
+  static const URL_USUARIOS = URL_BACKEND + "/usuarios";
   static const URL_SIGNUP = URL_BACKEND + "/clientes";
   static const URL_EDITAR = URL_BACKEND + "/clientes/editar";
 
   /// Este método envía un POST al backend con un JSON en el cuerpo del request.
   ///
   /// Genera un Exception si se recibe algo que no es un JWT.
+  /// Autor: Marco Venegas
   Future<String> login(String correo, String contrasena) {
     String body = jsonEncode(
         {
@@ -54,6 +56,7 @@ class RestService {
   /// [encriptado] recibe un string encriptado con Base64.
   ///
   /// Genera una Exception si se ingresa una string que no está encriptada con Base64.
+  /// Autor: Marco Venegas
   String _decodificarToken(String encriptado) {
     //"intermedio" pues se transforma el string antes de decriptarse.
     String intermedio = encriptado.replaceAll('-', '+').replaceAll('_', '/');
@@ -93,7 +96,6 @@ class RestService {
   }
 
   /// Solicita un token para recuperar la contraseña del usuario.
-  //
   /// Envia un get al backend con el [correo} al endpoint
   /// 'usuarios/contrasenaToken'.
   ///
@@ -107,5 +109,21 @@ class RestService {
   /// Autor: Kevin Jimenez
   void borrarUsuario(correo){
     _networkService.httpdelete(URL_BACKEND+ '/usuarios/' + correo);
+  }
+
+  /// Este método envía un GET al backend con el correo del taxista que se desea consultar su estado.
+  ///
+  /// Recibe en el cuerpo de la respuesta un booleano que indica si está suspendido.
+  /// Retorna un MAP con los datos del usuario como JSON.
+  ///
+  /// Autor: Marco Venegas
+  Future<String> obtenerEstadoTaxista(String correo) {
+    String url = URL_USUARIOS + correo + "/estado";
+    return _networkService.httpGet(url)
+        .then((dynamic res) {
+      var respuesta = res;
+      // recibe srtring con un json
+      return respuesta.body;
+    });
   }
 }
