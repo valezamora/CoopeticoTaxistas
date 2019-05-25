@@ -31,7 +31,8 @@ dependencies:
 
   google_maps_flutter: #Dependencia para trabajar con Google Maps
     path: ./vendors/google_maps_flutter
-
+  # Location
+  location: ^2.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

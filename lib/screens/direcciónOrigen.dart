@@ -1,10 +1,13 @@
 ///----------------------------------------------------------------------------
 /// Imports
 import 'dart:async';
-///import 'package:geolocator/geolocator.dart';
 import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
 import 'package:CoopeticoTaxiApp/services/rest_service.dart';
 import 'package:CoopeticoTaxiApp/widgets/boton.dart';
+/// TODO: PARA HACER ESTA CIPORT FUNCIONAR BIEN, DEBEN SEGUIRSE LOS PASOS
+/// TODO: QUE SE DESCRIBEN EN LA SIGUIENTE PÁGINA: 
+/// TODO: https://pub.dev/packages/location
+import 'package:location/location.dart';
 ///----------------------------------------------------------------------------
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +58,8 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   viajeComenzando datosIniciales;
   double origenLatitud;
   double origenLongitud;
+  double currentLatitud;
+  double currentLongitud;
   ///--------------------------------------------------------------------------
   /// Constantes
   final String MARKER_ID_INICIO = "current";
@@ -312,6 +317,12 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
         )
     );
     ///------------------------------------------------------------------------
+    var ubicacion = new Location();
+
+    ubicacion.onLocationChanged().listen((LocationData currentLocation) {
+      this.currentLatitud = currentLocation.latitude;
+      this.currentLongitud = currentLocation.longitude;
+    });
     this._addMarker(
         MARKER_ID_INICIO,
         new PlaceItemRes(MARKER_ID_INICIO, 'test', 9.873140, -83.911564)
