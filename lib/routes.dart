@@ -19,9 +19,10 @@ final routes = {
   '/direccionOrigen'    : (BuildContext context)
     /// TODO: get the name ot the class.
     => new DireccionOrigen(
-      new viajeComenzando(
+      new ViajeComenzando(
         "cliente@cliente.com",
-        "9.938007,-84.051901"
+        "9.938007,-84.051901",
+        null, null, null, null
       )
     ),
   '/recibirViaje': (BuildContext context) => new RecibirViaje(),

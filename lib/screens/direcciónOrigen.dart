@@ -37,7 +37,7 @@ import 'package:CoopeticoTaxiApp/util/paleta.dart';
 class DireccionOrigen extends StatefulWidget {
   //---------------------------------------------------------------------------
   // Los datos que se traen desde la pantalla anterior
-  final viajeComenzando datosIniciales;
+  final ViajeComenzando datosIniciales;
   //---------------------------------------------------------------------------
   DireccionOrigen(this.datosIniciales);
   //---------------------------------------------------------------------------
@@ -55,7 +55,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   GoogleMapController _mapController;
   RestService _restService = new RestService();
   String correoTaxista;
-  viajeComenzando datosIniciales;
+  ViajeComenzando datosIniciales;
   double origenLatitud;
   double origenLongitud;
   double currentLatitud;
@@ -76,7 +76,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   }
   ///--------------------------------------------------------------------------
   /// Constructor del despliegue original
-  _DireccionOrigenState (viajeComenzando datosIniciales) {
+  _DireccionOrigenState (ViajeComenzando datosIniciales) {
     this.datosIniciales = datosIniciales;
     var origenArray = datosIniciales.origen.split(',');
     this.origenLatitud = double.parse(origenArray[0]);
@@ -308,27 +308,41 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
 //    print(location.longitude);
     ///------------------------------------------------------------------------
     this._addMarker(
-        MARKER_ID_FIN,
-        new PlaceItemRes(
-            MARKER_ID_FIN,
-            'test',
-            this.origenLatitud,
-            this.origenLongitud
-        )
+      MARKER_ID_FIN,
+      new PlaceItemRes(
+          MARKER_ID_FIN,
+          'test',
+          this.origenLatitud,
+          this.origenLongitud
+      )
     );
     ///------------------------------------------------------------------------
     var ubicacion = new Location();
-
     ubicacion.onLocationChanged().listen((LocationData currentLocation) {
       this.currentLatitud = currentLocation.latitude;
       this.currentLongitud = currentLocation.longitude;
     });
+    ///------------------------------------------------------------------------
+    print(currentLatitud);
+    print(currentLongitud);
     this._addMarker(
+      MARKER_ID_INICIO,
+      new PlaceItemRes(
         MARKER_ID_INICIO,
-        new PlaceItemRes(MARKER_ID_INICIO, 'test', 9.873140, -83.911564)
+        'test',
+        this.currentLatitud,
+        this.currentLongitud
+      )
     );
     ///------------------------------------------------------------------------
     this._checkDrawPolyline();
+    ///------------------------------------------------------------------------
+    _restService.actualizar(
+      this.correoTaxista,
+      this.currentLatitud.toString(),
+      this.currentLongitud.toString()
+    );
+    ///------------------------------------------------------------------------
   }
   ///--------------------------------------------------------------------------
 }

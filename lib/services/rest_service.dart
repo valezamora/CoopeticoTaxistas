@@ -189,8 +189,8 @@ class RestService {
     /// Creación del cuerpo del "request"
     String body = jsonEncode(
         {
-          "correotaxista" : correoTaxista,
-          "latitud"       : lat,
+          "correotaxista" : '"' + correoTaxista + '"',
+          "latitud"       : '"' + lat +'"',
           "longitud"      : lon
         }
     );
