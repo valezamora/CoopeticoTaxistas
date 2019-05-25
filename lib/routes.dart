@@ -21,7 +21,7 @@ final routes = {
     => new DireccionOrigen(
       new viajeComenzando(
         "cliente@cliente.com",
-        "direccion_origen"
+        "9.938007,-84.051901"
       )
     ),
   '/recibirViaje': (BuildContext context) => new RecibirViaje(),

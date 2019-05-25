@@ -7,12 +7,13 @@ import 'package:CoopeticoTaxiApp/widgets/boton.dart';
 ///----------------------------------------------------------------------------
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 ///----------------------------------------------------------------------------
 // Google Maps
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 ///----------------------------------------------------------------------------
 //Widgets
-import 'package:CoopeticoTaxiApp/widgets/home_widgets/drawer.dart';
+///import 'package:CoopeticoTaxiApp/widgets/home_widgets/drawer.dart';
 ///----------------------------------------------------------------------------
 //Modelos
 import 'package:CoopeticoTaxiApp/models/trip_info_res.dart';
@@ -50,29 +51,46 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   /// Variables globales.
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
   final Map<String, Marker> _markers = <String, Marker>{};
-  static const LatLng _center = const LatLng(9.901589, -84.009813);
+  LatLng _center = LatLng(9.901589, -84.009813);
   GoogleMapController _mapController;
   RestService _restService = new RestService();
   String correoTaxista;
   viajeComenzando datosIniciales;
+  double origenLatitud;
+  double origenLongitud;
   ///--------------------------------------------------------------------------
   @override
   void initState(){
     super.initState();
+    //this.build(context);
+    ///this._dibujarRuta(context);
+    var timer = Timer.periodic(Duration(seconds: 1),
+      (Timer t) => this._dibujarRuta(context));
     TokenService.getnombreCompleto().then( (val) => setState(() {
       correoTaxista = val;
     }));
   }
-  ///--------------------------------------------------------------------------
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    this._dibujarRuta(context);
+  }
+
+  ///---------------------------
+  ///-----------------------------------------------
   /// Constructor del despliegue original
   _DireccionOrigenState (viajeComenzando datosIniciales) {
     this.datosIniciales = datosIniciales;
+    var origenArray = datosIniciales.origen.split(',');
+    this.origenLatitud = double.parse(origenArray[0]);
+    this.origenLongitud = double.parse(origenArray[1]);
+    _center = LatLng(origenLatitud,origenLongitud);
   }
   ///--------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     ///------------------------------------------------------------------------
-    return Scaffold(
+    Scaffold resultado = Scaffold(
       ///----------------------------------------------------------------------
       key: _scaffoldKey,
       ///----------------------------------------------------------------------
@@ -94,7 +112,8 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
               },
               initialCameraPosition: CameraPosition(
                 target: _center,
-                zoom: 14.4746,
+                /// zoom: 14.4746,
+                zoom: 20.0
               ),
               myLocationEnabled: true,
             ),
@@ -108,9 +127,8 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
                 Paleta.Blanco,
                 onPressed: () {this._comenzarViaje();}
                 ///--------------------------------------------------------------
-              ),
+              )
             )
-
             ///----------------------------------------------------------------
           ],
           ///------------------------------------------------------------------
@@ -119,6 +137,8 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
         ),
       ///----------------------------------------------------------------------
     );
+    this._dibujarRuta(context);
+    return resultado;
     ///------------------------------------------------------------------------
   }
   ///------------------------------Métodos-------------------------------------
@@ -141,7 +161,6 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
     _clearMarker(fromAddress);
   }
   ///--------------------------------------------------------------------------
-  /// TODO: check how to use this method to mark the 'from' point.
   /// Método privado que se utiliza para agregar un marcador en el mapa de Google
   ///
   /// No retorna nada
@@ -208,7 +227,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   /// Autor: Paulo Barrantes
   void _checkDrawPolyline() {
     print(_markers);
-//  remove old polyline
+    //  remove old polyline
     _mapController.clearPolylines();
 
     if (_markers.length > 1) {
@@ -218,8 +237,6 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
           from.latitude, from.longitude, to.latitude, to.longitude)
           .then((vl) {
         TripInfoRes infoRes = vl;
-        /// TODO: delete this var
-        //_tripDistance = infoRes.distance;
         setState(() {
         });
         List<StepsRes> rs = infoRes.steps;
@@ -250,9 +267,6 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
           _mapController.removeMarker(marker);
         }
       });
-      // We clear the distance
-      /// TODO: delete this var
-      /// _tripDistance = 0;
     });
     ///------------------------------------------------------------------------
   }
@@ -268,9 +282,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
     /// Acá se recopilian los datos para crear la tupla.
     /// TODO: la placa para este sprint no es algo que se pueda obtener.
     String placa = "AAA111";
-    ///print(this.correoTaxista);
     this.correoTaxista = 'taxista1@taxista.com';
-    /// TODO: get the correct format for the hour.
     var timestamp = DateTime.now().toString().split(' ');
     String fechaInicio = timestamp[0] + "T" + timestamp[1].split(".")[0];
     String origen = this.datosIniciales.origen;
@@ -285,6 +297,23 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
     );
     print(codigo);
     ///------------------------------------------------------------------------
+  }
+
+  _dibujarRuta(BuildContext context) {
+    this._addMarker(
+        'origen',
+        new PlaceItemRes(
+            'origen',
+            'test',
+            this.origenLatitud,
+            this.origenLongitud
+        )
+    );
+    this._addMarker(
+        'current',
+        new PlaceItemRes('current', 'test', 9.937807, -84.0518701)
+    );
+    ///this._moveCamera();
   }
   ///--------------------------------------------------------------------------
 }
