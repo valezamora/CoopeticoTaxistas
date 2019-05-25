@@ -13,6 +13,7 @@ class RestService {
   static const URL_SIGNUP = URL_BACKEND + "/clientes";
   static const URL_EDITAR = URL_BACKEND + "/clientes/editar";
   static const URL_VIAJES = URL_BACKEND + "/viajes";
+  static const URL_UU_ACTUALIZAR_U = "/ubicaciones/actualizar/ubicacion";
 
   /// Este método envía un POST al backend con un JSON en el cuerpo del request.
   ///
@@ -164,6 +165,58 @@ class RestService {
         return resultado;
       ///--------------------------------------------------------------------
       }
+    );
+    ///------------------------------------------------------------------------
+  }
+  ///--------------------------------------------------------------------------
+  /// Envía el JSON hacia el server para actualizar la ubicion
+  ///
+  /// Autor: Joseph Rementería (b55824).
+  /// Fecha: 19-05-2019
+  ///--------------------------------------------------------------------------
+  Future<String> actualizar(
+      String correoTaxista,
+      String lat,
+      String lon
+    ) {
+    ///------------------------------------------------------------------------
+    /// Creación del "header" del "request"
+    Map<String, String> header = {
+      "Accept": "application/json",
+      "content-type": "application/json"
+    };
+    ///------------------------------------------------------------------------
+    /// Creación del cuerpo del "request"
+    String body = jsonEncode(
+        {
+          "correotaxista" : correoTaxista,
+          "latitud"       : lat,
+          "longitud"      : lon
+        }
+    );
+    ///------------------------------------------------------------------------
+    return _networkService.httpPost(
+        URL_VIAJES,
+        body: body,
+        header: header
+    ).then((dynamic res) {
+      ///--------------------------------------------------------------------
+      //final String respuesta = res.body;
+      final int codigo = res.statusCode;
+
+      String resultado = "error";
+
+      switch (codigo) {
+        case 200:
+          resultado = "ok";
+          break;
+        default:
+        /// TODO: list all the codes.
+          break;
+      }
+      return resultado;
+      ///--------------------------------------------------------------------
+    }
     );
     ///------------------------------------------------------------------------
   }

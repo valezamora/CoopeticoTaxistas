@@ -1,19 +1,16 @@
 ///----------------------------------------------------------------------------
 /// Imports
 import 'dart:async';
+///import 'package:geolocator/geolocator.dart';
 import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
 import 'package:CoopeticoTaxiApp/services/rest_service.dart';
 import 'package:CoopeticoTaxiApp/widgets/boton.dart';
 ///----------------------------------------------------------------------------
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 ///----------------------------------------------------------------------------
 // Google Maps
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-///----------------------------------------------------------------------------
-//Widgets
-///import 'package:CoopeticoTaxiApp/widgets/home_widgets/drawer.dart';
 ///----------------------------------------------------------------------------
 //Modelos
 import 'package:CoopeticoTaxiApp/models/trip_info_res.dart';
@@ -59,25 +56,20 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   double origenLatitud;
   double origenLongitud;
   ///--------------------------------------------------------------------------
+  /// Constantes
+  final String MARKER_ID_INICIO = "current";
+  final String MARKER_ID_FIN = "origen";
+  ///--------------------------------------------------------------------------
   @override
   void initState(){
     super.initState();
-    //this.build(context);
-    ///this._dibujarRuta(context);
     var timer = Timer.periodic(Duration(seconds: 1),
       (Timer t) => this._dibujarRuta(context));
     TokenService.getnombreCompleto().then( (val) => setState(() {
       correoTaxista = val;
     }));
   }
-
-  @override
-  void afterFirstLayout(BuildContext context) {
-    this._dibujarRuta(context);
-  }
-
-  ///---------------------------
-  ///-----------------------------------------------
+  ///--------------------------------------------------------------------------
   /// Constructor del despliegue original
   _DireccionOrigenState (viajeComenzando datosIniciales) {
     this.datosIniciales = datosIniciales;
@@ -90,7 +82,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   @override
   Widget build(BuildContext context) {
     ///------------------------------------------------------------------------
-    Scaffold resultado = Scaffold(
+    return Scaffold(
       ///----------------------------------------------------------------------
       key: _scaffoldKey,
       ///----------------------------------------------------------------------
@@ -137,8 +129,6 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
         ),
       ///----------------------------------------------------------------------
     );
-    this._dibujarRuta(context);
-    return resultado;
     ///------------------------------------------------------------------------
   }
   ///------------------------------Métodos-------------------------------------
@@ -146,8 +136,9 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   ///
   /// No retorna nada
   /// Autor: Paulo Barrantes
+  /// Editado por: Joseph Rementería (b55824); Fecha: 24-05-2019
   void onPlaceSelected(PlaceItemRes place, bool fromAddress) {
-    var mkId = fromAddress ? "from_address" : "to_address";
+    var mkId = fromAddress ? MARKER_ID_INICIO : MARKER_ID_FIN;
     _addMarker(mkId, place);
     _moveCamera();
     _checkDrawPolyline();
@@ -185,13 +176,14 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   ///
   /// No retorna nada
   /// Autor: Paulo Barrantes
+  /// Editador por: Joseph Rementería (b55824); Fecha: 24-05-2019.
   void _moveCamera() {
-    print("move camera: ");
-    print(_markers);
+    ///print("move camera: ");
+    ///print(_markers);
 
     if (_markers.values.length > 1) {
-      var fromLatLng = _markers["from_address"].options.position;
-      var toLatLng = _markers["to_address"].options.position;
+      var fromLatLng = _markers[MARKER_ID_INICIO].options.position;
+      var toLatLng = _markers[MARKER_ID_FIN].options.position;
 
       var sLat, sLng, nLat, nLng;
       if(fromLatLng.latitude <= toLatLng.latitude) {
@@ -225,14 +217,15 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   ///
   /// No retorna nada
   /// Autor: Paulo Barrantes
+  /// Editador por: Joseph Rementería (b55824); Fecha: 24-05-2019.
   void _checkDrawPolyline() {
-    print(_markers);
+    ///print(_markers);
     //  remove old polyline
     _mapController.clearPolylines();
 
     if (_markers.length > 1) {
-      var from = _markers["from_address"].options.position;
-      var to = _markers["to_address"].options.position;
+      var from = _markers[MARKER_ID_INICIO].options.position;
+      var to = _markers[MARKER_ID_FIN].options.position;
       PlaceService.getStep(
           from.latitude, from.longitude, to.latitude, to.longitude)
           .then((vl) {
@@ -256,10 +249,11 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   ///
   /// No retorna nada
   /// Autor: Paulo Barrantes
+  /// Editador por: Joseph Rementería (b55824); Fecha: 24-05-2019.
   void _clearMarker(bool fromAddress){
-    var mkId = fromAddress ? "from_address" : "to_address";
-    print(mkId);
-    print(_markers[mkId]);
+    var mkId = fromAddress ? MARKER_ID_INICIO : MARKER_ID_FIN;
+    ///print(mkId);
+    ///print(_markers[mkId]);
     _mapController.clearPolylines();
     setState(() {
       _mapController.markers.forEach((marker){
@@ -295,25 +289,35 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
       origen,
       correoCliente
     );
-    print(codigo);
     ///------------------------------------------------------------------------
   }
 
-  _dibujarRuta(BuildContext context) {
+  ///--------------------------------------------------------------------------
+  /// Dibuja la ruta y actualiza los puntos de dirección actual y dirección
+  /// de origen.
+  void _dibujarRuta(BuildContext context) async {
+//    var location =  await Geolocator().getCurrentPosition(
+//      desiredAccuracy: LocationAccuracy.high
+//    );
+//    print(location.latitude);
+//    print(location.longitude);
+    ///------------------------------------------------------------------------
     this._addMarker(
-        'origen',
+        MARKER_ID_FIN,
         new PlaceItemRes(
-            'origen',
+            MARKER_ID_FIN,
             'test',
             this.origenLatitud,
             this.origenLongitud
         )
     );
+    ///------------------------------------------------------------------------
     this._addMarker(
-        'current',
-        new PlaceItemRes('current', 'test', 9.937807, -84.0518701)
+        MARKER_ID_INICIO,
+        new PlaceItemRes(MARKER_ID_INICIO, 'test', 9.873140, -83.911564)
     );
-    ///this._moveCamera();
+    ///------------------------------------------------------------------------
+    this._checkDrawPolyline();
   }
   ///--------------------------------------------------------------------------
 }
