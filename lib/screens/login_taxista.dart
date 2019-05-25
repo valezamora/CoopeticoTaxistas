@@ -150,7 +150,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
                 context, TITAPPEQUIVOCADA, APPEQUIVOCADA, OK);
           }else{
             DialogoAlerta.mostrarAlerta(
-                context, TITSUSPENDIDO, SUSPENDIDO, OK);
+                context, TITSUSPENDIDO, SUSPENDIDO + mensaje, OK);
           }
         } else {
           Navigator.of(context)
