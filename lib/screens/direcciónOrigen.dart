@@ -208,7 +208,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
     );
 
     for (var m in _markers.values){
-      await _mapController.addMarker(m.options);
+       _mapController.addMarker(m.options);
     }
   }
   ///--------------------------------------------------------------------------
@@ -218,9 +218,6 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   /// Autor: Paulo Barrantes
   /// Editador por: Joseph Rementería (b55824); Fecha: 24-05-2019.
   void _moveCamera() {
-    ///print("move camera: ");
-    ///print(_markers);
-
     if (_markers.values.length > 1) {
       var fromLatLng = _markers[MARKER_ID_INICIO].options.position;
       var toLatLng = _markers[MARKER_ID_FIN].options.position;
@@ -259,8 +256,6 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   /// Autor: Paulo Barrantes
   /// Editador por: Joseph Rementería (b55824); Fecha: 24-05-2019.
   void _checkDrawPolyline() {
-    ///print(_markers);
-    //  remove old polyline
     _mapController.clearPolylines();
 
     if (_markers.length > 1) {
@@ -292,8 +287,6 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   /// Editador por: Joseph Rementería (b55824); Fecha: 24-05-2019.
   void _clearMarker(bool fromAddress){
     var mkId = fromAddress ? MARKER_ID_INICIO : MARKER_ID_FIN;
-    ///print(mkId);
-    ///print(_markers[mkId]);
     _mapController.clearPolylines();
     setState(() {
       _mapController.markers.forEach((marker){
