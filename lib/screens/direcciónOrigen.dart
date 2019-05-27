@@ -56,7 +56,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   GoogleMapController _mapController;
   RestService _restService = new RestService();
   /// TODO: obtener el correo del taxista actual.
-  String correoTaxista = 'taxista1@taxista.com';
+  String correoTaxista; ///= 'taxista1@taxista.com';
   ViajeComenzando datosIniciales;
   double origenLatitud;
   double origenLongitud;
@@ -68,20 +68,24 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   final String MARKER_ID_FIN = "origen";
   final String COMENZAR_VIAJE_MENSAJE_BOTON = 'Comenzar Viaje';
   final String TITULO_DIR_OPERADORA = 'Indicaciones';
+  final int REFRESHING_RATIO = 3;
   ///--------------------------------------------------------------------------
   @override
   void initState(){
     super.initState();
     TokenService.getSub().then( (val) => setState(() {
       correoTaxista = val;
+      print('---------------------------------------------------------------');
+      print(correoTaxista);
+      print('---------------------------------------------------------------');
     }));
     if (datosIniciales.origen[0] != '\$') {
-      Timer.periodic(Duration(seconds: 1),
+      Timer.periodic(Duration(seconds: REFRESHING_RATIO),
         (Timer t) => this._dibujarRuta(context));
     } else {
       WidgetsBinding.instance
         .addPostFrameCallback((_) => _mostrarOrigenOperador(context));
-      Timer.periodic(Duration(seconds: 1),
+      Timer.periodic(Duration(seconds: REFRESHING_RATIO),
         (Timer t) => _actualizarUbicacion());
     }
   }
@@ -379,8 +383,8 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
     /// Envia al server la ubicación actual del taxista.
     _restService.actualizar(
         this.correoTaxista,
-        this.currentLatitud.toString(),
-        this.currentLongitud.toString()
+        this.currentLatitud,
+        this.currentLongitud
     );
   }
 

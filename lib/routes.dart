@@ -21,7 +21,7 @@ final routes = {
     => new DireccionOrigen(
         new ViajeComenzando(
           "cliente@cliente.com",
-          "9.938007,-84.051901",
+          "9.9555117,-84.1153095",
           ///"\$Mall San Pedro, entrada principal",
           null, null, null, null
         )
