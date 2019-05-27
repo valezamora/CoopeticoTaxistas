@@ -77,10 +77,12 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
     }));
     if (datosIniciales.origen[0] != '\$') {
       Timer.periodic(Duration(seconds: 1),
-              (Timer t) => this._dibujarRuta(context));
+        (Timer t) => this._dibujarRuta(context));
     } else {
       WidgetsBinding.instance
-        .addPostFrameCallback((_) => mostrarOrigenOperador(context));
+        .addPostFrameCallback((_) => _mostrarOrigenOperador(context));
+      Timer.periodic(Duration(seconds: 1),
+        (Timer t) => _actualizarUbicacion());
     }
   }
   ///--------------------------------------------------------------------------
@@ -348,12 +350,8 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
       )
     );
     ///------------------------------------------------------------------------
-    /// Calcula la ubicación actual del taxista.
-    var ubicacion = new Location();
-    ubicacion.onLocationChanged().listen((LocationData currentLocation) {
-      this.currentLatitud = currentLocation.latitude;
-      this.currentLongitud = currentLocation.longitude;
-    });
+    /// Calcula la ubicación actual del taxista y se la envía la backend.
+    this._actualizarUbicacion();
     ///------------------------------------------------------------------------
     /// Dibuja el marcador de la ubicación actual del taxista.
     this._addMarker(
@@ -369,16 +367,38 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
     /// Dibuja la línea desde el la ubicación actual hasta la de origen.
     this._checkDrawPolyline();
     ///------------------------------------------------------------------------
-    /// Envia al server la ubicación actual del taxista.
-    _restService.actualizar(
-      this.correoTaxista,
-      this.currentLatitud.toString(),
-      this.currentLongitud.toString()
-    );
-    ///------------------------------------------------------------------------
   }
 
-  mostrarOrigenOperador(BuildContext context) {
+  ///--------------------------------------------------------------------------
+  /// Calcula la ubicación actual del taxista usando el GPS
+  /// y se la manda al backend
+  ///
+  /// Autor: Joseph Rementería (b55824)
+  /// Fecha: 26-05-2019
+  void _actualizarUbicacion(){
+    ///------------------------------------------------------------------------
+    var ubicacion = new Location();
+    ubicacion.onLocationChanged().listen((LocationData currentLocation) {
+      this.currentLatitud = currentLocation.latitude;
+      this.currentLongitud = currentLocation.longitude;
+    });
+    ///------------------------------------------------------------------------
+    /// Envia al server la ubicación actual del taxista.
+    _restService.actualizar(
+        this.correoTaxista,
+        this.currentLatitud.toString(),
+        this.currentLongitud.toString()
+    );
+  }
+
+  ///--------------------------------------------------------------------------
+  /// Método que muestra la dirección de origen en caso de que el viaje
+  /// haya sido insertado por un operador.
+  ///
+  /// Autor: Joseph Rementería (b55824)
+  /// Fecha: 25-05-2019
+  ///--------------------------------------------------------------------------
+  _mostrarOrigenOperador(BuildContext context) {
     showDialog(
       context: context,
       barrierDismissible: false,

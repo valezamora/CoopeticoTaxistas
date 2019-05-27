@@ -190,8 +190,9 @@ class RestService {
     String body = jsonEncode(
         {
           "correoTaxista" : '"' + correoTaxista + '"',
-          "latitud"       : '"' + lat + '"',
-          "longitud"      : '"' + lon + '"'
+          "latitud"       : lat,
+          "longitud"      : lon,
+          "disponible"    : false
         }
     );
     ///------------------------------------------------------------------------
