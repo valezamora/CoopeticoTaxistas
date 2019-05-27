@@ -7,10 +7,10 @@ import 'package:CoopeticoTaxiApp/services/network_service.dart';
 /// Clase para la comunicación con el backend mediante el REST API.
 class RestService {
   NetworkService _networkService = new NetworkService();
-  static const URL_BACKEND = "http://192.16.202.19:8080";  // 10.0.2.2 es para el emulador de android
+  static const URL_BACKEND = "http://192.168.0.11:8080";  // 10.0.2.2 es para el emulador de android
   static const URL_LOGIN = URL_BACKEND + "/auth/signin";
   static const URL_OBTENER_USUARIO = URL_BACKEND + "/clientes/obtenerUsuario/";
-  static const URL_USUARIOS = URL_BACKEND + "/usuarios";
+  static const URL_TAXISTAS = URL_BACKEND + "/taxistas";
   static const URL_SIGNUP = URL_BACKEND + "/clientes";
   static const URL_EDITAR = URL_BACKEND + "/clientes/editar";
   static const URL_VIAJES = URL_BACKEND + "/viajes";
@@ -119,7 +119,7 @@ class RestService {
   ///
   /// Autor: Marco Venegas
   Future<String> obtenerEstadoTaxista(String correo) {
-    String url = URL_USUARIOS + correo + "/estado";
+    String url = URL_TAXISTAS + "/" + correo + "/estado";
     return _networkService.httpGet(url)
         .then((dynamic res) {
       var respuesta = res;
