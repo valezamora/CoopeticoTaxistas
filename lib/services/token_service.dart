@@ -32,7 +32,8 @@ class TokenService {
 
     String subT = respuestaJSON['sub'];
     String nombreT = respuestaJSON['nombre'];
-    String apellidosT = respuestaJSON['apellidos'];
+    String apellido1T = respuestaJSON['apellido1'];
+    String apellido2T = respuestaJSON['apellido2'];
     String telefonoT = respuestaJSON['telefono'];
     String fotoUrlT = respuestaJSON['fotoUrl'];
     List<String> permisosT = new List<String>.from(respuestaJSON['permisos']);
@@ -41,7 +42,8 @@ class TokenService {
 
     await preferences.setString('subT', subT);
     await preferences.setString('nombreT', nombreT);
-    await preferences.setString('apellidosT', apellidosT);
+    await preferences.setString('apellido1T', apellido1T);
+    await preferences.setString('apellido2T', apellido2T);
     await preferences.setString('telefonoT', telefonoT);
     await preferences.setString('fotoUrlT', fotoUrlT);
     await preferences.setStringList('permisosT', permisosT);
@@ -60,7 +62,8 @@ class TokenService {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.remove('subT');
     await preferences.remove('nombreT');
-    await preferences.remove('apellidosT');
+    await preferences.remove('apellido1T');
+    await preferences.remove('apellido2T');
     await preferences.remove('telefonoT');
     await preferences.remove('fotoUrlT');
     await preferences.remove('permisosT');
@@ -80,7 +83,7 @@ class TokenService {
 
     String subT = preferences.getString('subT');
     String nombreT = preferences.getString('nombreT');
-    String apellidosT = preferences.getString('apellidosT');
+    String apellido1T = preferences.getString('apellido1T'); //Con solo uno de los dos apellidos basta
     String telefonoT = preferences.getString('telefonoT');
     String fotoUrlT = preferences.getString('subT');
     List<String> permisosT = preferences.getStringList('permisosT');
@@ -89,7 +92,7 @@ class TokenService {
     int expT = preferences.getInt('expT');
 
 
-    if (subT != null && nombreT != null && apellidosT != null && telefonoT != null &&
+    if (subT != null && nombreT != null && apellido1T != null && telefonoT != null &&
         fotoUrlT != null && permisosT != null && rolT != null && iatT != null && expT != null &&
         DateTime.fromMillisecondsSinceEpoch((expT * 1000)).isAfter(DateTime.now())) {
       //Si existe un token y no ha expirado.
