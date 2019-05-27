@@ -180,22 +180,27 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
     // remove old
     _markers.remove(mkId);
     _mapController.clearMarkers();
-
+    ///------------------------------------------------------------------------
+    /// Esta sección cambia el ícono dependiendo de si es el del taxista o el
+    /// del usuario.
+    BitmapDescriptor icono;
+    if (mkId != this.MARKER_ID_INICIO) {
+      icono = BitmapDescriptor.defaultMarkerWithHue(
+        BitmapDescriptor.hueOrange
+      );
+    } else {
+      icono = BitmapDescriptor.defaultMarkerWithHue(
+          BitmapDescriptor.hueAzure
+      );
+    }
+    ///------------------------------------------------------------------------
     _markers[mkId] = Marker(
       mkId,
       MarkerOptions(
         position: LatLng(place.lat, place.lng),
         infoWindowText: InfoWindowText(place.name, place.address),
         ///--------------------------------------------------------------------
-        ///icon: BitmapDescriptor.fromAsset('assets/ic_location_black.png')
-//        BitmapDescriptor.fromAssetImage(
-//          ImageConfiguration(size: Size(32, 32)), 'assets/car.png'
-//        )
-//        .then((onValue) {
-//        setState(() {
-//        markerIcon = onValue;
-//        });
-//        });
+        icon: icono
         ///--------------------------------------------------------------------
       )
     );
