@@ -66,6 +66,8 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   /// Constantes
   final String MARKER_ID_INICIO = "current";
   final String MARKER_ID_FIN = "origen";
+  final String COMENZAR_VIAJE_MENSAJE_BOTON = 'Comenzar Viaje';
+  final String TITULO_DIR_OPERADORA = 'Indicaciones';
   ///--------------------------------------------------------------------------
   @override
   void initState(){
@@ -73,17 +75,27 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
     TokenService.getSub().then( (val) => setState(() {
       correoTaxista = val;
     }));
-    var timer = Timer.periodic(Duration(seconds: 5),
-      (Timer t) => this._dibujarRuta(context));
+    if (datosIniciales.origen[0] != '\$') {
+      Timer.periodic(Duration(seconds: 1),
+              (Timer t) => this._dibujarRuta(context));
+    } else {
+      WidgetsBinding.instance
+        .addPostFrameCallback((_) => mostrarOrigenOperador(context));
+    }
   }
   ///--------------------------------------------------------------------------
   /// Constructor del despliegue original
   _DireccionOrigenState (ViajeComenzando datosIniciales) {
     this.datosIniciales = datosIniciales;
-    var origenArray = datosIniciales.origen.split(',');
-    this.origenLatitud = double.parse(origenArray[0]);
-    this.origenLongitud = double.parse(origenArray[1]);
-    _center = LatLng(origenLatitud,origenLongitud);
+    if (datosIniciales.origen[0] != '\$'){
+      var origenArray = datosIniciales.origen.split(',');
+      this.origenLatitud = double.parse(origenArray[0]);
+      this.origenLongitud = double.parse(origenArray[1]);
+      _center = LatLng(origenLatitud,origenLongitud);
+    } else {
+      /// TODO: find if there's another action
+    }
+
   }
   ///--------------------------------------------------------------------------
   @override
@@ -121,7 +133,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
             Positioned(
               bottom: 50,
               child:  Boton(
-                'Comenzar Viaje',
+                COMENZAR_VIAJE_MENSAJE_BOTON,
                 Paleta.Verde,
                 Paleta.Blanco,
                 onPressed: () {this._comenzarViaje();}
@@ -163,16 +175,30 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   ///
   /// No retorna nada
   /// Autor: Paulo Barrantes
+  /// Editado por: Joseph Rementería (b55824)
   void _addMarker(String mkId, PlaceItemRes place) async {
     // remove old
     _markers.remove(mkId);
     _mapController.clearMarkers();
 
     _markers[mkId] = Marker(
-        mkId,
-        MarkerOptions(
-            position: LatLng(place.lat, place.lng),
-            infoWindowText: InfoWindowText(place.name, place.address)));
+      mkId,
+      MarkerOptions(
+        position: LatLng(place.lat, place.lng),
+        infoWindowText: InfoWindowText(place.name, place.address),
+        ///--------------------------------------------------------------------
+        ///icon: BitmapDescriptor.fromAsset('assets/ic_location_black.png')
+//        BitmapDescriptor.fromAssetImage(
+//          ImageConfiguration(size: Size(32, 32)), 'assets/car.png'
+//        )
+//        .then((onValue) {
+//        setState(() {
+//        markerIcon = onValue;
+//        });
+//        });
+        ///--------------------------------------------------------------------
+      )
+    );
 
     for (var m in _markers.values){
       await _mapController.addMarker(m.options);
@@ -247,7 +273,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
         }
 
         _mapController.addPolyline(PolylineOptions(
-            points: paths, color: Color(0xFF21a6ff).value, width: 3));
+            points: paths, color: Paleta.Naranja.value, width: 10));
       });
     }
   }
@@ -345,6 +371,29 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
       this.currentLongitud.toString()
     );
     ///------------------------------------------------------------------------
+  }
+
+  mostrarOrigenOperador(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(TITULO_DIR_OPERADORA),
+          content: Text(
+            datosIniciales.origen.substring(1)
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(COMENZAR_VIAJE_MENSAJE_BOTON),
+              onPressed: () {
+                this._comenzarViaje();
+              },
+            )
+          ],
+        );
+      },
+    );
   }
   ///--------------------------------------------------------------------------
 }
