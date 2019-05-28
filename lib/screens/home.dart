@@ -65,7 +65,7 @@ class _HomeState extends State<Home> {
     }));
     
     channel = WebSocketsService.connect('ws://echo.websocket.org');
-    channel.sink.add('caca');
+    channel.sink.add('TEST');
   }
 
   @override

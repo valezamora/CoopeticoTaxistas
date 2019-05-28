@@ -9,8 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class TokenService {
   static String token = '';
   /// Se ejecuta cuando un taxista hace un log in exitoso.
-  /// Requiere que [respuesta] sea un string JSON con formato válido.
-  /// Requiere que todos los permisos en el JSON sean Strings.
   ///
   /// Autor: Marco Venegas
   static Future<String> guardarTokenLogin(String respuesta) async {
