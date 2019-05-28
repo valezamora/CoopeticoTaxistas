@@ -1,5 +1,5 @@
 import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
-import 'package:CoopeticoTaxiApp/screens/direcci%C3%B3nOrigen.dart';
+import 'package:CoopeticoTaxiApp/screens/direccion_orig.dart';
 /// Documento de rutas de las ventanas.
 ///
 /// Por cuestiones de seguridad se debe importar cada una de las ventanas por separado.

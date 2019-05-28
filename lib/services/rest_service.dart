@@ -214,7 +214,7 @@ class RestService {
     );
     ///------------------------------------------------------------------------
     return _networkService.httpPost(
-        URL_VIAJES,
+        URL_UU_ACTUALIZAR_U,
         body: body,
         header: header
     ).then((dynamic res) {
