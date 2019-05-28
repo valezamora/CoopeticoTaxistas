@@ -25,11 +25,6 @@ import 'package:CoopeticoTaxiApp/services/web_sockets_service.dart';
 import 'package:CoopeticoTaxiApp/util/paleta.dart';
 
 import 'package:web_socket_channel/io.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:web_socket_channel/status.dart' as status;
-import 'package:stream_channel/stream_channel.dart';
-
-
 
 /// Widget que contiene el appbar, el ridepicker, el car picker y el payment picker.
 ///
@@ -46,6 +41,7 @@ class _HomeState extends State<Home> {
   var mensaje;
   var head;
   IOWebSocketChannel channel;
+  IOWebSocketChannel channel2;
 
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
   var _tripDistance = 0;
@@ -66,12 +62,14 @@ class _HomeState extends State<Home> {
     
     channel = WebSocketsService.connect('ws://echo.websocket.org');
     channel.sink.add('TEST');
+    channel2 = WebSocketsService.connect('ws://18.224.54.92:8085/user/queue/recibir-viaje');
   }
 
   @override
   Widget build(BuildContext context) {
 
     print("build UI");
+    print(channel2);
 
     return Scaffold(
       key: _scaffoldKey,
