@@ -8,6 +8,9 @@ import 'package:CoopeticoTaxiApp/util/seleccionador_home.dart';
 
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket_channel/status.dart' as status;
+import 'package:stream_channel/stream_channel.dart';
+
 
 void main() async{
   // channel: IOWebSocketChannel.connect('ws://echo.websocket.org');
@@ -26,9 +29,6 @@ class CoopeticoAppTaxista extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var channel = IOWebSocketChannel.connect('ws://echo.websocket.org');
-    channel.sink.add('caca');
-    print('PROTOCOL' + channel.toString());
     return MaterialApp(
       title: 'Coopetico Taxi App',
       theme: new ThemeData(primaryColor: Colors.white, fontFamily: "Roboto"),
