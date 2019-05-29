@@ -14,7 +14,7 @@ class RestService {
   static const URL_SIGNUP = URL_BACKEND + "/clientes";
   static const URL_EDITAR = URL_BACKEND + "/clientes/editar";
   static const URL_VIAJES = URL_BACKEND + "/viajes";
-  static const URL_UU_ACTUALIZAR_U = "/ubicaciones/actualizar/ubicacion";
+  static const URL_ACTUALIZAR_UBICACION = URL_BACKEND + "/ubicaciones/actualizar/ubicacion";
 
   /// Este método envía un POST al backend con un JSON en el cuerpo del request.
   ///
@@ -214,7 +214,7 @@ class RestService {
     );
     ///------------------------------------------------------------------------
     return _networkService.httpPost(
-        URL_UU_ACTUALIZAR_U,
+        URL_ACTUALIZAR_UBICACION,
         body: body,
         header: header
     ).then((dynamic res) {
