@@ -1,5 +1,5 @@
 import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
-import 'package:CoopeticoTaxiApp/screens/direcci%C3%B3nOrigen.dart';
+import 'package:CoopeticoTaxiApp/screens/direccion_orig.dart';
 /// Documento de rutas de las ventanas.
 ///
 /// Por cuestiones de seguridad se debe importar cada una de las ventanas por separado.
@@ -16,13 +16,5 @@ final routes = {
   '/home'               : (BuildContext context) => new Home(),
   '/perfil'             : (BuildContext context) => new PerfilUsuario(),
   '/recuperarContrasena': (BuildContext context) => new RecuperarContrasena(),
-  '/direccionOrigen'    : (BuildContext context)
-    /// TODO: get the name ot the class.
-    => new DireccionOrigen(
-      new viajeComenzando(
-        "cliente@cliente.com",
-        "direccion_origen"
-      )
-    ),
   '/recibirViaje': (BuildContext context) => new RecibirViaje(),
 };

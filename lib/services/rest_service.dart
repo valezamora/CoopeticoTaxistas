@@ -7,13 +7,14 @@ import 'package:CoopeticoTaxiApp/services/network_service.dart';
 /// Clase para la comunicación con el backend mediante el REST API.
 class RestService {
   NetworkService _networkService = new NetworkService();
-  static const URL_BACKEND = "http://10.0.2.2:8080";  // 10.0.2.2 es para el emulador de android  18.224.54.92:8085
+  static const URL_BACKEND = "http://18.224.54.92:8085";  // 10.0.2.2 es para el emulador de android
   static const URL_LOGIN = URL_BACKEND + "/auth/signin";
   static const URL_OBTENER_USUARIO = URL_BACKEND + "/clientes/obtenerUsuario/";
   static const URL_TAXISTAS = URL_BACKEND + "/taxistas";
   static const URL_SIGNUP = URL_BACKEND + "/clientes";
   static const URL_EDITAR = URL_BACKEND + "/clientes/editar";
   static const URL_VIAJES = URL_BACKEND + "/viajes";
+  static const URL_ACTUALIZAR_UBICACION = URL_BACKEND + "/ubicaciones/actualizar/ubicacion";
 
   /// Este método envía un POST al backend con un JSON en el cuerpo del request.
   ///
@@ -146,13 +147,59 @@ class RestService {
           case 200:
             resultado = "ok";
             break;
-          default:
-            /// TODO: list all the codes.
-            break;
         }
         return resultado;
       ///--------------------------------------------------------------------
       }
+    );
+    ///------------------------------------------------------------------------
+  }
+  ///--------------------------------------------------------------------------
+  /// Envía el JSON hacia el server para actualizar la ubicion
+  ///
+  /// Autor: Joseph Rementería (b55824).
+  /// Fecha: 19-05-2019
+  ///--------------------------------------------------------------------------
+  Future<String> actualizar(
+      String correoTaxista,
+      double lat,
+      double lon
+    ) {
+    ///------------------------------------------------------------------------
+    /// Creación del "header" del "request"
+    Map<String, String> header = {
+      "Accept": "application/json",
+      "content-type": "application/json"
+    };
+    ///------------------------------------------------------------------------
+    /// Creación del cuerpo del "request"
+    String body = jsonEncode(
+        {
+          "correoTaxista" : '"' + correoTaxista + '"',
+          "latitud"       : lat,
+          "longitud"      : lon
+        }
+    );
+    ///------------------------------------------------------------------------
+    return _networkService.httpPost(
+        URL_ACTUALIZAR_UBICACION,
+        body: body,
+        header: header
+    ).then((dynamic res) {
+      ///--------------------------------------------------------------------
+      //final String respuesta = res.body;
+      final int codigo = res.statusCode;
+
+      String resultado = "error";
+
+      switch (codigo) {
+        case 200:
+          resultado = "ok";
+          break;
+      }
+      return resultado;
+      ///--------------------------------------------------------------------
+    }
     );
     ///------------------------------------------------------------------------
   }

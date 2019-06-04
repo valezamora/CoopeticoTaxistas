@@ -86,9 +86,6 @@ class _HomeState extends State<Home> {
                 ),
                 myLocationEnabled: true,
               ),
-              ///--------------------------------------------------------------
-              /// TODO: este botón solo está para probar la funcionalidad de
-              /// TODO: recibir dirección de origen y crear viaje
               Positioned(
                 bottom: 15,
                 child: StreamBuilder(
