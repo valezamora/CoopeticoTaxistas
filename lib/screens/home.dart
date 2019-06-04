@@ -19,10 +19,12 @@ import 'package:CoopeticoTaxiApp/models/step_res.dart';
 import 'package:CoopeticoTaxiApp/services/google_maps_places.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:CoopeticoTaxiApp/services/token_service.dart';
+import 'package:CoopeticoTaxiApp/services/web_sockets_service.dart';
 
 //Colores
 import 'package:CoopeticoTaxiApp/util/paleta.dart';
 
+import 'package:web_socket_channel/io.dart';
 
 /// Widget que contiene el appbar, el ridepicker, el car picker y el payment picker.
 ///
@@ -36,6 +38,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   var email = '';
   var nombreCompleto = '';
+  var mensaje;
+  var head;
+  IOWebSocketChannel channelViaje;
 
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
   var _tripDistance = 0;
@@ -53,12 +58,14 @@ class _HomeState extends State<Home> {
     TokenService.getnombreCompleto().then( (val) => setState(() {
       nombreCompleto = val;
     }));
+    channelViaje = WebSocketsService.connect('ws://18.224.54.92:8085/user/queue/recibir-viaje');
   }
 
   @override
   Widget build(BuildContext context) {
 
     print("build UI");
+    print(channelViaje);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -79,6 +86,20 @@ class _HomeState extends State<Home> {
                 ),
                 myLocationEnabled: true,
               ),
+              Positioned(
+                bottom: 15,
+                child: StreamBuilder(
+                  stream: channelViaje.stream,
+                  builder: (context, snapshot) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 24.0),
+                      child: Text(snapshot.hasData ? '${snapshot.data}' : '',
+                        style: TextStyle(color: Colors.blue)),
+                    );
+                  },
+                )
+              ),
+              ///--------------------------------------------------------------
               Positioned(
                 left: 0,
                 top: 0,

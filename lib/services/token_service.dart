@@ -7,15 +7,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// el token de login para que el taxista no tenga que autenticarse
 /// cada vez que abre la aplicación.
 class TokenService {
-
+  static String token = '';
   /// Se ejecuta cuando un taxista hace un log in exitoso.
-  /// Requiere que [respuesta] sea un string JSON con formato válido.
-  /// Requiere que todos los permisos en el JSON sean Strings.
   ///
   /// Autor: Marco Venegas
   static Future<String> guardarTokenLogin(String respuesta) async {
+    var partes = respuesta.split('.');
+    if (partes.length != 3) {
+      throw Exception('Token inválido.');
+    }
+    var resultado = _decodificarToken(partes[1]); //Decodifica la parte que nos interesa del token.
+
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    Map respuestaJSON = jsonDecode(respuesta);
+    Map respuestaJSON = jsonDecode(resultado);
 
     String rolT = respuestaJSON['rol'];
 
@@ -30,9 +34,12 @@ class TokenService {
       return justificacionT;
     }
 
+    token = respuesta;
+
     String subT = respuestaJSON['sub'];
     String nombreT = respuestaJSON['nombre'];
-    String apellidosT = respuestaJSON['apellidos'];
+    String apellido1T = respuestaJSON['apellido1'];
+    String apellido2T = respuestaJSON['apellido2'];
     String telefonoT = respuestaJSON['telefono'];
     String fotoUrlT = respuestaJSON['fotoUrl'];
     List<String> permisosT = new List<String>.from(respuestaJSON['permisos']);
@@ -41,7 +48,8 @@ class TokenService {
 
     await preferences.setString('subT', subT);
     await preferences.setString('nombreT', nombreT);
-    await preferences.setString('apellidosT', apellidosT);
+    await preferences.setString('apellido1T', apellido1T);
+    await preferences.setString('apellido2T', apellido2T);
     await preferences.setString('telefonoT', telefonoT);
     await preferences.setString('fotoUrlT', fotoUrlT);
     await preferences.setStringList('permisosT', permisosT);
@@ -52,6 +60,31 @@ class TokenService {
     return 'OK';
   }
 
+  /// Método decodifica un JWT que es una string codificada con Base64.
+  /// [encriptado] recibe un string encriptado con Base64.
+  ///
+  /// Genera una Exception si se ingresa una string que no está encriptada con Base64.
+  /// Autor: Marco Venegas
+  static String _decodificarToken(String encriptado) {
+    //"intermedio" pues se transforma el string antes de decriptarse.
+    String intermedio = encriptado.replaceAll('-', '+').replaceAll('_', '/');
+
+    switch (intermedio.length % 4) {
+      case 0:
+        break;
+      case 2:
+        intermedio += '==';
+        break;
+      case 3:
+        intermedio += '=';
+        break;
+      default:
+        throw Exception('No es una string Base64!"');
+    }
+
+    String decriptado = utf8.decode(base64Url.decode(intermedio));
+    return decriptado;
+  }
   /// Método borra el token del dispositivo.
   /// Se debe ejecutar al hacer logout de la aplicación.
   ///
@@ -60,13 +93,21 @@ class TokenService {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.remove('subT');
     await preferences.remove('nombreT');
-    await preferences.remove('apellidosT');
+    await preferences.remove('apellido1T');
+    await preferences.remove('apellido2T');
     await preferences.remove('telefonoT');
     await preferences.remove('fotoUrlT');
     await preferences.remove('permisosT');
     await preferences.remove('rolT');
     await preferences.remove('iatT');
     await preferences.remove('expT');
+    token = '';
+  }
+
+  /// Metodo que devuelve el token actual
+  /// Autor: Valeria Zamora
+  static String getToken() {
+    return token;
   }
 
   /// Método devuelve true si existe un token en el dispositivo con una fecha
@@ -80,7 +121,7 @@ class TokenService {
 
     String subT = preferences.getString('subT');
     String nombreT = preferences.getString('nombreT');
-    String apellidosT = preferences.getString('apellidosT');
+    String apellido1T = preferences.getString('apellido1T'); //Con solo uno de los dos apellidos basta
     String telefonoT = preferences.getString('telefonoT');
     String fotoUrlT = preferences.getString('subT');
     List<String> permisosT = preferences.getStringList('permisosT');
@@ -89,7 +130,7 @@ class TokenService {
     int expT = preferences.getInt('expT');
 
 
-    if (subT != null && nombreT != null && apellidosT != null && telefonoT != null &&
+    if (subT != null && nombreT != null && apellido1T != null && telefonoT != null &&
         fotoUrlT != null && permisosT != null && rolT != null && iatT != null && expT != null &&
         DateTime.fromMillisecondsSinceEpoch((expT * 1000)).isAfter(DateTime.now())) {
       //Si existe un token y no ha expirado.

@@ -10,7 +10,7 @@ class RestService {
   static const URL_BACKEND = "http://18.224.54.92:8085";  // 10.0.2.2 es para el emulador de android
   static const URL_LOGIN = URL_BACKEND + "/auth/signin";
   static const URL_OBTENER_USUARIO = URL_BACKEND + "/clientes/obtenerUsuario/";
-  static const URL_USUARIOS = URL_BACKEND + "/usuarios";
+  static const URL_TAXISTAS = URL_BACKEND + "/taxistas";
   static const URL_SIGNUP = URL_BACKEND + "/clientes";
   static const URL_EDITAR = URL_BACKEND + "/clientes/editar";
   static const URL_VIAJES = URL_BACKEND + "/viajes";
@@ -37,16 +37,11 @@ class RestService {
         .then((dynamic res) {
       final String respuesta = res.body;
       final int statusCode = res.statusCode;
-
-      String resultado = "error";
+      var resultado = "error";
 
       if (statusCode == 200) { //Se obtuvo el token satisfactoriamente.
-        var partes = respuesta.split('.');
-        if (partes.length != 3) {
-          throw Exception('Token inválido.');
-        }
-        resultado = _decodificarToken(
-            partes[1]); //Decodifica la parte que nos interesa del token.
+        resultado = res.body;
+        print(resultado);
       } else if (statusCode == 401){
         resultado = "noauth";
       }
@@ -54,31 +49,7 @@ class RestService {
     });
   }
 
-  /// Método decodifica un JWT que es una string codificada con Base64.
-  /// [encriptado] recibe un string encriptado con Base64.
-  ///
-  /// Genera una Exception si se ingresa una string que no está encriptada con Base64.
-  /// Autor: Marco Venegas
-  String _decodificarToken(String encriptado) {
-    //"intermedio" pues se transforma el string antes de decriptarse.
-    String intermedio = encriptado.replaceAll('-', '+').replaceAll('_', '/');
 
-    switch (intermedio.length % 4) {
-      case 0:
-        break;
-      case 2:
-        intermedio += '==';
-        break;
-      case 3:
-        intermedio += '=';
-        break;
-      default:
-        throw Exception('No es una string Base64!"');
-    }
-
-    String decriptado = utf8.decode(base64Url.decode(intermedio));
-    return decriptado;
-  }
 
 
   /// Este método envía un GET al backend con el correo del usuario que se desea consultar.
@@ -120,7 +91,7 @@ class RestService {
   ///
   /// Autor: Marco Venegas
   Future<String> obtenerEstadoTaxista(String correo) {
-    String url = URL_USUARIOS + correo + "/estado";
+    String url = URL_TAXISTAS + "/" + correo + "/estado";
     return _networkService.httpGet(url)
         .then((dynamic res) {
       var respuesta = res;

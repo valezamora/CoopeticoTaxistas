@@ -138,12 +138,15 @@ class _LoginTaxistaState extends State<LoginTaxista> {
   void validarTaxista() async {
     try {
       String respuesta = await _restService.login(_correo, _contrasena);
+      print('respuesta recibida: '+respuesta);
       if (respuesta == "error") {
         DialogoAlerta.mostrarAlerta(context, ERROR, ERRORAUTH, OK);
       } else if (respuesta == "noauth") {
         DialogoAlerta.mostrarAlerta(context, DATOSINCORRECTOS, BADLOGIN, OK);
       } else {
+        print('GUARDAR TOKEN');
         String mensaje = await TokenService.guardarTokenLogin(respuesta);
+        print(mensaje);
         if (mensaje != 'OK') {
           if(mensaje == 'AppEquivocada'){
             DialogoAlerta.mostrarAlerta(
