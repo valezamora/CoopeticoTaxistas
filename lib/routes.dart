@@ -16,5 +16,6 @@ final routes = {
   '/home'               : (BuildContext context) => new Home(),
   '/perfil'             : (BuildContext context) => new PerfilUsuario(),
   '/recuperarContrasena': (BuildContext context) => new RecuperarContrasena(),
+  '/solicitarPlaca': (BuildContext context) => new RecuperarContrasena(),
   '/recibirViaje': (BuildContext context) => new RecibirViaje(),
 };

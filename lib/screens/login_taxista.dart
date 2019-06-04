@@ -156,8 +156,26 @@ class _LoginTaxistaState extends State<LoginTaxista> {
                 context, TITSUSPENDIDO, SUSPENDIDO + mensaje, OK);
           }
         } else {
+          ///------------------------------------------------------------------
+          /// Obtención de la placa desde el token
+          String placaTaxi = '\$';
+          TokenService.getPlacaTaxi().then( (val) => setState(() {
+            placaTaxi = val;
+          }));
+          ///------------------------------------------------------------------
+          /// Se selecciona cuál pantalla dirigir, si la de home de una o
+          /// la del solicitar la placa
+          String siguientePagina = '';
+          if (placaTaxi == null) {
+            siguientePagina = '/solicitarPlaca';
+          } else {
+            siguientePagina = '/home';
+          }
+          ///------------------------------------------------------------------
+          /// Redirecciona a la pantalla debida
           Navigator.of(context)
-              .pushReplacementNamed('/home'); //Redireccionar al home screen.
+              .pushReplacementNamed(siguientePagina);
+          ///------------------------------------------------------------------
         }
       }
     } catch (e) {
