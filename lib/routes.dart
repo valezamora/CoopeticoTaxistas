@@ -16,15 +16,5 @@ final routes = {
   '/home'               : (BuildContext context) => new Home(),
   '/perfil'             : (BuildContext context) => new PerfilUsuario(),
   '/recuperarContrasena': (BuildContext context) => new RecuperarContrasena(),
-  '/direccionOrigen'    : (BuildContext context)
-    /// TODO: get the name ot the class.
-    => new DireccionOrigen(
-        new ViajeComenzando(
-          "cliente@cliente.com",
-          "9.9555117,-84.1153095",
-          ///"\$Mall San Pedro, entrada principal",
-          null, null, null, null
-        )
-      ),
   '/recibirViaje': (BuildContext context) => new RecibirViaje(),
 };

@@ -176,9 +176,6 @@ class RestService {
           case 200:
             resultado = "ok";
             break;
-          default:
-            /// TODO: list all the codes.
-            break;
         }
         return resultado;
       ///--------------------------------------------------------------------
@@ -227,9 +224,6 @@ class RestService {
       switch (codigo) {
         case 200:
           resultado = "ok";
-          break;
-        default:
-        /// TODO: list all the codes.
           break;
       }
       return resultado;
