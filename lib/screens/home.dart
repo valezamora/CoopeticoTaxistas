@@ -89,7 +89,7 @@ class _HomeState extends State<Home> {
               Positioned(
                 bottom: 15,
                 child: StreamBuilder(
-                  stream: channelViaje.stream,
+                  stream: channelViaje.client.stream,
                   builder: (context, snapshot) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24.0),
