@@ -13,6 +13,7 @@ class LoadingScreen {
 
   void mostrar(BuildContext context){
     showDialog(
+      barrierDismissible: false, //No se puede quitar presionando afuera.
       context: context,
       builder: (BuildContext context){
         return Container(
