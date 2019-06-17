@@ -1,3 +1,5 @@
+import 'dart:collection';
+import 'dart:async';
 import 'package:CoopeticoTaxiApp/services/token_service.dart';
 import 'package:stomp_client/stomp_client.dart';
 
@@ -12,6 +14,34 @@ class WebSocketsService {
     return _instance;
   }
 
-  static const URL_BACKEND = "http://192.168.1.6:8080";
-  StompClient client;
+  static const URL_BACKEND = "ws://18.224.54.92:8085/ws-flutter";
+  StompClient client = new StompClient(urlBackend: URL_BACKEND);
+
+  /// Metodo para conectarse al web socket
+  ///
+  /// Autor: Valeria Zamora
+  connect() {
+    client.connectWithToken(token: TokenService.getToken());
+  }
+
+  /// Metodo para desconectarse de un endpoint
+  ///
+  /// Autor: Valeria Zamora
+  disconect() {
+    client.disconnect();
+  }
+
+  /// Metodo para suscribirse al WS
+  ///
+  /// Valeria Zamora
+  StreamController<HashMap> subscribe (String topic) {
+    return client.subscribe(topic: topic);
+  }
+
+  /// Metodo para cerrar suscripcion
+  ///
+  /// Valeria Zamora
+  unsubscribe(String topic) {
+    client.unsubscribe(topic: topic);
+  }
 }

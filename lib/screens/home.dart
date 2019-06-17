@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:CoopeticoTaxiApp/widgets/boton.dart';
 import 'package:flutter/widgets.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 
 //Widgets
 import 'package:CoopeticoTaxiApp/widgets/home_widgets/drawer.dart';
+import 'package:CoopeticoTaxiApp/widgets/recibe_viaje.dart';
 
 //Models
 
@@ -26,7 +28,6 @@ import 'package:CoopeticoTaxiApp/util/paleta.dart';
 
 import 'package:web_socket_channel/io.dart';
 
-/// Widget que contiene el appbar, el ridepicker, el car picker y el payment picker.
 ///
 /// Autor: Paulo Barrantes
 
@@ -40,7 +41,9 @@ class _HomeState extends State<Home> {
   var nombreCompleto = '';
   var mensaje;
   var head;
+  var stream;
   WebSocketsService channelViaje;
+  StreamController<HashMap> streamController;
 
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
   var _tripDistance = 0;
@@ -59,6 +62,9 @@ class _HomeState extends State<Home> {
       nombreCompleto = val;
     }));
     channelViaje = WebSocketsService();
+    streamController = channelViaje.subscribe('/user/queue/recibir-viaje');
+    final StreamSubscription subscription = streamController.stream.listen((data) => recibeViaje());
+    // TODO cerrar subscription
   }
 
   @override
@@ -89,7 +95,7 @@ class _HomeState extends State<Home> {
               Positioned(
                 bottom: 15,
                 child: StreamBuilder(
-                  stream: channelViaje.stream,
+                  stream: stream,
                   builder: (context, snapshot) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24.0),
@@ -265,8 +271,12 @@ class _HomeState extends State<Home> {
 
    // _moveCamera();
    // _checkDrawPolyline();
-
   }
 
+  /// Metodo que muestra la alerta del viaje recibido
+  /// Autor: Valeria Zamora
+  void recibeViaje(){
+    RecibeViaje.mostrarAlerta(context);
+  }
 
 }

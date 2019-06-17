@@ -2,13 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:CoopeticoTaxiApp/services/network_service.dart';
+import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
 
 
 /// Autor: Marco Venegas.
 /// Clase para la comunicación con el backend mediante el REST API.
 class RestService {
   NetworkService _networkService = new NetworkService();
-  static const URL_BACKEND = "http://192.168.1.6:8080";  // 10.0.2.2 es para el emulador de android
+  static const URL_BACKEND = "http://18.224.54.92:8085";  // 10.0.2.2 es para el emulador de android
   static const URL_LOGIN = URL_BACKEND + "/auth/signin";
   static const URL_OBTENER_USUARIO = URL_BACKEND + "/clientes/obtenerUsuario/";
   static const URL_TAXISTAS = URL_BACKEND + "/taxistas";
@@ -203,5 +204,17 @@ class RestService {
     }
     );
     ///------------------------------------------------------------------------
+  }
+
+  respuestaViaje (bool respuesta, ViajeComenzando datos) {
+    String urlRespuesta = '/viajes/aceptar-rechazar?respuesta=' + (respuesta ? '1' : '0');
+    String body = jsonEncode({
+      "datosViaje": datos
+    });
+    Map<String, String> header = {
+      "Accept": "application/json",
+      "content-type": "application/json"
+    };
+    _networkService.httpPost(urlRespuesta, body: body, header: header);
   }
 }
