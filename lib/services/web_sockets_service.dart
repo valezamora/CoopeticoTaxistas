@@ -35,7 +35,7 @@ class WebSocketsService {
   ///
   /// Valeria Zamora
   StreamController<HashMap> subscribe (String topic) {
-    return client.subscribe(topic: topic, callback: null);
+    return client.subscribe(topic: topic);
   }
 
   /// Metodo para cerrar suscripcion

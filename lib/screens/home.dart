@@ -45,6 +45,7 @@ class _HomeState extends State<Home> {
   var stream;
   WebSocketsService channelViaje;
   StreamController<HashMap> streamController;
+  StreamSubscription subscription;
 
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
   var _tripDistance = 0;
@@ -63,7 +64,7 @@ class _HomeState extends State<Home> {
       nombreCompleto = val;
     }));
 
-    final StreamSubscription subscription = ViajesBloc().viajeStream.listen((data) => recibeViaje(data));
+    subscription = ViajesBloc().viajeStream.listen((data) => recibeViaje(data));
     // TODO cerrar subscription
   }
 
@@ -278,6 +279,12 @@ class _HomeState extends State<Home> {
   void recibeViaje(data){
     var viaje = data.content;
     RecibeViaje.mostrarAlerta(context, viaje);
+  }
+
+  /// Metodo que
+  /// Autor: Valeria Zamora
+  void cerrarSubscription() {
+    subscription.cancel();
   }
 
 }
