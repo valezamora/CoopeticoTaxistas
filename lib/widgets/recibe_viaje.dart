@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
 
 
 import 'package:CoopeticoTaxiApp/services/rest_service.dart';
@@ -18,13 +19,12 @@ class RecibeViaje {
   /// Método hace que aparezca el diálogo de recibir viaje.
   ///
   /// Autor: Valeria Zamora
-  static void mostrarAlerta(BuildContext context) {
+  static void mostrarAlerta(BuildContext context, String viaje) {
     Timer _tiempo;
-    // TODO fix timer
     _tiempo = new Timer.periodic(segundo, (Timer tiempo) => (() {
       if(_inicio <= 0) {    // no contesta en 10 segundos
         _tiempo.cancel();
-        responder(context, false);
+        responder(context, false, viaje);
       } else {
         _inicio -= 1;
       }
@@ -39,12 +39,12 @@ class RecibeViaje {
             FlatButton(
               child: Text('Rechazar'),
               onPressed: () {
-                responder(context, false);
+                responder(context, false, viaje);
               },
             ),
             FlatButton(
               child: Text('Aceptar'),
-              onPressed: _restService.respuestaViaje(true, null), // TODO send respuesta (datos viaje)
+              onPressed: _restService.respuestaViaje(true, viaje),
               // TODO cargar ruta hacia cliente
             ),
           ],
@@ -53,8 +53,8 @@ class RecibeViaje {
     );
   }
 
-  static responder(context, bool respuesta) {
-    _restService.respuestaViaje(respuesta, null); // TODO send respuesta (datos viaje)
+  static responder(context, bool respuesta, String viaje) {
+    _restService.respuestaViaje(respuesta, viaje);
     Navigator.of(context).pop();
   }
 }

@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
       nombreCompleto = val;
     }));
 
-    final StreamSubscription subscription = ViajesBloc().viajeStream.listen((data) => recibeViaje());
+    final StreamSubscription subscription = ViajesBloc().viajeStream.listen((data) => recibeViaje(data));
     // TODO cerrar subscription
   }
 
@@ -275,8 +275,9 @@ class _HomeState extends State<Home> {
 
   /// Metodo que muestra la alerta del viaje recibido
   /// Autor: Valeria Zamora
-  void recibeViaje(){
-    RecibeViaje.mostrarAlerta(context);
+  void recibeViaje(data){
+    var viaje = data.content;
+    RecibeViaje.mostrarAlerta(context, viaje);
   }
 
 }

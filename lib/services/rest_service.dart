@@ -206,7 +206,7 @@ class RestService {
     ///------------------------------------------------------------------------
   }
 
-  respuestaViaje (bool respuesta, ViajeComenzando datos) {
+  respuestaViaje (bool respuesta, String datos) {
     String urlRespuesta = '/viajes/aceptar-rechazar?respuesta=' + (respuesta ? '1' : '0');
     String body = jsonEncode({
       "datosViaje": datos
