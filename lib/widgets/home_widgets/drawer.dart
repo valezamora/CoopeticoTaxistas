@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:CoopeticoTaxiApp/util/paleta.dart';
 import 'package:CoopeticoTaxiApp/services/token_service.dart';
+import 'package:CoopeticoTaxiApp/blocs/viajes_bloc.dart';
 
 class DrawerCustom extends Drawer {
 
@@ -44,6 +45,7 @@ class DrawerCustom extends Drawer {
             trailing: new Icon(Icons.exit_to_app),
             onTap: () {
               TokenService.borrarToken();
+              ViajesBloc().dispose();
               Navigator.pushNamed(context, '/login');
             },
           ),

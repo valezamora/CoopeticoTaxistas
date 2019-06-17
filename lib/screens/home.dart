@@ -16,6 +16,7 @@ import 'package:CoopeticoTaxiApp/models/trip_info_res.dart';
 import 'package:CoopeticoTaxiApp/models/place_res.dart';
 import 'package:CoopeticoTaxiApp/models/step_res.dart';
 
+import 'package:CoopeticoTaxiApp/blocs/viajes_bloc.dart';
 
 //Service
 import 'package:CoopeticoTaxiApp/services/google_maps_places.dart';
@@ -61,9 +62,8 @@ class _HomeState extends State<Home> {
     TokenService.getnombreCompleto().then( (val) => setState(() {
       nombreCompleto = val;
     }));
-    channelViaje = WebSocketsService();
-    streamController = channelViaje.subscribe('/user/queue/recibir-viaje');
-    final StreamSubscription subscription = streamController.stream.listen((data) => recibeViaje());
+
+    final StreamSubscription subscription = ViajesBloc().viajeStream.listen((data) => recibeViaje());
     // TODO cerrar subscription
   }
 

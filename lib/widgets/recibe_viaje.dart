@@ -19,11 +19,12 @@ class RecibeViaje {
   ///
   /// Autor: Valeria Zamora
   static void mostrarAlerta(BuildContext context) {
-    // flutter defined function
+    Timer _tiempo;
     // TODO fix timer
-    Timer _tiempo = new Timer.periodic(segundo, (Timer tiempo) => (() {
-      if(_inicio <= 0) {
+    _tiempo = new Timer.periodic(segundo, (Timer tiempo) => (() {
+      if(_inicio <= 0) {    // no contesta en 10 segundos
         _tiempo.cancel();
+        responder(context, false);
       } else {
         _inicio -= 1;
       }
@@ -38,17 +39,22 @@ class RecibeViaje {
             FlatButton(
               child: Text('Rechazar'),
               onPressed: () {
-                _restService.respuestaViaje(true, null); // TODO send respuesta (datos viaje)
-                Navigator.of(context).pop();
+                responder(context, false);
               },
             ),
             FlatButton(
               child: Text('Aceptar'),
               onPressed: _restService.respuestaViaje(true, null), // TODO send respuesta (datos viaje)
+              // TODO cargar ruta hacia cliente
             ),
           ],
         );
       },
     );
+  }
+
+  static responder(context, bool respuesta) {
+    _restService.respuestaViaje(respuesta, null); // TODO send respuesta (datos viaje)
+    Navigator.of(context).pop();
   }
 }
