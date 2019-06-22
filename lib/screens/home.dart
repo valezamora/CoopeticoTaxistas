@@ -63,9 +63,7 @@ class _HomeState extends State<Home> {
     TokenService.getnombreCompleto().then( (val) => setState(() {
       nombreCompleto = val;
     }));
-
-    subscription = ViajesBloc().viajeStream.listen((data) => recibeViaje(data));
-    // TODO cerrar subscription
+    ViajesBloc().connectStream();
   }
 
   @override
@@ -93,18 +91,16 @@ class _HomeState extends State<Home> {
                 ),
                 myLocationEnabled: true,
               ),
-              Positioned(
-                bottom: 15,
-                child: StreamBuilder(
-                  stream: stream,
+              StreamBuilder(
+                  stream: ViajesBloc().viajeStream,
+                  initialData: 'inicio',
                   builder: (context, snapshot) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24.0),
-                      child: Text(snapshot.hasData ? '${snapshot.data}' : '',
-                        style: TextStyle(color: Colors.blue)),
+                      child: Text('Recibe: ${snapshot.data}',
+                        style: TextStyle(color: Colors.red, fontSize: 30)),
                     );
                   },
-                )
               ),
               ///--------------------------------------------------------------
               Positioned(
@@ -277,6 +273,7 @@ class _HomeState extends State<Home> {
   /// Metodo que muestra la alerta del viaje recibido
   /// Autor: Valeria Zamora
   void recibeViaje(data){
+    print(data);
     var viaje = data.content;
     RecibeViaje.mostrarAlerta(context, viaje);
   }

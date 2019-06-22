@@ -14,7 +14,7 @@ class WebSocketsService {
     return _instance;
   }
 
-  static const URL_BACKEND = "ws://18.224.54.92:8085/ws-flutter";
+  static const URL_BACKEND = "ws://18.220.131.173:8080/ws-flutter";
   StompClient client = new StompClient(urlBackend: URL_BACKEND);
 
   /// Metodo para conectarse al web socket

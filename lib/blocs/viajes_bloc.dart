@@ -5,11 +5,19 @@ import 'package:CoopeticoTaxiApp/services/web_sockets_service.dart';
 
 class ViajesBloc {
 
-  static StreamController<HashMap> _streamControllerViaje = WebSocketsService().subscribe('/user/queue/recibir-viaje');
-  Stream<HashMap> viajeStream = _streamControllerViaje.stream;
+  static StreamController<HashMap> streamControllerViaje;
+  Stream<HashMap> viajeStream;
+  StreamSubscription subscription;
 
+  void connectStream() {
+    WebSocketsService().connect();
+    streamControllerViaje = WebSocketsService().subscribe('/user/queue/recibir-viaje');
+    viajeStream = streamControllerViaje.stream;
+    subscription = viajeStream.listen((data) => print(data));
+  }
 
   void dispose() {
-    _streamControllerViaje.close();
+    subscription.cancel();
+    streamControllerViaje.close();
   }
 }
