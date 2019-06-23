@@ -40,7 +40,7 @@ class _HomeState extends State<Home> {
   var nombreCompleto = '';
   var mensaje;
   var head;
-  IOWebSocketChannel channelViaje;
+  WebSocketsService channelViaje;
 
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
   var _tripDistance = 0;
@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
     TokenService.getnombreCompleto().then( (val) => setState(() {
       nombreCompleto = val;
     }));
-    channelViaje = WebSocketsService.connect('ws://18.224.54.92:8085/user/queue/recibir-viaje');
+    channelViaje = WebSocketsService();
   }
 
   @override
@@ -89,7 +89,7 @@ class _HomeState extends State<Home> {
               Positioned(
                 bottom: 15,
                 child: StreamBuilder(
-                  stream: channelViaje.stream,
+                  stream: channelViaje.client.stream,
                   builder: (context, snapshot) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24.0),

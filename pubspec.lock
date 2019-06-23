@@ -64,6 +64,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
+  flare_dart:
+    dependency: transitive
+    description:
+      name: flare_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.4.1"
+  flare_flutter:
+    dependency: "direct main"
+    description:
+      name: flare_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.5.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -310,13 +324,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.3"
-  stomp:
+  stomp_client:
     dependency: "direct main"
     description:
-      name: stomp
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.8.0"
+      path: "."
+      ref: HEAD
+      resolved-ref: "0f245af4a78472aafefa94a2e326feab66c81740"
+      url: "git://github.com/kevinjimenez96/stomp_client.git"
+    source: git
+    version: "0.0.1"
   stream_channel:
     dependency: transitive
     description:
