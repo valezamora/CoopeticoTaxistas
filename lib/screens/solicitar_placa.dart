@@ -1,38 +1,32 @@
+///----------------------------------------------------------------------------
+/// Imports
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-
 import 'package:CoopeticoTaxiApp/util/paleta.dart';
 import 'package:CoopeticoTaxiApp/util/tamano_letra.dart';
 import 'package:CoopeticoTaxiApp/util/validador_lexico.dart';
-
 import 'package:CoopeticoTaxiApp/services/rest_service.dart';
 import 'package:CoopeticoTaxiApp/services/token_service.dart';
-
 import 'package:CoopeticoTaxiApp/widgets/dialogo_alerta.dart';
 import 'package:CoopeticoTaxiApp/widgets/logo_coopetico.dart';
 import 'package:CoopeticoTaxiApp/widgets/entrada_texto.dart';
 import 'package:CoopeticoTaxiApp/widgets/boton.dart';
 import 'package:CoopeticoTaxiApp/widgets/boton_plano.dart';
 import 'package:CoopeticoTaxiApp/widgets/etiqueta.dart';
-import 'package:CoopeticoTaxiApp/widgets/loading_screen.dart';
-
-/// Autor: Marco Venegas.
-/// Ventana Stateful de login de taxisa.
-class LoginTaxista extends StatefulWidget {
+///----------------------------------------------------------------------------
+/// Ventana statful para solicitar la placa en caso de que no exista
+///
+/// Autor: Joseph Rementería (b55824)
+class SolicitarPlaca extends StatefulWidget {
   final String titulo;
-  LoginTaxista({Key key, this.titulo}) : super(key: key);
+  SolicitarPlaca({Key key, this.titulo}) : super(key: key);
 
   @override
-  _LoginTaxistaState createState() => new _LoginTaxistaState();
+  _SolicitarPlacaState createState() => new _SolicitarPlacaState();
 }
 
-/// Ventana Stateles de login de usuario.
-///
-/// Implementa:
-///             - Validación de correo válido.
-///             - Validación de contraseña válida.
-///             - Autenticación de usuario contra el backend mediante REST.
-class _LoginTaxistaState extends State<LoginTaxista> {
+/// Venta para solicitar la placa y guardarla en el token de preferencias
+class _SolicitarPlacaState extends State<SolicitarPlaca> {
   static const String ERROR = "Error";
   static const String ERRORDECONECCION = "Error de conexión";
   static const String OK = "OK";
@@ -59,9 +53,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
-  String _correo =
-      ""; //Se almacenan aquí las entradas de texto para validarlas al presionar el botón.
-  String _contrasena = "";
+  String _placa = "";
 
   /// Definición de ventana Login Usuario
   @override
@@ -74,55 +66,40 @@ class _LoginTaxistaState extends State<LoginTaxista> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Container(
-                  padding: const EdgeInsets.only(bottom: 30.0, top: 128.0),
-                  child: LogoCoopetico()),
+                padding: const EdgeInsets.only(bottom: 30.0, top: 128.0),
+                child: LogoCoopetico()
+              ),
               Etiqueta("Taxistas", TamanoLetra.H2, FontWeight.bold),
               Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      EntradaTexto("Correo", "Correo", false,
-                          validator: (value) {
-                        String error = ValidadorLexico.validarCorreo(value);
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    EntradaTexto(
+                      "Correo",
+                      "Correo",
+                      false,
+                      validator: (value) {
+                        String error = ValidadorLexico.validarPlaca(value);
                         if (error == null) {
-                          this._correo = value;
+                          this._placa = value;
                         }
                         return error;
+                      }
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(top: 60.0, bottom: 30.0),
+                      child: Boton(
+                          "Guardar Placa", Paleta.Naranja, Paleta.Blanco,
+                          onPressed: () {
+                        if (_formKey.currentState.validate()) {
+                          //validarTaxista();
+                        }
                       }),
-                      EntradaTexto(
-                        "Contraseña",
-                        "Contraseña",
-                        true,
-                        validator: (value) {
-                          String error =
-                              ValidadorLexico.validarContrasena(value);
-                          if (error == null) {
-                            this._contrasena = value;
-                          }
-                          return error;
-                        },
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(top: 60.0, bottom: 30.0),
-                        child: Boton(
-                            "Iniciar sesión", Paleta.Naranja, Paleta.Blanco,
-                            onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            validarTaxista();
-                          }
-                        }),
-                      ),
-                    ],
-                  )),
-              BotonPlano(
-                "Recuperar contraseña",
-                Paleta.Gris,
-                TamanoLetra.H3,
-                onPressed: () {
-                  Navigator.pushNamed(context, '/recuperarContrasena');
-                },
-              ),
+                    ),
+                  ],
+                )
+              )
             ],
           ),
         )
@@ -136,12 +113,11 @@ class _LoginTaxistaState extends State<LoginTaxista> {
   ///
   /// Si el correo y contraseña son correctos, recibe un token en una string JSON.
   /// Esta la almacena en el dispositivo.
+  /*
   void validarTaxista() async {
-    LoadingScreen loadingSC = LoadingScreen();
-    loadingSC.mostrar(context);
     try {
-      String respuesta = await _restService.login(_correo, _contrasena);
-      loadingSC.quitar(context);
+      String respuesta = 'nice';
+      print('respuesta recibida: '+respuesta);
       if (respuesta == "error") {
         DialogoAlerta.mostrarAlerta(context, ERROR, ERRORAUTH, OK);
       } else if (respuesta == "noauth") {
@@ -170,8 +146,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
           /// la del solicitar la placa
           String siguientePagina = '';
           if (placaTaxi == null) {
-            //siguientePagina = '/solicitarPlaca';
-            siguientePagina = '/home';
+            siguientePagina = '/solicitarPlaca';
           } else {
             siguientePagina = '/home';
           }
@@ -183,8 +158,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
         }
       }
     } catch (e) {
-      loadingSC.quitar(context);
       DialogoAlerta.mostrarAlerta(context, ERRORDECONECCION, ERRORCONN, OK);
     }
-  }
+  }*/
 }

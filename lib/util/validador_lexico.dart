@@ -152,5 +152,18 @@ class ValidadorLexico{
     }
     return mensajeError;
   }
+
+  static String validarPlaca(value) {
+    var mensajeError = '';
+    if (value.isEmpty) {
+      mensajeError = "Ingrese la placa.";
+    } else {
+      RegExp regExp = new RegExp(r"^[A-Z]{3}\d{3}$");
+      if(!regExp.hasMatch(value)){
+        mensajeError = "Placa Inválida.";
+      }
+    }
+    return mensajeError;
+  }
 }
 
