@@ -14,7 +14,6 @@ import 'package:stream_channel/stream_channel.dart';
 
 
 void main() async{
-  // channel: IOWebSocketChannel.connect('ws://echo.websocket.org');
   runApp(CoopeticoAppTaxista(await SeleccionadorHome.seleccionarHome()));
 }
 
@@ -27,6 +26,12 @@ class CoopeticoAppTaxista extends StatelessWidget {
   // final WebSocketChannel channel;
 
   CoopeticoAppTaxista(this.home);
+
+  @override
+  void initState(){
+    ViajesBloc().connectStream();
+
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:CoopeticoTaxiApp/widgets/boton.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 // Google Maps
@@ -54,6 +53,7 @@ class _HomeState extends State<Home> {
   static const LatLng _center = const LatLng(9.901589, -84.009813);
 
   GoogleMapController _mapController;
+
   @override
   void initState(){
     super.initState();
@@ -63,14 +63,13 @@ class _HomeState extends State<Home> {
     TokenService.getnombreCompleto().then( (val) => setState(() {
       nombreCompleto = val;
     }));
-    ViajesBloc().connectStream();
+    channel: IOWebSocketChannel.connect('ws://echo.websocket.org');
   }
 
   @override
   Widget build(BuildContext context) {
-
+    // ViajesBloc().connectStream();
     print("build UI");
-    print(channelViaje);
 
     return Scaffold(
       key: _scaffoldKey,
