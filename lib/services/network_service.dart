@@ -30,6 +30,15 @@ class NetworkService {
   }
 
   /// [url] contiene la dirección a donde se realizará el request.
+  Future<dynamic> httpPut(String url, {Map header, body, encoding}) {
+    return http
+        .put(url, body: body, headers: header, encoding: encoding)
+        .then((response) {
+      return response;
+    });
+  }
+
+  /// [url] contiene la dirección a donde se realizará el request.
   Future<dynamic> httpdelete(String url) {
     return http.delete(url).then((response) {
       return response;

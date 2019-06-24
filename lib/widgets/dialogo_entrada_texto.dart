@@ -41,7 +41,6 @@ class DialogoEntradaTexto {
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   onPressed();
-                  Navigator.of(context).pop();
                 }
               },
             ),
