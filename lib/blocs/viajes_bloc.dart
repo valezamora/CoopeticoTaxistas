@@ -21,17 +21,8 @@ class ViajesBloc {
 
   void connectStream() {
     ws.connect();
-    ws.subscribe('/user/queue/recibir-viaje').stream.listen((message) {
-      // handling of the incoming messages
-      print("Mensaje:");
-      print(message.toString());
-      //messageReceieved(message);
-    }, onError: (error, StackTrace stackTrace) {
-      // error handling
-    }, onDone: () {
-      // communication has been closed
-    });
-    ws.send('/user/queue/recibir-viaje', "holas");
+    ws.subscribe("/queue/a");
+    ws.send("/queue/a", "holas");
   }
 
   void dispose() {

@@ -41,8 +41,17 @@ class WebSocketsService {
   /// Metodo para suscribirse al WS
   ///
   /// Valeria Zamora
-  StreamController<HashMap<dynamic,dynamic>> subscribe (String topic) {
-    return client.subscribe(topic: topic);
+  void subscribe (String topic) {
+    client.subscribe(topic: topic).stream.listen((message) {
+      // handling of the incoming messages
+      print("Mensaje:");
+      print(message.toString());
+      //messageReceieved(message);
+    }, onError: (error, StackTrace stackTrace) {
+      // error handling
+    }, onDone: () {
+      // communication has been closed
+    });
   }
 
   /// Metodo para cerrar suscripcion
