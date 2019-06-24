@@ -13,7 +13,7 @@ class DialogoEntradaTexto {
     // flutter defined function
     final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
     showDialog(
-      barrierDismissible: false, //No se puede quitar presionando afuera.
+      barrierDismissible: dismissable, //No se puede quitar presionando afuera.
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
