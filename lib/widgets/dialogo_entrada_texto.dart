@@ -9,7 +9,7 @@ import 'package:CoopeticoTaxiApp/widgets/entrada_texto.dart';
 class DialogoEntradaTexto {
 
   ///Método hace que aparezca el diálogo de alerta.
-  static void mostrarAlerta(BuildContext context, String titulo, String texto, String hintEntrada, String textoBoton, {@required final validator, final onPressed}) {
+  static void mostrarAlerta(BuildContext context, String titulo, String texto, String hintEntrada, String textoBoton, {@required final validator, final onPressed, final dismissable}) {
     // flutter defined function
     final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
     showDialog(
