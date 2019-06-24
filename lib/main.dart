@@ -13,6 +13,7 @@ import 'package:web_socket_channel/status.dart' as status;
 import 'package:stream_channel/stream_channel.dart';
 
 
+
 void main() async{
   runApp(CoopeticoAppTaxista(await SeleccionadorHome.seleccionarHome()));
 }
@@ -29,8 +30,7 @@ class CoopeticoAppTaxista extends StatelessWidget {
 
   @override
   void initState(){
-    ViajesBloc().connectStream();
-
+    //ViajesBloc().connectStream();
   }
 
   @override

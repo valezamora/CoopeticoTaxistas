@@ -43,10 +43,10 @@ dev_dependencies:
                # Es una versión más vieja para que sea compatible con la version de flutter.
   mockito: ^4.0.0 # Dependencia para hacer mocks en las pruebas.
   test_api: ^0.2.2
-
+ 
 # The following section is specific to Flutter.
 flutter:
-
+ 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

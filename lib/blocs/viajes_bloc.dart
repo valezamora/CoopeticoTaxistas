@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:io';
 import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
 import 'package:CoopeticoTaxiApp/services/web_sockets_service.dart';
 import 'package:CoopeticoTaxiApp/widgets/recibe_viaje.dart';
@@ -8,9 +9,7 @@ class ViajesBloc {
 
  // ViajeComenzando _viaje;
 
-  StreamController<HashMap> streamControllerViaje;
-  Stream<HashMap> viajeStream;
-  StreamSubscription subscription;
+  WebSocketsService ws =  WebSocketsService();
 
   static final ViajesBloc _bloc = new ViajesBloc._internal();
   factory ViajesBloc(){
@@ -21,15 +20,23 @@ class ViajesBloc {
 
 
   void connectStream() {
-    WebSocketsService().connect();
-    streamControllerViaje = WebSocketsService().subscribe('/user/queue/recibir-viaje');
-    viajeStream = streamControllerViaje.stream;
-    subscription = viajeStream.listen(print);
+    ws.connect();
+    ws.subscribe('/user/queue/recibir-viaje').stream.listen((message) {
+      // handling of the incoming messages
+      print("Mensaje:");
+      print(message.toString());
+      //messageReceieved(message);
+    }, onError: (error, StackTrace stackTrace) {
+      // error handling
+    }, onDone: () {
+      // communication has been closed
+    });
+    ws.send('/user/queue/recibir-viaje', "holas");
   }
 
   void dispose() {
-    subscription.cancel();
-    streamControllerViaje.close();
+    //subscription.cancel();
+    //streamControllerViaje.close();
   }
 
   recibeDatos(data) {

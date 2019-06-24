@@ -7,12 +7,10 @@ import 'package:stomp_client/stomp_client.dart';
 /// Autor: Kevin Jiménez
 class WebSocketsService {
   // Esta clase es un singleton
-  WebSocketsService._privateConstructor();
-  static final WebSocketsService _instance = WebSocketsService._privateConstructor();
 
-  factory WebSocketsService(){
-    return _instance;
-  }
+  static WebSocketsService _instance = new WebSocketsService.internal();
+  WebSocketsService.internal();
+  factory WebSocketsService() => _instance;
 
   static const URL_BACKEND = "ws://18.220.131.173:8080/ws-flutter";
   StompClient client = new StompClient(urlBackend: URL_BACKEND);
@@ -21,6 +19,15 @@ class WebSocketsService {
   ///
   /// Autor: Valeria Zamora
   connect() {
+    client.general.stream.listen((message) {
+      // handling of the incoming messages
+      print(message);
+      //messageReceieved(message);
+    }, onError: (error, StackTrace stackTrace) {
+      // error handling
+    }, onDone: () {
+      // communication has been closed
+    });
     client.connectWithToken(token: TokenService.getToken());
   }
 
@@ -34,7 +41,7 @@ class WebSocketsService {
   /// Metodo para suscribirse al WS
   ///
   /// Valeria Zamora
-  StreamController<HashMap> subscribe (String topic) {
+  StreamController<HashMap<dynamic,dynamic>> subscribe (String topic) {
     return client.subscribe(topic: topic);
   }
 
@@ -43,5 +50,9 @@ class WebSocketsService {
   /// Valeria Zamora
   unsubscribe(String topic) {
     client.unsubscribe(topic: topic);
+  }
+
+  send(String topic, String message){
+    client.send(topic: topic, message: message);
   }
 }

@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
   var head;
   var stream;
   WebSocketsService channelViaje;
-  StreamController<HashMap> streamController;
+  StreamController streamController;
   StreamSubscription subscription;
 
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -68,7 +68,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    // ViajesBloc().connectStream();
+    //ViajesBloc().connectStream();
     print("build UI");
 
     return Scaffold(
@@ -90,7 +90,7 @@ class _HomeState extends State<Home> {
                 ),
                 myLocationEnabled: true,
               ),
-              StreamBuilder(
+              /*StreamBuilder(
                   stream: ViajesBloc().viajeStream,
                   initialData: 'inicio',
                   builder: (context, snapshot) {
@@ -100,7 +100,7 @@ class _HomeState extends State<Home> {
                         style: TextStyle(color: Colors.red, fontSize: 30)),
                     );
                   },
-              ),
+              ),*/
               ///--------------------------------------------------------------
               Positioned(
                 left: 0,
