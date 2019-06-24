@@ -204,4 +204,18 @@ class RestService {
     );
     ///------------------------------------------------------------------------
   }
+
+  /// Finaliza un viaje, utilizando la [placa] y [fechaInicio], 
+  /// además es necesario la [fechaFin] para finalizar el viaje.
+  /// 
+  /// Autor: Kevin Jiménez
+  Future<String> finalizarViaje({String placa, String fechaInicio, String fechaFin}){
+    String url = URL_VIAJES + "/finalizar";
+    return _networkService.httput(url, body: "{\"placa\": \""+ placa + "\" , \"fechaInicio\" : \"" + fechaInicio +"\", \"fechaFin\": \"" + fechaFin + "\"}")
+        .then((dynamic res) {
+      var respuesta = res;
+      // recibe srtring con un json
+      return respuesta.statusCode;
+    });
+  }
 }
