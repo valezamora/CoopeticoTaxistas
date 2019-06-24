@@ -68,7 +68,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    //ViajesBloc().connectStream();
     print("build UI");
 
     return Scaffold(

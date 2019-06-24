@@ -23,6 +23,11 @@ class ViajesBloc {
     ws.connect();
     ws.subscribe("/queue/a");
     ws.send("/queue/a", "holas");
+    ws.subscribe('user/queue/recibir-viaje');
+  }
+
+  void connectRecibirViajes() {
+    ws.subscribe('user/queue/recibir-viaje');
   }
 
   void dispose() {
