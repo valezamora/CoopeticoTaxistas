@@ -10,6 +10,7 @@ class ViajesBloc {
  // ViajeComenzando _viaje;
 
   WebSocketsService ws =  WebSocketsService();
+  Stream viajeStream;
 
   static final ViajesBloc _bloc = new ViajesBloc._internal();
   factory ViajesBloc(){
@@ -23,11 +24,8 @@ class ViajesBloc {
     ws.connect();
     ws.subscribe("/queue/a");
     ws.send("/queue/a", "holas");
-    ws.subscribe('user/queue/recibir-viaje');
-  }
+    ws.subscribe('/user/queue/recibir-viaje');
 
-  void connectRecibirViajes() {
-    ws.subscribe('user/queue/recibir-viaje');
   }
 
   void dispose() {
@@ -43,7 +41,7 @@ class ViajesBloc {
         data['destino'],
         data['tipo'],
         data['datafono'],
-        data['taxistasQueRecjazaron']
+        data['taxistasQueRechazaron']
     );*/
   }
 

@@ -89,7 +89,7 @@ class _HomeState extends State<Home> {
                 ),
                 myLocationEnabled: true,
               ),
-              /*StreamBuilder(
+              StreamBuilder(
                   stream: ViajesBloc().viajeStream,
                   initialData: 'inicio',
                   builder: (context, snapshot) {
@@ -99,7 +99,7 @@ class _HomeState extends State<Home> {
                         style: TextStyle(color: Colors.red, fontSize: 30)),
                     );
                   },
-              ),*/
+              ),
               ///--------------------------------------------------------------
               Positioned(
                 left: 0,
