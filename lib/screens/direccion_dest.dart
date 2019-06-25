@@ -28,25 +28,26 @@ import 'package:CoopeticoTaxiApp/services/token_service.dart';
 import 'package:CoopeticoTaxiApp/util/paleta.dart';
 ///----------------------------------------------------------------------------
 /// Pantalla que muestra la ruta de la dirección actual del taxista y la
-/// dirección de origen del viaje.
+/// dirección de destino del viaje.
 ///
 /// Autor: Joseph Rementería (b55824).
-/// Fecha: 18-05-2019.
+/// Fecha: 25-06-2019.
 ///----------------------------------------------------------------------------
 ///
-class DireccionOrigen extends StatefulWidget {
+class DireccionDestino extends StatefulWidget {
   //---------------------------------------------------------------------------
   // Los datos que se traen desde la pantalla anterior
   final ViajeComenzando datosIniciales;
   //---------------------------------------------------------------------------
-  DireccionOrigen(this.datosIniciales);
+  DireccionDestino(this.datosIniciales);
   //---------------------------------------------------------------------------
   @override
-  _DireccionOrigenState createState() => _DireccionOrigenState(datosIniciales);
+  _DireccionDestinoState createState() =>
+      _DireccionDestinoState(datosIniciales);
 //---------------------------------------------------------------------------
 }
 ///----------------------------------------------------------------------------
-class _DireccionOrigenState extends State<DireccionOrigen> {
+class _DireccionDestinoState extends State<DireccionDestino> {
   ///--------------------------------------------------------------------------
   /// Variables globales.
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -55,18 +56,17 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   LatLng _center = LatLng(9.901589, -84.009813);
   GoogleMapController _mapController;
   RestService _restService = new RestService();
-  /// TODO: obtener el correo del taxista actual.
   String correoTaxista; ///= 'taxista1@taxista.com';
   ViajeComenzando datosIniciales;
-  double origenLatitud;
-  double origenLongitud;
+  double destinoLatitud;
+  double destinoLongitud;
   double currentLatitud;
   double currentLongitud;
   ///--------------------------------------------------------------------------
   /// Constantes
   final String MARKER_ID_INICIO = "current";
-  final String MARKER_ID_FIN = "origen";
-  final String COMENZAR_VIAJE_MENSAJE_BOTON = 'Comenzar Viaje';
+  final String MARKER_ID_FIN = "destino";
+  final String COMENZAR_VIAJE_MENSAJE_BOTON = 'Finalizar Viaje';
   final String TITULO_DIR_OPERADORA = 'Indicaciones';
   final int REFRESHING_RATIO = 3;
   ///--------------------------------------------------------------------------
@@ -79,25 +79,25 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
       print(correoTaxista);
       print('---------------------------------------------------------------');
     }));
-    if (datosIniciales.origen[0] != '\$') {
+    if (datosIniciales.destino[0] != '\$') {
       Timer.periodic(Duration(seconds: REFRESHING_RATIO),
         (Timer t) => this._dibujarRuta(context));
     } else {
       WidgetsBinding.instance
-        .addPostFrameCallback((_) => _mostrarOrigenOperador(context));
+        .addPostFrameCallback((_) => _mostrarDestinoOperador(context));
       Timer.periodic(Duration(seconds: REFRESHING_RATIO),
         (Timer t) => _actualizarUbicacion());
     }
   }
   ///--------------------------------------------------------------------------
   /// Constructor del despliegue original
-  _DireccionOrigenState (ViajeComenzando datosIniciales) {
+  _DireccionDestinoState (ViajeComenzando datosIniciales) {
     this.datosIniciales = datosIniciales;
-    if (datosIniciales.origen[0] != '\$'){
-      var origenArray = datosIniciales.origen.split(',');
-      this.origenLatitud = double.parse(origenArray[0]);
-      this.origenLongitud = double.parse(origenArray[1]);
-      _center = LatLng(origenLatitud,origenLongitud);
+    if (datosIniciales.destino[0] != '\$'){
+      var destinoArray = datosIniciales.destino.split(',');
+      this.destinoLatitud = double.parse(destinoArray[0]);
+      this.destinoLongitud = double.parse(destinoArray[1]);
+      _center = LatLng(destinoLatitud,destinoLongitud);
     } else {
       /// TODO: find if there's another action
     }
@@ -161,7 +161,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   ///
   /// No retorna nada
   /// Autor: Paulo Barrantes
-  /// Editado por: Joseph Rementería (b55824); Fecha: 24-05-2019
+  /// Editado por: Joseph Rementería (b55824); Fecha: 25-06-2019
   void onPlaceSelected(PlaceItemRes place, bool fromAddress) {
     var mkId = fromAddress ? MARKER_ID_INICIO : MARKER_ID_FIN;
     _addMarker(mkId, place);
@@ -220,7 +220,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   ///
   /// No retorna nada
   /// Autor: Paulo Barrantes
-  /// Editador por: Joseph Rementería (b55824); Fecha: 24-05-2019.
+  /// Editador por: Joseph Rementería (b55824); Fecha: 25-06-2019.
   void _moveCamera() {
     if (_markers.values.length > 1) {
       var fromLatLng = _markers[MARKER_ID_INICIO].options.position;
@@ -258,7 +258,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   ///
   /// No retorna nada
   /// Autor: Paulo Barrantes
-  /// Editador por: Joseph Rementería (b55824); Fecha: 24-05-2019.
+  /// Editador por: Joseph Rementería (b55824); Fecha: 25-06-2019.
   void _checkDrawPolyline() {
     _mapController.clearPolylines();
 
@@ -288,7 +288,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   ///
   /// No retorna nada
   /// Autor: Paulo Barrantes
-  /// Editador por: Joseph Rementería (b55824); Fecha: 24-05-2019.
+  /// Editador por: Joseph Rementería (b55824); Fecha: 25-06-2019.
   void _clearMarker(bool fromAddress){
     var mkId = fromAddress ? MARKER_ID_INICIO : MARKER_ID_FIN;
     _mapController.clearPolylines();
@@ -306,7 +306,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   /// viaje.
   ///
   /// Autor: Joseph Rementería (b55824)
-  /// Fecha: 19-05-2019
+  /// Fecha: 26-06-2019
   ///--------------------------------------------------------------------------
   Future _comenzarViaje() async {
     ///------------------------------------------------------------------------
@@ -315,14 +315,14 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
     String placa = "AAA111";
     var timestamp = DateTime.now().toString().split(' ');
     String fechaInicio = timestamp[0] + "T" + timestamp[1].split(".")[0];
-    String origen = this.datosIniciales.origen;
+    String destino = this.datosIniciales.destino;
     String  correoCliente = this.datosIniciales.correoCliente;
     ///------------------------------------------------------------------------
     String codigo = await _restService.crearViaje(
       placa,
       this.correoTaxista,
       fechaInicio,
-      origen,
+        destino,
       correoCliente
     );
     ///------------------------------------------------------------------------
@@ -330,20 +330,20 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
 
   ///--------------------------------------------------------------------------
   /// Dibuja la ruta y actualiza los puntos de dirección actual y dirección
-  /// de origen.
+  /// de destino.
   ///
   /// Autor: Joseph Rementería (b55824)
-  /// Fecha: 24-05-2019
+  /// Fecha: 26-06-2019
   void _dibujarRuta(BuildContext context) async {
     ///------------------------------------------------------------------------
-    /// Dibuja el marcador de la ubicación de origen.
+    /// Dibuja el marcador de la ubicación de destino.
     this._addMarker(
       MARKER_ID_FIN,
       new PlaceItemRes(
           MARKER_ID_FIN,
           'test',
-          this.origenLatitud,
-          this.origenLongitud
+          this.destinoLatitud,
+          this.destinoLongitud
       )
     );
     ///------------------------------------------------------------------------
@@ -361,7 +361,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
       )
     );
     ///------------------------------------------------------------------------
-    /// Dibuja la línea desde el la ubicación actual hasta la de origen.
+    /// Dibuja la línea desde el la ubicación actual hasta la de destino.
     this._checkDrawPolyline();
     ///------------------------------------------------------------------------
   }
@@ -371,7 +371,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   /// y se la manda al backend
   ///
   /// Autor: Joseph Rementería (b55824)
-  /// Fecha: 26-05-2019
+  /// Fecha: 26-06-2019
   void _actualizarUbicacion(){
     ///------------------------------------------------------------------------
     var ubicacion = new Location();
@@ -389,13 +389,13 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   }
 
   ///--------------------------------------------------------------------------
-  /// Método que muestra la dirección de origen en caso de que el viaje
+  /// Método que muestra la dirección de destino en caso de que el viaje
   /// haya sido insertado por un operador.
   ///
   /// Autor: Joseph Rementería (b55824)
-  /// Fecha: 25-05-2019
+  /// Fecha: 26-06-2019
   ///--------------------------------------------------------------------------
-  _mostrarOrigenOperador(BuildContext context) {
+  _mostrarDestinoOperador(BuildContext context) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -403,7 +403,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
         return AlertDialog(
           title: Text(TITULO_DIR_OPERADORA),
           content: Text(
-            datosIniciales.origen.substring(1)
+            datosIniciales.destino.substring(1)
           ),
           actions: <Widget>[
             FlatButton(
