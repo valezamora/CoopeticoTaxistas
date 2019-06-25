@@ -348,7 +348,11 @@ class _DireccionDestinoState extends State<DireccionDestino> {
     );
     ///------------------------------------------------------------------------
     /// Calcula la ubicación actual del taxista y se la envía la backend.
-    this._actualizarUbicacion();
+    try {
+      this._actualizarUbicacion();
+    } catch (Exception) {
+      
+    }
     ///------------------------------------------------------------------------
     /// Dibuja el marcador de la ubicación actual del taxista.
     this._addMarker(

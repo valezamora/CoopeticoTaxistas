@@ -15,6 +15,6 @@ final routes = {
   '/login'              : (BuildContext context) => new LoginTaxista(),
   '/home'               : (BuildContext context) => new Home(),
   '/perfil'             : (BuildContext context) => new PerfilUsuario(),
-  '/recuperarContrasena': (BuildContext context) => new RecuperarContrasena(),z
+  '/recuperarContrasena': (BuildContext context) => new RecuperarContrasena(),
   '/recibirViaje': (BuildContext context) => new RecibirViaje(),
 };

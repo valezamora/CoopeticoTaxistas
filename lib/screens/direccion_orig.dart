@@ -184,7 +184,11 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   /// Autor: Paulo Barrantes
   /// Editado por: Joseph Rementería (b55824)
   void _addMarker(String mkId, PlaceItemRes place) async {
-    // remove old
+    print('-----------------------------------------------------------------');
+    print(mkId);
+    print(place.lat);
+    print(place.lng);
+    print('-----------------------------------------------------------------');
     _markers.remove(mkId);
     _mapController.clearMarkers();
     ///------------------------------------------------------------------------
@@ -353,7 +357,11 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
     );
     ///------------------------------------------------------------------------
     /// Calcula la ubicación actual del taxista y se la envía la backend.
-    this._actualizarUbicacion();
+    try {
+      this._actualizarUbicacion();
+    } catch (Exception) {
+      print('NO_BACKEND');
+    }
     ///------------------------------------------------------------------------
     /// Dibuja el marcador de la ubicación actual del taxista.
     this._addMarker(

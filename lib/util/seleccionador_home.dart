@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
+import 'package:CoopeticoTaxiApp/screens/direccion_orig.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:CoopeticoTaxiApp/services/token_service.dart';
@@ -33,7 +35,8 @@ class SeleccionadorHome {
     } catch (e){ //Si se cae obteniendo el estado de un taxista o algo, se obliga a hacer login nuevamente.
       TokenService.borrarToken(); //Se borra el token
     }
-    return home;
+    return new DireccionOrigen(new ViajeComenzando('cliente@cliente.com','9.935052, -84.041004','9.930886, -84.034450','tipo',true,null));
+    //return home;
   }
 
   static Future<bool> _getEstado() async {
