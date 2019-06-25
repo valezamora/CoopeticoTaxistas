@@ -161,6 +161,8 @@ class ValidadorLexico{
       RegExp regExp = new RegExp(r"^[A-Z]{3}\d{3}$");
       if(!regExp.hasMatch(value)){
         mensajeError = "Placa Inválida.";
+      } else {
+        mensajeError = null;
       }
     }
     return mensajeError;

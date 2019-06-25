@@ -76,8 +76,8 @@ class _SolicitarPlacaState extends State<SolicitarPlaca> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     EntradaTexto(
-                      "Correo",
-                      "Correo",
+                      "Inserte su placa",
+                      "Inserte su placa",
                       false,
                       validator: (value) {
                         String error = ValidadorLexico.validarPlaca(value);
@@ -93,7 +93,7 @@ class _SolicitarPlacaState extends State<SolicitarPlaca> {
                           "Guardar Placa", Paleta.Naranja, Paleta.Blanco,
                           onPressed: () {
                         if (_formKey.currentState.validate()) {
-                          //validarTaxista();
+                          validarPlaca();
                         }
                       }),
                     ),
@@ -113,52 +113,18 @@ class _SolicitarPlacaState extends State<SolicitarPlaca> {
   ///
   /// Si el correo y contraseña son correctos, recibe un token en una string JSON.
   /// Esta la almacena en el dispositivo.
-  /*
-  void validarTaxista() async {
+  void validarPlaca() async {
     try {
-      String respuesta = 'nice';
-      print('respuesta recibida: '+respuesta);
-      if (respuesta == "error") {
-        DialogoAlerta.mostrarAlerta(context, ERROR, ERRORAUTH, OK);
-      } else if (respuesta == "noauth") {
-        DialogoAlerta.mostrarAlerta(context, DATOSINCORRECTOS, BADLOGIN, OK);
-      } else {
-        print('GUARDAR TOKEN');
-        String mensaje = await TokenService.guardarTokenLogin(respuesta);
-        print(mensaje);
-        if (mensaje != 'OK') {
-          if(mensaje == 'AppEquivocada'){
-            DialogoAlerta.mostrarAlerta(
-                context, TITAPPEQUIVOCADA, APPEQUIVOCADA, OK);
-          }else{
-            DialogoAlerta.mostrarAlerta(
-                context, TITSUSPENDIDO, SUSPENDIDO + mensaje, OK);
-          }
-        } else {
-          ///------------------------------------------------------------------
-          /// Obtención de la placa desde el token
-          String placaTaxi = '\$';
-          TokenService.getPlacaTaxi().then( (val) => setState(() {
-            placaTaxi = val;
-          }));
-          ///------------------------------------------------------------------
-          /// Se selecciona cuál pantalla dirigir, si la de home de una o
-          /// la del solicitar la placa
-          String siguientePagina = '';
-          if (placaTaxi == null) {
-            siguientePagina = '/solicitarPlaca';
-          } else {
-            siguientePagina = '/home';
-          }
-          ///------------------------------------------------------------------
-          /// Redirecciona a la pantalla debida
-          Navigator.of(context)
-              .pushReplacementNamed(siguientePagina);
-          ///------------------------------------------------------------------
-        }
-      }
+      ///------------------------------------------------------------------
+      /// se guarda la placa
+      TokenService.setPlacaTaxi(this._placa);
+      ///------------------------------------------------------------------
+      /// Redirecciona a la pantalla debida
+      Navigator.of(context)
+          .pushReplacementNamed('/home');
+      ///------------------------------------------------------------------
     } catch (e) {
       DialogoAlerta.mostrarAlerta(context, ERRORDECONECCION, ERRORCONN, OK);
     }
-  }*/
+  }
 }

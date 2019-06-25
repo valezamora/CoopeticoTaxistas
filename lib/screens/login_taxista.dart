@@ -161,7 +161,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
         } else {
           ///------------------------------------------------------------------
           /// Obtención de la placa desde el token
-          String placaTaxi = '\$';
+          String placaTaxi  ;
           TokenService.getPlacaTaxi().then( (val) => setState(() {
             placaTaxi = val;
           }));
@@ -170,8 +170,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
           /// la del solicitar la placa
           String siguientePagina = '';
           if (placaTaxi == null) {
-            //siguientePagina = '/solicitarPlaca';
-            siguientePagina = '/home';
+            siguientePagina = '/solicitarPlaca';
           } else {
             siguientePagina = '/home';
           }

@@ -9,7 +9,7 @@ import 'package:CoopeticoTaxiApp/services/network_service.dart';
 class RestService {
   NetworkService _networkService = new NetworkService();
   //static const URL_BACKEND = "http://18.216.200.152:8080";  // 10.0.2.2 es para el emulador de android
-  static const URL_BACKEND = "http://192.16.202.12:8080";
+  static const URL_BACKEND = "http://192.168.43.38:8080";
   static const URL_LOGIN = URL_BACKEND + "/auth/signin";
   static const URL_OBTENER_USUARIO = URL_BACKEND + "/clientes/obtenerUsuario/";
   static const URL_TAXISTAS = URL_BACKEND + "/taxistas";
