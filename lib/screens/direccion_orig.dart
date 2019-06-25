@@ -2,6 +2,7 @@
 /// Imports
 import 'dart:async';
 import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
+import 'package:CoopeticoTaxiApp/screens/direccion_dest.dart';
 import 'package:CoopeticoTaxiApp/services/rest_service.dart';
 import 'package:CoopeticoTaxiApp/widgets/boton.dart';
 /// TODO: PARA HACER ESTA CIPORT FUNCIONAR BIEN, DEBEN SEGUIRSE LOS PASOS
@@ -325,6 +326,10 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
       origen,
       correoCliente
     );
+    ///------------------------------------------------------------------------
+    Navigator.push(context, new MaterialPageRoute(
+        builder: (BuildContext context) =>
+        new DireccionDestino(this.datosIniciales)));
     ///------------------------------------------------------------------------
   }
 
