@@ -35,8 +35,7 @@ class SeleccionadorHome {
     } catch (e){ //Si se cae obteniendo el estado de un taxista o algo, se obliga a hacer login nuevamente.
       TokenService.borrarToken(); //Se borra el token
     }
-    return new DireccionOrigen(new ViajeComenzando('cliente@cliente.com','9.935052, -84.041004','9.930886, -84.034450','tipo',true,null));
-    //return home;
+    return home;
   }
 
   static Future<bool> _getEstado() async {

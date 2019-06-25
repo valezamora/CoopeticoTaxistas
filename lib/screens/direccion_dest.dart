@@ -75,9 +75,6 @@ class _DireccionDestinoState extends State<DireccionDestino> {
     super.initState();
     TokenService.getSub().then( (val) => setState(() {
       correoTaxista = val;
-      print('---------------------------------------------------------------');
-      print(correoTaxista);
-      print('---------------------------------------------------------------');
     }));
     if (datosIniciales.destino[0] != '\$') {
       Timer.periodic(Duration(seconds: REFRESHING_RATIO),
@@ -351,7 +348,7 @@ class _DireccionDestinoState extends State<DireccionDestino> {
     try {
       this._actualizarUbicacion();
     } catch (Exception) {
-      
+
     }
     ///------------------------------------------------------------------------
     /// Dibuja el marcador de la ubicación actual del taxista.
