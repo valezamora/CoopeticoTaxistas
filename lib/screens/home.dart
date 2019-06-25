@@ -40,6 +40,7 @@ class _HomeState extends State<Home> {
   var nombreCompleto = '';
   var mensaje;
   var head;
+  var stream;
   WebSocketsService channelViaje;
 
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -89,7 +90,7 @@ class _HomeState extends State<Home> {
               Positioned(
                 bottom: 15,
                 child: StreamBuilder(
-                  stream: channelViaje.client.stream,
+                  stream: stream,
                   builder: (context, snapshot) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24.0),
