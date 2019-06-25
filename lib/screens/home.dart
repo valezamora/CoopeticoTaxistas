@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
     TokenService.getnombreCompleto().then( (val) => setState(() {
       nombreCompleto = val;
     }));
-    channel: IOWebSocketChannel.connect('ws://echo.websocket.org');
+    subscription = ViajesBloc().viajeStream.listen((data) => recibeViaje(data));
   }
 
   @override

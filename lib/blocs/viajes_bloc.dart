@@ -24,8 +24,7 @@ class ViajesBloc {
     ws.connect();
     ws.subscribe("/queue/a");
     ws.send("/queue/a", "holas");
-    ws.subscribe('/user/queue/recibir-viaje');
-
+    viajeStream = ws.subscribe('/user/queue/recibir-viaje').stream;
   }
 
   void dispose() {
