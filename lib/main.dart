@@ -28,10 +28,6 @@ class CoopeticoAppTaxista extends StatelessWidget {
 
   CoopeticoAppTaxista(this.home);
 
-  @override
-  void initState(){
-    //ViajesBloc().connectStream();
-  }
 
   @override
   Widget build(BuildContext context) {

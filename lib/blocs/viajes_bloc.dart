@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:collection';
 import 'dart:io';
 import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
@@ -22,12 +23,12 @@ class ViajesBloc {
 
   void connectStream() {
     ws.connect();
-    ws.subscribe("/queue/a");
-    ws.send("/queue/a", "holas");
     viajeStream = ws.subscribe('/user/queue/recibir-viaje').stream;
+    viajeStream.listen((data) => recibeViaje(data));
   }
 
   void dispose() {
+    ws.unsubscribe('/user/queue/recibir-viaje');
     //subscription.cancel();
     //streamControllerViaje.close();
   }
@@ -46,9 +47,11 @@ class ViajesBloc {
 
   /// Metodo que muestra la alerta del viaje recibido
   /// Autor: Valeria Zamora
-  void recibeViaje(context, data){
+  void recibeViaje(data){
     print(data);
-    var viaje = data.content;
-    RecibeViaje.mostrarAlerta(context, viaje);
+    // Map<String, dynamic> viajeInfo = jsonDecode(data);
+    // var viaje = data.content;
+    // print(viaje);
+    // RecibeViaje.mostrarAlerta(context, viaje);
   }
 }

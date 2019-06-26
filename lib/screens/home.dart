@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
     TokenService.getnombreCompleto().then( (val) => setState(() {
       nombreCompleto = val;
     }));
-    subscription = ViajesBloc().viajeStream.listen((data) => recibeViaje(data));
+    // ViajesBloc().viajeStream.listen((data) => recibeViaje(data));
   }
 
   @override
@@ -89,7 +89,7 @@ class _HomeState extends State<Home> {
                 ),
                 myLocationEnabled: true,
               ),
-              StreamBuilder(
+              /*StreamBuilder(
                   stream: ViajesBloc().viajeStream,
                   initialData: 'inicio',
                   builder: (context, snapshot) {
@@ -99,7 +99,7 @@ class _HomeState extends State<Home> {
                         style: TextStyle(color: Colors.red, fontSize: 30)),
                     );
                   },
-              ),
+              ),*/
               ///--------------------------------------------------------------
               Positioned(
                 left: 0,
@@ -272,8 +272,9 @@ class _HomeState extends State<Home> {
   /// Autor: Valeria Zamora
   void recibeViaje(data){
     print(data);
-    var viaje = data.content;
-    RecibeViaje.mostrarAlerta(context, viaje);
+    // var viaje = data.content;
+    // print('Viaje recibe: ' + viaje);
+    // RecibeViaje.mostrarAlerta(context, viaje);
   }
 
   /// Metodo que
