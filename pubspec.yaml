@@ -32,9 +32,7 @@ dependencies:
   # Location
   location: ^2.0.0
 
-  stomp_client: 
-    git:
-      url: git://github.com/kevinjimenez96/stomp_client.git
+  stomp_client: ^0.0.2
       
 dev_dependencies:
   flutter_test:
