@@ -32,7 +32,9 @@ dependencies:
   # Location
   location: ^2.0.0
 
-  stomp_client: ^0.0.2
+  stomp_client: ^0.0.1 
+   # git:
+    #  url: git://github.com/kevinjimenez96/stomp_client.git
       
 dev_dependencies:
   flutter_test:
@@ -41,7 +43,7 @@ dev_dependencies:
                # Es una versión más vieja para que sea compatible con la version de flutter.
   mockito: ^4.0.0 # Dependencia para hacer mocks en las pruebas.
   test_api: ^0.2.2
- 
+  
 # The following section is specific to Flutter.
 flutter:
  
