@@ -212,7 +212,16 @@ class RestService {
   /// Autor: Kevin Jiménez
   Future<String> finalizarViaje({String placa, String fechaInicio, String fechaFin}){
     String url = URL_VIAJES + "/finalizar";
-    return _networkService.httput(url, body: "{\"placa\": \""+ placa + "\" , \"fechaInicio\" : \"" + fechaInicio +"\", \"fechaFin\": \"" + fechaFin + "\"}")
+    String body = jsonEncode({
+      "placa": placa,
+      "fechaInicio": fechaInicio,
+      "fechaFin": fechaFin,
+    });
+    Map<String, String> header = {
+      "Accept": "application/json",
+      "content-type": "application/json"
+    };
+    return _networkService.httput(url, body: body, header: header)
         .then((dynamic res) {
       var respuesta = res;
       // recibe srtring con un json
