@@ -333,7 +333,10 @@ class _DireccionDestinoState extends State<DireccionDestino> {
     String fechaFin = timestamp[0] + " " + timestamp[1].split(".")[0];
 
     ///TODO AQUI VA EL CÓDIGO DE KEVIN QUE MANDA EL REQUEST AL BACKEND PARA FINALIZAR EL VIAJE
-
+    _restService.finalizarViaje(placa: placa, fechaFin: fechaFin, fechaInicio: fechaInicio).then((value){
+      print(value);
+      DialogoAlerta.mostrarAlerta(context, "Exito", "Se ha finalizado el viaje correctamente", "Aceptar");
+    });
     Navigator.pushNamed(context, '/home');
     mostrarDialogoMonto(context, placa, this.fechaInicio);
   }

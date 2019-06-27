@@ -209,6 +209,29 @@ class RestService {
     _networkService.httpPost(urlRespuesta, body: body, header: header);
   }
 
+  /// Finaliza un viaje, utilizando la [placa] y [fechaInicio], 
+  /// además es necesario la [fechaFin] para finalizar el viaje.
+  /// 
+  /// Autor: Kevin Jiménez
+  Future<String> finalizarViaje({String placa, String fechaInicio, String fechaFin}){
+    String url = URL_VIAJES + "/finalizar";
+    String body = jsonEncode({
+      "placa": placa,
+      "fechaInicio": fechaInicio,
+      "fechaFin": fechaFin,
+    });
+    Map<String, String> header = {
+      "Accept": "application/json",
+      "content-type": "application/json"
+    };
+    return _networkService.httput(url, body: body, header: header)
+        .then((dynamic res) {
+      var respuesta = res;
+      // recibe srtring con un json
+      return respuesta.statusCode;
+    });
+  }
+
   /// Método envía en un PUT el monto que fue cobrado al cliente por el viaje.
   /// Autor: Marco Venegas.
   Future<List> enviarMonto(String placaTaxi, String fechaInicio, int monto) {

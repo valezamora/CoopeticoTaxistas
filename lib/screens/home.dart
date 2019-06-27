@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'package:CoopeticoTaxiApp/services/rest_service.dart';
 import 'package:flutter/services.dart';
 
 import 'package:CoopeticoTaxiApp/widgets/boton.dart';
@@ -97,7 +98,7 @@ class _HomeState extends State<Home> {
 
     print("build UI");
     print(channelViaje);
-
+    
     return Scaffold(
       key: _scaffoldKey,
       drawer: DrawerCustom(email, nombreCompleto),
