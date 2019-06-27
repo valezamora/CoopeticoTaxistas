@@ -16,6 +16,7 @@ class RestService {
   static const URL_SIGNUP = URL_BACKEND + "/clientes";
   static const URL_EDITAR = URL_BACKEND + "/clientes/editar";
   static const URL_VIAJES = URL_BACKEND + "/viajes";
+  static const URL_MONTOVIAJE = URL_VIAJES + "/costoViaje";
   static const URL_ACTUALIZAR_UBICACION = URL_BACKEND + "/ubicaciones/actualizar/ubicacion";
 
   /// Este método envía un POST al backend con un JSON en el cuerpo del request.
@@ -166,7 +167,7 @@ class RestService {
     /// Creación del cuerpo del "request"
     String body = jsonEncode(
         {
-          "correoTaxista" : '"' + correoTaxista + '"',
+          "correoTaxista" : correoTaxista,
           "latitud"       : lat,
           "longitud"      : lon
         }
@@ -204,5 +205,26 @@ class RestService {
       "content-type": "application/json"
     };
     _networkService.httpPost(urlRespuesta, body: body, header: header);
+  }
+
+  /// Método envía en un PUT el monto que fue cobrado al cliente por el viaje.
+  /// Autor: Marco Venegas.
+  Future<List> enviarMonto(String placaTaxi, String fechaInicio, int monto) {
+    String body = jsonEncode({"pkPlacaTaxi": placaTaxi, "pkFechaInicio": fechaInicio});
+
+    Map<String, String> header = {
+      "Accept": "application/json",
+      "content-type": "application/json"
+    };
+    String url = URL_MONTOVIAJE + "/" + monto.toString() + "/";
+
+    return _networkService
+        .httpPut(url, body: body, header: header)
+        .then((dynamic res) {
+      final int statusCode = res.statusCode;
+      final String body = res.body;
+      List respuesta = [statusCode, body];
+      return respuesta;
+    });
   }
 }

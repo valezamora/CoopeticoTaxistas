@@ -311,9 +311,9 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
     /// TODO: la placa para este sprint no es algo que se pueda obtener.
     String placa = "AAA111";
     var timestamp = DateTime.now().toString().split(' ');
-    String fechaInicio = timestamp[0] + "T" + timestamp[1].split(".")[0];
+    String fechaInicio = timestamp[0] + " " + timestamp[1].split(".")[0];
     String origen = this.datosIniciales.origen;
-    String  correoCliente = this.datosIniciales.correoCliente;
+    String correoCliente = this.datosIniciales.correoCliente;
     ///------------------------------------------------------------------------
     String codigo = await _restService.crearViaje(
       placa,
@@ -323,9 +323,9 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
       correoCliente
     );
     ///------------------------------------------------------------------------
-    Navigator.push(context, new MaterialPageRoute(
+    Navigator.pushReplacement(context, new MaterialPageRoute(
         builder: (BuildContext context) =>
-        new DireccionDestino(this.datosIniciales)));
+        new DireccionDestino(this.datosIniciales, fechaInicio)));
     ///------------------------------------------------------------------------
   }
 

@@ -26,6 +26,7 @@ import 'package:CoopeticoTaxiApp/services/google_maps_places.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:CoopeticoTaxiApp/services/token_service.dart';
 import 'package:CoopeticoTaxiApp/services/web_sockets_service.dart';
+import 'package:CoopeticoTaxiApp/services/rest_service.dart';
 
 //Colores
 import 'package:CoopeticoTaxiApp/util/paleta.dart';
@@ -42,6 +43,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  RestService _restService = new RestService();
 
   Location _locationService  = new Location();
   bool _permission = false;
@@ -64,12 +67,21 @@ class _HomeState extends State<Home> {
 
   static const LatLng _center = const LatLng(9.901589, -84.009813);
 
+  final int REFRESHING_RATIO = 3;
+  double currentLatitud;
+  double currentLongitud;
+
+  String correoTaxista;
+
   GoogleMapController _mapController;
 
   @override
   void initState(){
     super.initState();
     initLocation();
+    TokenService.getSub().then( (val) => setState(() {
+      correoTaxista = val;
+    }));
     TokenService.getSub().then( (val) => setState(() {
       email = val;
     }));
@@ -329,6 +341,28 @@ class _HomeState extends State<Home> {
         error = e.message;
       }
     }
+  }
+
+  ///--------------------------------------------------------------------------
+  /// Calcula la ubicación actual del taxista usando el GPS
+  /// y se la manda al backend
+  ///
+  /// Autor: Joseph Rementería (b55824)
+  /// Fecha: 26-05-2019
+  void _actualizarUbicacion(){
+    ///------------------------------------------------------------------------
+    var ubicacion = new Location();
+    ubicacion.onLocationChanged().listen((LocationData currentLocation) {
+      this.currentLatitud = currentLocation.latitude;
+      this.currentLongitud = currentLocation.longitude;
+    });
+    ///------------------------------------------------------------------------
+    /// Envia al server la ubicación actual del taxista.
+    _restService.actualizar(
+        this.correoTaxista,
+        this.currentLatitud,
+        this.currentLongitud
+    );
   }
 
 
