@@ -7,7 +7,11 @@ packages:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "0.36.3"
+=======
+    version: "0.36.4"
+>>>>>>> Developer
   args:
     dependency: transitive
     description:
@@ -101,7 +105,11 @@ packages:
       name: front_end
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "0.1.18"
+=======
+    version: "0.1.19"
+>>>>>>> Developer
   glob:
     dependency: transitive
     description:
@@ -171,7 +179,11 @@ packages:
       name: kernel
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "0.3.18"
+=======
+    version: "0.3.19"
+>>>>>>> Developer
   location:
     dependency: "direct main"
     description:
@@ -341,12 +353,19 @@ packages:
   stomp_client:
     dependency: "direct main"
     description:
+<<<<<<< HEAD
       path: "."
       ref: HEAD
       resolved-ref: "91e4a5f8dd04116ee9dd73c0808c3b27905ab368"
       url: "git://github.com/kevinjimenez96/stomp_client.git"
     source: git
     version: "0.0.1"
+=======
+      name: stomp_client
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
+>>>>>>> Developer
   stream_channel:
     dependency: transitive
     description:
@@ -432,5 +451,9 @@ packages:
     source: hosted
     version: "2.1.16"
 sdks:
+<<<<<<< HEAD
   dart: ">=2.2.0 <3.0.0"
+=======
+  dart: ">=2.2.2 <3.0.0"
+>>>>>>> Developer
   flutter: ">=1.5.0 <2.0.0"

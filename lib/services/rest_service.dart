@@ -2,13 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:CoopeticoTaxiApp/services/network_service.dart';
+import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
 
 
 /// Autor: Marco Venegas.
 /// Clase para la comunicación con el backend mediante el REST API.
 class RestService {
   NetworkService _networkService = new NetworkService();
-  static const URL_BACKEND = "http://192.168.1.6:8080";  // 10.0.2.2 es para el emulador de android
+  static const URL_BACKEND = "http://18.220.131.173:8080";  // 10.0.2.2 es para el emulador de android
   static const URL_LOGIN = URL_BACKEND + "/auth/signin";
   static const URL_OBTENER_USUARIO = URL_BACKEND + "/clientes/obtenerUsuario/";
   static const URL_TAXISTAS = URL_BACKEND + "/taxistas";
@@ -101,13 +102,11 @@ class RestService {
     });
   }
 
-  ///--------------------------------------------------------------------------
   /// Envía el JSON hacia el server para insertar los datos del
   /// viaje en creación
   ///
   /// Autor: Joseph Rementería (b55824).
   /// Fecha: 19-05-2019
-  ///--------------------------------------------------------------------------
   Future<String> crearViaje(
     String placa,
     String correoTaxista,
@@ -115,13 +114,11 @@ class RestService {
     String origen,
     String correoCliente
   ) {
-    ///------------------------------------------------------------------------
     /// Creación del "header" del "request"
     Map<String, String> header = {
       "Accept": "application/json",
       "content-type": "application/json"
     };
-    ///------------------------------------------------------------------------
     /// Creación del cuerpo del "request"
     String body = jsonEncode(
         {
@@ -132,13 +129,11 @@ class RestService {
           "correoCliente" : correoCliente
         }
     );
-    ///------------------------------------------------------------------------
     return _networkService.httpPost(
       URL_VIAJES,
       body: body,
         header: header
       ).then((dynamic res) {
-        ///--------------------------------------------------------------------
         //final String respuesta = res.body;
         final int codigo = res.statusCode;
 
@@ -150,29 +145,24 @@ class RestService {
             break;
         }
         return resultado;
-      ///--------------------------------------------------------------------
       }
     );
-    ///------------------------------------------------------------------------
   }
-  ///--------------------------------------------------------------------------
+
   /// Envía el JSON hacia el server para actualizar la ubicion
   ///
   /// Autor: Joseph Rementería (b55824).
   /// Fecha: 19-05-2019
-  ///--------------------------------------------------------------------------
   Future<String> actualizar(
       String correoTaxista,
       double lat,
       double lon
     ) {
-    ///------------------------------------------------------------------------
     /// Creación del "header" del "request"
     Map<String, String> header = {
       "Accept": "application/json",
       "content-type": "application/json"
     };
-    ///------------------------------------------------------------------------
     /// Creación del cuerpo del "request"
     String body = jsonEncode(
         {
@@ -181,13 +171,11 @@ class RestService {
           "longitud"      : lon
         }
     );
-    ///------------------------------------------------------------------------
     return _networkService.httpPost(
         URL_ACTUALIZAR_UBICACION,
         body: body,
         header: header
     ).then((dynamic res) {
-      ///--------------------------------------------------------------------
       //final String respuesta = res.body;
       final int codigo = res.statusCode;
 
@@ -199,10 +187,23 @@ class RestService {
           break;
       }
       return resultado;
-      ///--------------------------------------------------------------------
     }
     );
-    ///------------------------------------------------------------------------
+  }
+
+  /// Envia la respuesta a una solicitud de viaje
+  ///
+  /// Autor: Valeria Zamora
+  respuestaViaje (bool respuesta, String datos) {
+    String urlRespuesta = '/viajes/aceptar-rechazar?respuesta=' + respuesta.toString();
+    String body = jsonEncode({
+      "datosViaje": datos
+    });
+    Map<String, String> header = {
+      "Accept": "application/json",
+      "content-type": "application/json"
+    };
+    _networkService.httpPost(urlRespuesta, body: body, header: header);
   }
 
   /// Finaliza un viaje, utilizando la [placa] y [fechaInicio], 

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:collection';
+import 'package:flutter/services.dart';
 
 import 'package:CoopeticoTaxiApp/widgets/boton.dart';
 import 'package:flutter/widgets.dart';
@@ -7,6 +9,9 @@ import 'package:flutter/material.dart';
 
 //Widgets
 import 'package:CoopeticoTaxiApp/widgets/home_widgets/drawer.dart';
+import 'package:location/location.dart';
+
+import 'package:CoopeticoTaxiApp/widgets/recibe_viaje.dart';
 
 //Models
 
@@ -14,6 +19,7 @@ import 'package:CoopeticoTaxiApp/models/trip_info_res.dart';
 import 'package:CoopeticoTaxiApp/models/place_res.dart';
 import 'package:CoopeticoTaxiApp/models/step_res.dart';
 
+import 'package:CoopeticoTaxiApp/blocs/viajes_bloc.dart';
 
 //Service
 import 'package:CoopeticoTaxiApp/services/google_maps_places.dart';
@@ -36,29 +42,41 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  Location _locationService  = new Location();
+  bool _permission = false;
+  String error;
+
   var email = '';
   var nombreCompleto = '';
   var mensaje;
   var head;
+  var stream;
   WebSocketsService channelViaje;
+  StreamController streamController;
+  StreamSubscription subscription;
 
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
   var _tripDistance = 0;
   final Map<String, Marker> _markers = <String, Marker>{};
 
+  CameraPosition _currentCameraPosition;
+
   static const LatLng _center = const LatLng(9.901589, -84.009813);
 
   GoogleMapController _mapController;
+
   @override
   void initState(){
     super.initState();
+    initLocation();
     TokenService.getSub().then( (val) => setState(() {
       email = val;
     }));
     TokenService.getnombreCompleto().then( (val) => setState(() {
       nombreCompleto = val;
     }));
-    channelViaje = WebSocketsService();
+    ViajesBloc().viajeStream.listen((data) => mostrarAlertaViaje(data));
   }
 
   @override
@@ -86,19 +104,6 @@ class _HomeState extends State<Home> {
                 ),
                 myLocationEnabled: true,
               ),
-              Positioned(
-                bottom: 15,
-                child: StreamBuilder(
-                  stream: channelViaje.client.stream,
-                  builder: (context, snapshot) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 24.0),
-                      child: Text(snapshot.hasData ? '${snapshot.data}' : '',
-                        style: TextStyle(color: Colors.blue)),
-                    );
-                  },
-                )
-              ),
               ///--------------------------------------------------------------
               Positioned(
                 left: 0,
@@ -124,6 +129,11 @@ class _HomeState extends State<Home> {
                     ),
                   ],
                 ),
+              ),
+              Positioned(
+                  bottom: 10,
+                  right: 10,
+                  child: IconButton(icon: Icon(Icons.my_location, size: 35), onPressed: initLocation)
               ),
 
             ],
@@ -265,7 +275,59 @@ class _HomeState extends State<Home> {
 
    // _moveCamera();
    // _checkDrawPolyline();
+  }
 
+  /// Metodo que muestra la alerta del viaje recibido
+  /// Autor: Valeria Zamora
+  void mostrarAlertaViaje(data){
+    ViajesBloc().recibeViaje(data);
+    RecibeViaje.mostrarAlerta(context, ViajesBloc().infoViajeString);
+  }
+
+  /// Metodo que
+  /// Autor: Valeria Zamora
+  void cerrarSubscription() {
+    subscription.cancel();
+  }
+
+  /// Método que se encarga de pedir de forma async la ubicación del usuario y mover la cámara de Google Maps hacia ese punto.
+  ///
+  /// No retorna nada
+  /// Autor: Paulo Barrantes
+  /// Modificado por: Marco Venegas
+
+  initLocation() async {
+    await _locationService.changeSettings(accuracy: LocationAccuracy.LOW, interval: 1000);
+
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      LocationData location;
+      bool serviceStatus = await _locationService.serviceEnabled();
+      if (serviceStatus) {
+        _permission = await _locationService.requestPermission();
+        if (_permission) {
+          location = await _locationService.getLocation();
+
+          _currentCameraPosition = CameraPosition(
+              target: LatLng(location.latitude, location.longitude),
+              zoom: 14.4746
+          );
+
+          _mapController.animateCamera(CameraUpdate.newCameraPosition(_currentCameraPosition)); //Muevo la camara a mi ubicacion actual
+        }
+      } else {
+        bool serviceStatusResult = await _locationService.requestService(); //Si no se cuentan con permisos de ubicacion se piden y se intenta de nuevo
+        if(serviceStatusResult){
+          initLocation();
+        }
+      }
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {
+        error = e.message;
+      } else if (e.code == 'SERVICE_STATUS_ERROR') {
+        error = e.message;
+      }
+    }
   }
 
 

@@ -150,10 +150,11 @@ class TokenService {
 
     String correo = preferences.getString('subT');
     String nombreT = preferences.getString('nombreT');
-    String apellidosT = preferences.getString('apellidosT');
+    String apellido1T = preferences.getString('apellido1T');
+    String apellido2T = preferences.getString('apellido2T');
     String telefonoT = preferences.getString('telefonoT');
 
-    if(correo != null && nombreT != null && apellidosT != null && telefonoT != null){
+    if(correo != null && nombreT != null && apellido1T != null && apellido2T != null && telefonoT != null){
       datos = true;
     }
 
@@ -178,7 +179,7 @@ class TokenService {
   /// Autor: Valeria Zamora
   static Future<String> getApellidos() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString('apellidosT');
+    return preferences.getString('apellido1T') + ' ' + preferences.getString('apellido2T');
   }
 
   /// Retorna el telefono del taxista
@@ -227,7 +228,7 @@ class TokenService {
   /// Autor: Valeria Zamora
   static Future<String> getnombreCompleto() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString('nombreT') + ' ' + preferences.getString('apellidosT');
+    return preferences.getString('nombreT') + ' ' + preferences.getString('apellido1T') + ' ' + preferences.getString('apellido2T');
   }
 
   ///--------------------------------------------------------------------------
@@ -235,7 +236,8 @@ class TokenService {
   /// Autor: Joseph Rementería (b55824)
   static void editarJson(
     String nombreT,
-    String apellidosT,
+    String apellido1T,
+    String apellido2T,
     String telefonoT,
     String correo
   ) async {
@@ -244,7 +246,8 @@ class TokenService {
     ///------------------------------------------------------------------------
     await preferences.setString('correo', correo);
     await preferences.setString('nombreT', nombreT);
-    await preferences.setString('apellidosT', apellidosT);
+    await preferences.setString('apellido1T', apellido1T);
+    await preferences.setString('apellido2T', apellido2T);
     await preferences.setString('telefonoT', telefonoT);
   }
   ///--------------------------------------------------------------------------
