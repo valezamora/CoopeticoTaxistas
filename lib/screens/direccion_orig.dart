@@ -323,7 +323,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
       correoCliente
     );
     ///------------------------------------------------------------------------
-    Navigator.push(context, new MaterialPageRoute(
+    Navigator.pushReplacement(context, new MaterialPageRoute(
         builder: (BuildContext context) =>
         new DireccionDestino(this.datosIniciales, fechaInicio)));
     ///------------------------------------------------------------------------
