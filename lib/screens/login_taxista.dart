@@ -14,6 +14,7 @@ import 'package:CoopeticoTaxiApp/widgets/entrada_texto.dart';
 import 'package:CoopeticoTaxiApp/widgets/boton.dart';
 import 'package:CoopeticoTaxiApp/widgets/boton_plano.dart';
 import 'package:CoopeticoTaxiApp/widgets/etiqueta.dart';
+import 'package:CoopeticoTaxiApp/widgets/loading_screen.dart';
 
 import 'package:CoopeticoTaxiApp/blocs/viajes_bloc.dart';
 /// Autor: Marco Venegas.
@@ -137,9 +138,11 @@ class _LoginTaxistaState extends State<LoginTaxista> {
   /// Si el correo y contraseña son correctos, recibe un token en una string JSON.
   /// Esta la almacena en el dispositivo.
   void validarTaxista() async {
+    LoadingScreen loadingSC = LoadingScreen();
+    loadingSC.mostrar(context);
     try {
       String respuesta = await _restService.login(_correo, _contrasena);
-      print('respuesta recibida: '+respuesta);
+      loadingSC.quitar(context);
       if (respuesta == "error") {
         DialogoAlerta.mostrarAlerta(context, ERROR, ERRORAUTH, OK);
       } else if (respuesta == "noauth") {
@@ -165,6 +168,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
         }
       }
     } catch (e) {
+      loadingSC.quitar(context);
       DialogoAlerta.mostrarAlerta(context, ERRORDECONECCION, ERRORCONN, OK);
     }
   }
