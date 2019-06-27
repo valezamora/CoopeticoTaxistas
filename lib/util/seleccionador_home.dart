@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
-import 'package:CoopeticoTaxiApp/screens/direccion_orig.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:CoopeticoTaxiApp/services/token_service.dart';
