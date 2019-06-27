@@ -15,20 +15,24 @@ class WebSocketsService {
   static const URL_BACKEND = "ws://18.220.131.173:8080/ws-flutter";
   StompClient client = new StompClient(urlBackend: URL_BACKEND);
 
+  bool listened = false;
   /// Metodo para conectarse al web socket
   ///
   /// Autor: Valeria Zamora
   connect() {
-    client.general.stream.listen((message) {
-      // handling of the incoming messages
-      print(message);
-      //messageReceieved(message);
-    }, onError: (error, StackTrace stackTrace) {
-      // error handling
-    }, onDone: () {
-      // communication has been closed
-    });
-    client.connectWithToken(token: TokenService.getToken());
+    if(!listened) {
+      listened = true;
+      client.general.stream.listen((message) {
+        // handling of the incoming messages
+        print(message);
+        //messageReceieved(message);
+      }, onError: (error, StackTrace stackTrace) {
+        // error handling
+      }, onDone: () {
+        // communication has been closed
+      });
+      client.connectWithToken(token: TokenService.getToken());
+    }
   }
 
   /// Metodo para desconectarse de un endpoint

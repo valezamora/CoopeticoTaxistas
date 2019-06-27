@@ -313,6 +313,7 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
     var timestamp = DateTime.now().toString().split(' ');
     String fechaInicio = timestamp[0] + " " + timestamp[1].split(".")[0];
     String origen = this.datosIniciales.origen;
+    String destino = this.datosIniciales.destino;
     String correoCliente = this.datosIniciales.correoCliente;
     ///------------------------------------------------------------------------
     String codigo = await _restService.crearViaje(
@@ -320,10 +321,11 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
       this.correoTaxista,
       fechaInicio,
       origen,
+      destino,
       correoCliente
     );
     ///------------------------------------------------------------------------
-    Navigator.push(context, new MaterialPageRoute(
+    Navigator.pushReplacement(context, new MaterialPageRoute(
         builder: (BuildContext context) =>
         new DireccionDestino(this.datosIniciales, fechaInicio)));
     ///------------------------------------------------------------------------
