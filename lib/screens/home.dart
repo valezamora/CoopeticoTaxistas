@@ -76,6 +76,7 @@ class _HomeState extends State<Home> {
     TokenService.getnombreCompleto().then( (val) => setState(() {
       nombreCompleto = val;
     }));
+    ViajesBloc().connectStream();
     ViajesBloc().viajeStream.listen((data) => mostrarAlertaViaje(data));
   }
 
