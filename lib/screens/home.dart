@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
     TokenService.getnombreCompleto().then( (val) => setState(() {
       nombreCompleto = val;
     }));
-    // ViajesBloc().viajeStream.listen((data) => recibeViaje(data));
+    ViajesBloc().viajeStream.listen((data) => mostrarAlertaViaje(data));
   }
 
   @override
@@ -270,11 +270,9 @@ class _HomeState extends State<Home> {
 
   /// Metodo que muestra la alerta del viaje recibido
   /// Autor: Valeria Zamora
-  void recibeViaje(data){
-    print(data);
-    // var viaje = data.content;
-    // print('Viaje recibe: ' + viaje);
-    // RecibeViaje.mostrarAlerta(context, viaje);
+  void mostrarAlertaViaje(data){
+    ViajesBloc().recibeViaje(data);
+    RecibeViaje.mostrarAlerta(context, ViajesBloc().infoViajeString);
   }
 
   /// Metodo que

@@ -4,14 +4,14 @@ import 'dart:collection';
 import 'dart:io';
 import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
 import 'package:CoopeticoTaxiApp/services/web_sockets_service.dart';
-import 'package:CoopeticoTaxiApp/widgets/recibe_viaje.dart';
+import 'package:CoopeticoTaxiApp/screens/home.dart';
 
 class ViajesBloc {
 
- // ViajeComenzando _viaje;
-
+  ViajeComenzando viaje;
   WebSocketsService ws =  WebSocketsService();
   Stream viajeStream;
+  String infoViajeString;
 
   static final ViajesBloc _bloc = new ViajesBloc._internal();
   factory ViajesBloc(){
@@ -19,12 +19,10 @@ class ViajesBloc {
   }
   ViajesBloc._internal();
 
-
-
   void connectStream() {
     ws.connect();
     viajeStream = ws.subscribe('/user/queue/recibir-viaje').stream;
-    viajeStream.listen((data) => recibeViaje(data));
+    // viajeStream.listen((data) => recibeViaje(data));
   }
 
   void dispose() {
@@ -33,25 +31,19 @@ class ViajesBloc {
     //streamControllerViaje.close();
   }
 
-  recibeDatos(data) {
-    print(data);
-   /* _viaje = new ViajeComenzando(
-        data['correoCliente'],
-        data['origen'],
-        data['destino'],
-        data['tipo'],
-        data['datafono'],
-        data['taxistasQueRechazaron']
-    );*/
-  }
-
   /// Metodo que muestra la alerta del viaje recibido
   /// Autor: Valeria Zamora
   void recibeViaje(data){
-    print(data);
-    // Map<String, dynamic> viajeInfo = jsonDecode(data);
-    // var viaje = data.content;
-    // print(viaje);
-    // RecibeViaje.mostrarAlerta(context, viaje);
+    Map<String, dynamic> viajeInfo = new Map<String, dynamic>.from(data);
+    infoViajeString = viajeInfo['content'];
+    print(infoViajeString);
+    Map<String, dynamic> viajeComenzando = jsonDecode(infoViajeString);
+    viaje = new ViajeComenzando(
+        viajeComenzando['correoCliente'],
+        viajeComenzando['origen'],
+        viajeComenzando['destino'],
+        viajeComenzando['taxistasQueRechazaron']
+    );
+    print(viaje.correoCliente);
   }
 }
