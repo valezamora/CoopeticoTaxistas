@@ -16,6 +16,7 @@ import 'package:CoopeticoTaxiApp/widgets/boton_plano.dart';
 import 'package:CoopeticoTaxiApp/widgets/etiqueta.dart';
 import 'package:CoopeticoTaxiApp/widgets/loading_screen.dart';
 
+import 'package:CoopeticoTaxiApp/blocs/viajes_bloc.dart';
 /// Autor: Marco Venegas.
 /// Ventana Stateful de login de taxisa.
 class LoginTaxista extends StatefulWidget {
@@ -150,6 +151,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
         print('GUARDAR TOKEN');
         String mensaje = await TokenService.guardarTokenLogin(respuesta);
         print(mensaje);
+
         if (mensaje != 'OK') {
           if(mensaje == 'AppEquivocada'){
             DialogoAlerta.mostrarAlerta(
@@ -159,6 +161,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
                 context, TITSUSPENDIDO, SUSPENDIDO + mensaje, OK);
           }
         } else {
+
           Navigator.of(context)
               .pushReplacementNamed('/home'); //Redireccionar al home screen.
         }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:CoopeticoTaxiApp/services/network_service.dart';
+import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
 
 
 /// Autor: Marco Venegas.
@@ -102,13 +103,11 @@ class RestService {
     });
   }
 
-  ///--------------------------------------------------------------------------
   /// Envía el JSON hacia el server para insertar los datos del
   /// viaje en creación
   ///
   /// Autor: Joseph Rementería (b55824).
   /// Fecha: 19-05-2019
-  ///--------------------------------------------------------------------------
   Future<String> crearViaje(
     String placa,
     String correoTaxista,
@@ -116,13 +115,11 @@ class RestService {
     String origen,
     String correoCliente
   ) {
-    ///------------------------------------------------------------------------
     /// Creación del "header" del "request"
     Map<String, String> header = {
       "Accept": "application/json",
       "content-type": "application/json"
     };
-    ///------------------------------------------------------------------------
     /// Creación del cuerpo del "request"
     String body = jsonEncode(
         {
@@ -133,13 +130,11 @@ class RestService {
           "correoCliente" : correoCliente
         }
     );
-    ///------------------------------------------------------------------------
     return _networkService.httpPost(
       URL_VIAJES,
       body: body,
         header: header
       ).then((dynamic res) {
-        ///--------------------------------------------------------------------
         //final String respuesta = res.body;
         final int codigo = res.statusCode;
 
@@ -151,29 +146,24 @@ class RestService {
             break;
         }
         return resultado;
-      ///--------------------------------------------------------------------
       }
     );
-    ///------------------------------------------------------------------------
   }
-  ///--------------------------------------------------------------------------
+
   /// Envía el JSON hacia el server para actualizar la ubicion
   ///
   /// Autor: Joseph Rementería (b55824).
   /// Fecha: 19-05-2019
-  ///--------------------------------------------------------------------------
   Future<String> actualizar(
       String correoTaxista,
       double lat,
       double lon
     ) {
-    ///------------------------------------------------------------------------
     /// Creación del "header" del "request"
     Map<String, String> header = {
       "Accept": "application/json",
       "content-type": "application/json"
     };
-    ///------------------------------------------------------------------------
     /// Creación del cuerpo del "request"
     String body = jsonEncode(
         {
@@ -182,13 +172,11 @@ class RestService {
           "longitud"      : lon
         }
     );
-    ///------------------------------------------------------------------------
     return _networkService.httpPost(
         URL_ACTUALIZAR_UBICACION,
         body: body,
         header: header
     ).then((dynamic res) {
-      ///--------------------------------------------------------------------
       //final String respuesta = res.body;
       final int codigo = res.statusCode;
 
@@ -200,10 +188,23 @@ class RestService {
           break;
       }
       return resultado;
-      ///--------------------------------------------------------------------
     }
     );
-    ///------------------------------------------------------------------------
+  }
+
+  /// Envia la respuesta a una solicitud de viaje
+  ///
+  /// Autor: Valeria Zamora
+  respuestaViaje (bool respuesta, String datos) {
+    String urlRespuesta = '/viajes/aceptar-rechazar?respuesta=' + respuesta.toString();
+    String body = jsonEncode({
+      "datosViaje": datos
+    });
+    Map<String, String> header = {
+      "Accept": "application/json",
+      "content-type": "application/json"
+    };
+    _networkService.httpPost(urlRespuesta, body: body, header: header);
   }
 
   /// Método envía en un PUT el monto que fue cobrado al cliente por el viaje.
