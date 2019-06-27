@@ -6,6 +6,7 @@ class ValidadorLexico{
   static final String _regExpCorreo =
       r"^([a-zA-Z0-9_\-\.]+)\@([a-zA-Z0-9_\-]+)\.([a-zA-Z]{2,})(\.([a-zA-Z]{2,}))*$";
   static final String _regExpContrasena = r"^[^(\-\-|\;|\—)]+$";
+  static final String _regExpNumPositivo = r"^\d+$";
 
   /// [value] contiene el correo al que se le desea validar el formato.
   /// Se utiliza una expresión regular para validar dicho formato.
@@ -148,6 +149,31 @@ class ValidadorLexico{
         mensajeError = "Verifique la contraseña ingresada.";
       } else {
         mensajeError = null;
+      }
+    }
+    return mensajeError;
+  }
+
+  /// [value] contiene el monto al que se le validará el formato.
+  /// Valida que el monto ingresado sea un número positivo.
+  /// Autor: Marco Venegas
+  static String validarMonto(String value){
+    var mensajeError = '';
+    if(value.isEmpty){
+      mensajeError = "Ingrese el monto.";
+    }else{
+      RegExp regExp = new RegExp(_regExpNumPositivo);
+      if(!regExp.hasMatch(value)){
+        mensajeError = 'Debe ingresar un número positivo';
+      }else{
+        final matches = regExp.allMatches(value);
+        for (Match match in matches) {
+          if (match.start == 0 && match.end == value.length) {
+            mensajeError = null;
+          } else {
+            mensajeError = "Debe ingresar un número positivo.";
+          }
+        }
       }
     }
     return mensajeError;

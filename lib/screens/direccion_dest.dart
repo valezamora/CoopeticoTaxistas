@@ -4,6 +4,10 @@ import 'dart:async';
 import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
 import 'package:CoopeticoTaxiApp/services/rest_service.dart';
 import 'package:CoopeticoTaxiApp/widgets/boton.dart';
+import 'package:CoopeticoTaxiApp/widgets/dialogo_entrada_texto.dart';
+import 'package:CoopeticoTaxiApp/widgets/loading_screen.dart';
+import 'package:CoopeticoTaxiApp/widgets/dialogo_alerta.dart';
+import 'package:CoopeticoTaxiApp/util/validador_lexico.dart';
 /// TODO: PARA HACER ESTA CIPORT FUNCIONAR BIEN, DEBEN SEGUIRSE LOS PASOS
 /// TODO: QUE SE DESCRIBEN EN LA SIGUIENTE PÁGINA: 
 /// TODO: https://pub.dev/packages/location
@@ -38,12 +42,13 @@ class DireccionDestino extends StatefulWidget {
   //---------------------------------------------------------------------------
   // Los datos que se traen desde la pantalla anterior
   final ViajeComenzando datosIniciales;
+  final String fechaInicio;
   //---------------------------------------------------------------------------
-  DireccionDestino(this.datosIniciales);
+  DireccionDestino(this.datosIniciales, this.fechaInicio);
   //---------------------------------------------------------------------------
   @override
   _DireccionDestinoState createState() =>
-      _DireccionDestinoState(datosIniciales);
+      _DireccionDestinoState(datosIniciales, fechaInicio);
 //---------------------------------------------------------------------------
 }
 ///----------------------------------------------------------------------------
@@ -58,6 +63,7 @@ class _DireccionDestinoState extends State<DireccionDestino> {
   RestService _restService = new RestService();
   String correoTaxista; ///= 'taxista1@taxista.com';
   ViajeComenzando datosIniciales;
+  String fechaInicio;
   double destinoLatitud;
   double destinoLongitud;
   double currentLatitud;
@@ -66,9 +72,21 @@ class _DireccionDestinoState extends State<DireccionDestino> {
   /// Constantes
   final String MARKER_ID_INICIO = "current";
   final String MARKER_ID_FIN = "destino";
-  final String COMENZAR_VIAJE_MENSAJE_BOTON = 'Finalizar Viaje';
+  final String FINALIZAR_VIAJE_MENSAJE_BOTON = 'Finalizar Viaje';
   final String TITULO_DIR_OPERADORA = 'Indicaciones';
+  static const String ERROR = "Error";
+  static const String OK = "OK";
+
+  static const String EXITO = "¡Éxito!";
+  static const String EXITOMONTO = "Monto guardado exitosamente.";
+  static const String NUEVAMENTE = "\nPor favor, inténtelo nuevamente.";
+
+  static const String ERRORMONTO = "Hubo un error tratando de ingresar el monto del viaje." + NUEVAMENTE;
+  static const String VIAJE404 = "No se encontró el viaje en la base de datos.\n" +
+      "Por favor contacte a un administrador.";
+
   final int REFRESHING_RATIO = 3;
+
   ///--------------------------------------------------------------------------
   @override
   void initState(){
@@ -88,8 +106,9 @@ class _DireccionDestinoState extends State<DireccionDestino> {
   }
   ///--------------------------------------------------------------------------
   /// Constructor del despliegue original
-  _DireccionDestinoState (ViajeComenzando datosIniciales) {
+  _DireccionDestinoState (ViajeComenzando datosIniciales, String fechaInicio) {
     this.datosIniciales = datosIniciales;
+    this.fechaInicio = fechaInicio;
     if (datosIniciales.destino[0] != '\$'){
       var destinoArray = datosIniciales.destino.split(',');
       this.destinoLatitud = double.parse(destinoArray[0]);
@@ -136,10 +155,10 @@ class _DireccionDestinoState extends State<DireccionDestino> {
             Positioned(
               bottom: 50,
               child:  Boton(
-                COMENZAR_VIAJE_MENSAJE_BOTON,
+                FINALIZAR_VIAJE_MENSAJE_BOTON,
                 Paleta.Verde,
                 Paleta.Blanco,
-                onPressed: () {this._comenzarViaje();}
+                onPressed: () {this._finalizarViaje();}
                 ///------------------------------------------------------------
               )
             )
@@ -299,30 +318,83 @@ class _DireccionDestinoState extends State<DireccionDestino> {
     ///------------------------------------------------------------------------
   }
   ///--------------------------------------------------------------------------
-  /// Envíá los datos necesarios al backend para crear una tupla en la tabla
-  /// viaje.
+  /// Envíá los datos necesarios al backend para finalizar un viaje y pasa a la
+  /// pantalla para ingresar el monto final cobrado al cliente.
   ///
-  /// Autor: Joseph Rementería (b55824)
+  /// Autor: Marco Venegas
   /// Fecha: 26-06-2019
   ///--------------------------------------------------------------------------
-  Future _comenzarViaje() async {
-    ///------------------------------------------------------------------------
-    /// Acá se recopilian los datos para crear la tupla.
+  Future _finalizarViaje() async {
+    /// Acá se recopilian los datos para actualizar la tupla del viaje.
     /// TODO: la placa para este sprint no es algo que se pueda obtener.
     String placa = "AAA111";
+    //FechaInicio está una variable global.
     var timestamp = DateTime.now().toString().split(' ');
-    String fechaInicio = timestamp[0] + "T" + timestamp[1].split(".")[0];
-    String destino = this.datosIniciales.destino;
-    String  correoCliente = this.datosIniciales.correoCliente;
-    ///------------------------------------------------------------------------
-    String codigo = await _restService.crearViaje(
-      placa,
-      this.correoTaxista,
-      fechaInicio,
-        destino,
-      correoCliente
+    String fechaFin = timestamp[0] + " " + timestamp[1].split(".")[0];
+
+    ///TODO AQUI VA EL CÓDIGO DE KEVIN QUE MANDA EL REQUEST AL BACKEND PARA FINALIZAR EL VIAJE
+
+    Navigator.pushNamed(context, '/home');
+    mostrarDialogoMonto(context, placa, this.fechaInicio);
+  }
+
+
+  /// Método que muestra un diálogo con una entrada de texto que solicita que se ingrese el monto
+  /// cobrado en el viaje recién finalizado.
+  ///
+  /// Autor: Marco Venegas
+  void mostrarDialogoMonto(BuildContext context, String placaTaxi, String fechaInicio){
+    String valueMonto = '';
+    DialogoEntradaTexto.mostrarAlerta(
+        context,
+        "Confirmación del monto.",
+        "Por favor ingrese el monto en colones cobrado al cliente.",
+        "Monto",
+        "Confirmar",
+        validator: (value){
+          String error = ValidadorLexico.validarMonto(value);
+          if(error == null){
+            valueMonto = value;
+          }
+          return error;
+        },
+        onPressed: () {
+          enviarMonto(context, placaTaxi, fechaInicio, int.parse(valueMonto));
+        },
+        dismissable: true
     );
-    ///------------------------------------------------------------------------
+  }
+
+  /// Método que envía al backend el monto cobrado al cliente para almacernarlo en
+  /// los datos del viaje recién finalizado.
+  ///
+  /// Autor: Marco Venegas
+  void enviarMonto(BuildContext context, String placaTaxi, String fechaInicio, int monto) async{
+    LoadingScreen loadingSC = LoadingScreen();
+    loadingSC.mostrar(context);
+    try{
+      List respuesta = await _restService.enviarMonto(placaTaxi, fechaInicio, monto);
+      loadingSC.quitar(context);
+
+      int statusCode = respuesta[0];
+      String body = respuesta[1];
+
+      if(statusCode == 200){
+        Navigator.of(context).pop();
+        DialogoAlerta.mostrarAlerta(context, EXITO, EXITOMONTO, OK);
+      }else{
+        if(statusCode == 500){ //Si sucede un error de parte del servidor se pide intentar de nuevo.
+          DialogoAlerta.mostrarAlerta(context, ERROR, ERRORMONTO, OK);
+        }else{
+          Navigator.of(context).pop();
+          DialogoAlerta.mostrarAlerta(context, ERROR, VIAJE404, OK); //Si no se encuentra el viaje en la bd se pide contactar a un admin.
+        }
+      }
+    }catch(e){
+      loadingSC.quitar(context);
+      DialogoAlerta.mostrarAlerta(context, ERROR, ERRORMONTO, OK);
+      this.dispose();
+    }
   }
 
   ///--------------------------------------------------------------------------
@@ -408,9 +480,9 @@ class _DireccionDestinoState extends State<DireccionDestino> {
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text(COMENZAR_VIAJE_MENSAJE_BOTON),
+              child: Text(FINALIZAR_VIAJE_MENSAJE_BOTON),
               onPressed: () {
-                this._comenzarViaje();
+                this._finalizarViaje();
               },
             )
           ],
