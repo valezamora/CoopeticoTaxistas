@@ -44,8 +44,10 @@ class RecibeViaje {
             ),
             FlatButton(
               child: Text('Aceptar'),
-              onPressed: _restService.respuestaViaje(true, viaje),
-              // TODO cargar ruta hacia cliente
+              onPressed: () {
+                responder(context, true, viaje);
+                // TODO cargar ruta hacia cliente (Joe)
+              }
             ),
           ],
         );
