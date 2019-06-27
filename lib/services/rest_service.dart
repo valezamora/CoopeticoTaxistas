@@ -113,6 +113,7 @@ class RestService {
     String correoTaxista,
     String fechaInicio,
     String origen,
+    String destino,
     String correoCliente
   ) {
     /// Creación del "header" del "request"
@@ -127,6 +128,7 @@ class RestService {
           "correoTaxista" : correoTaxista,
           "fechaInicio"   : fechaInicio,
           "origen"        : origen,
+          "destino"       : destino,
           "correoCliente" : correoCliente
         }
     );
