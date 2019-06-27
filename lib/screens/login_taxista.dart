@@ -152,6 +152,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
         String mensaje = await TokenService.guardarTokenLogin(respuesta);
         print(mensaje);
 
+      
         ViajesBloc().connectStream();
         if (mensaje != 'OK') {
           if(mensaje == 'AppEquivocada'){

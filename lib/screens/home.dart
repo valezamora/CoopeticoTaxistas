@@ -76,7 +76,6 @@ class _HomeState extends State<Home> {
 
   GoogleMapController _mapController;
 
-  RestService _restService = RestService();
   @override
   void initState(){
     super.initState();
@@ -101,7 +100,7 @@ class _HomeState extends State<Home> {
 
     print("build UI");
     print(channelViaje);
-
+    
     return Scaffold(
       key: _scaffoldKey,
       drawer: DrawerCustom(email, nombreCompleto),
