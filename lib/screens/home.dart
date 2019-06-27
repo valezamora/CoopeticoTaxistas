@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'package:flutter/services.dart';
 
 import 'package:CoopeticoTaxiApp/widgets/boton.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:CoopeticoTaxiApp/widgets/home_widgets/drawer.dart';
 import 'package:location/location.dart';
 
+import 'package:CoopeticoTaxiApp/widgets/recibe_viaje.dart';
 
 //Models
 
@@ -17,6 +19,7 @@ import 'package:CoopeticoTaxiApp/models/trip_info_res.dart';
 import 'package:CoopeticoTaxiApp/models/place_res.dart';
 import 'package:CoopeticoTaxiApp/models/step_res.dart';
 
+import 'package:CoopeticoTaxiApp/blocs/viajes_bloc.dart';
 
 //Service
 import 'package:CoopeticoTaxiApp/services/google_maps_places.dart';
@@ -46,11 +49,12 @@ class _HomeState extends State<Home> {
 
   var email = '';
   var nombreCompleto = '';
-
   var mensaje;
   var head;
   var stream;
   WebSocketsService channelViaje;
+  StreamController streamController;
+  StreamSubscription subscription;
 
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
   var _tripDistance = 0;
@@ -61,6 +65,7 @@ class _HomeState extends State<Home> {
   static const LatLng _center = const LatLng(9.901589, -84.009813);
 
   GoogleMapController _mapController;
+
   @override
   void initState(){
     super.initState();
@@ -71,7 +76,7 @@ class _HomeState extends State<Home> {
     TokenService.getnombreCompleto().then( (val) => setState(() {
       nombreCompleto = val;
     }));
-    channelViaje = WebSocketsService();
+    ViajesBloc().viajeStream.listen((data) => mostrarAlertaViaje(data));
   }
 
   @override
@@ -98,19 +103,6 @@ class _HomeState extends State<Home> {
                   zoom: 14.4746,
                 ),
                 myLocationEnabled: true,
-              ),
-              Positioned(
-                bottom: 15,
-                child: StreamBuilder(
-                  stream: stream,
-                  builder: (context, snapshot) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 24.0),
-                      child: Text(snapshot.hasData ? '${snapshot.data}' : '',
-                        style: TextStyle(color: Colors.blue)),
-                    );
-                  },
-                )
               ),
               ///--------------------------------------------------------------
               Positioned(
@@ -283,7 +275,19 @@ class _HomeState extends State<Home> {
 
    // _moveCamera();
    // _checkDrawPolyline();
+  }
 
+  /// Metodo que muestra la alerta del viaje recibido
+  /// Autor: Valeria Zamora
+  void mostrarAlertaViaje(data){
+    ViajesBloc().recibeViaje(data);
+    RecibeViaje.mostrarAlerta(context, ViajesBloc().infoViajeString);
+  }
+
+  /// Metodo que
+  /// Autor: Valeria Zamora
+  void cerrarSubscription() {
+    subscription.cancel();
   }
 
   /// Método que se encarga de pedir de forma async la ubicación del usuario y mover la cámara de Google Maps hacia ese punto.
