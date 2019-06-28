@@ -194,10 +194,15 @@ class RestService {
   /// Envia la respuesta a una solicitud de viaje
   ///
   /// Autor: Valeria Zamora
-  respuestaViaje (bool respuesta, String datos) {
-    String urlRespuesta = '/viajes/aceptar-rechazar?respuesta=' + respuesta.toString();
+  respuestaViaje (bool respuesta, ViajeComenzando datos) {
+    String urlRespuesta = URL_VIAJES +  '/viajes/aceptar-rechazar?respuesta=' + respuesta.toString();
     String body = jsonEncode({
-      "datosViaje": datos
+      "correoCliente": datos.correoCliente,
+      "origen": datos.origen,
+      "destino": datos.destino,
+      "datafono": datos.datafono,
+      "tipo": datos.tipo,
+      "taxistasQueRechazaron": datos.taxistasQueRechazaron
     });
     Map<String, String> header = {
       "Accept": "application/json",

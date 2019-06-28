@@ -19,7 +19,7 @@ class RecibeViaje {
   /// Método hace que aparezca el diálogo de recibir viaje.
   ///
   /// Autor: Valeria Zamora
-  static void mostrarAlerta(BuildContext context, String viaje) {
+  static void mostrarAlerta(BuildContext context, ViajeComenzando viaje) {
     Timer _tiempo;
     _tiempo = new Timer.periodic(segundo, (Timer tiempo) => (() {
       if(_inicio <= 0) {    // no contesta en 10 segundos
@@ -55,7 +55,7 @@ class RecibeViaje {
     );
   }
 
-  static responder(context, bool respuesta, String viaje) {
+  static responder(context, bool respuesta, ViajeComenzando viaje) {
     _restService.respuestaViaje(respuesta, viaje);
     Navigator.of(context).pop();
   }
