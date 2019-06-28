@@ -20,7 +20,7 @@ class ViajesBloc {
   ViajesBloc._internal();
 
   void connectStream() {
-    ws.connect();
+    //ws.connect();
     viajeStream = ws.subscribe('/user/queue/recibir-viaje').stream;
     // viajeStream.listen((data) => recibeViaje(data));
   }
