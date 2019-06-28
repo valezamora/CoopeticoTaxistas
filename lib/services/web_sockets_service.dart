@@ -12,7 +12,7 @@ class WebSocketsService {
   WebSocketsService.internal();
   factory WebSocketsService() => _instance;
 
-  static const URL_BACKEND = "ws://18.220.131.173:8080/ws-flutter";
+  static const URL_BACKEND = "ws://localhost:8080/ws-flutter";
   StompClient client = new StompClient(urlBackend: URL_BACKEND);
 
   /// Metodo para conectarse al web socket
@@ -22,17 +22,9 @@ class WebSocketsService {
   ///
   /// Autor: Valeria Zamora
   /// Modificado: Marco Venegas
-  connect() {
-//      client.general.stream.listen((message) {
-//        // handling of the incoming messages
-//        print(message);
-//        //messageReceieved(message);
-//      }, onError: (error, StackTrace stackTrace) {
-//        // error handling
-//      }, onDone: () {
-//        // communication has been closed
-//      });
-      client.connectWithToken(token: TokenService.getToken());
+  connect() async{
+      String token = await TokenService.getToken();
+      client.connectWithToken(token: token);
   }
 
   /// Metodo para desconectarse de un endpoint
@@ -46,17 +38,6 @@ class WebSocketsService {
   ///
   /// Valeria Zamora
   StreamController<HashMap> subscribe (String topic) {
-    /*client.subscribe(topic: topic).stream.listen((message) {
-      // handling of the incoming messages
-      print("Mensaje:");
-      print(message.toString());
-      //messageReceieved(message);
-    }, onError: (error, StackTrace stackTrace) {
-      // error handling
-    }, onDone: () {
-      // communication has been closed
-    });
-    */
     return client.subscribe(topic: topic);
   }
 

@@ -17,7 +17,6 @@ import 'package:CoopeticoTaxiApp/widgets/boton_plano.dart';
 import 'package:CoopeticoTaxiApp/widgets/etiqueta.dart';
 import 'package:CoopeticoTaxiApp/widgets/loading_screen.dart';
 
-import 'package:CoopeticoTaxiApp/blocs/viajes_bloc.dart';
 /// Autor: Marco Venegas.
 /// Ventana Stateful de login de taxisa.
 class LoginTaxista extends StatefulWidget {
