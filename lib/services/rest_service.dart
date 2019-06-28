@@ -224,7 +224,7 @@ class RestService {
       "Accept": "application/json",
       "content-type": "application/json"
     };
-    return _networkService.httput(url, body: body, header: header)
+    return _networkService.httpPut(url, body: body, header: header)
         .then((dynamic res) {
       var respuesta = res;
       // recibe srtring con un json

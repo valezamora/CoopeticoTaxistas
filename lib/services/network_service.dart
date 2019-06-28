@@ -48,14 +48,4 @@ class NetworkService {
   void setClient(Client client){
     this.http = client;
   }
-
-  /// Hace un put al backend
-  /// Autor: Kevin Jiménez
-  Future<dynamic> httput(String url, {Map header, body, encoding}){
-    return http
-        .put(url, body: body, headers: header, encoding: encoding)
-        .then((response) {
-      return response;
-    });
-  }
 }
