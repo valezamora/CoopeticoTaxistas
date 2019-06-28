@@ -7,6 +7,7 @@ import 'package:CoopeticoTaxiApp/util/validador_lexico.dart';
 
 import 'package:CoopeticoTaxiApp/services/rest_service.dart';
 import 'package:CoopeticoTaxiApp/services/token_service.dart';
+import 'package:CoopeticoTaxiApp/services/web_sockets_service.dart';
 
 import 'package:CoopeticoTaxiApp/widgets/dialogo_alerta.dart';
 import 'package:CoopeticoTaxiApp/widgets/logo_coopetico.dart';
@@ -57,6 +58,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
   "Intente ingresar luego nuevamente.\n"
   "Motivo de la suspensión:\n";
   RestService _restService = new RestService();
+  WebSocketsService ws = new WebSocketsService();
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
@@ -161,7 +163,7 @@ class _LoginTaxistaState extends State<LoginTaxista> {
                 context, TITSUSPENDIDO, SUSPENDIDO + mensaje, OK);
           }
         } else {
-
+          ws.connect(); //Se conecta al hacer login exitoso
           Navigator.of(context)
               .pushReplacementNamed('/home'); //Redireccionar al home screen.
         }

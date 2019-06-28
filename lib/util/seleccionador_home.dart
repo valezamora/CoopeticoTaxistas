@@ -8,12 +8,14 @@ import 'package:flutter/widgets.dart';
 
 import 'package:CoopeticoTaxiApp/services/token_service.dart';
 import 'package:CoopeticoTaxiApp/services/rest_service.dart';
+import 'package:CoopeticoTaxiApp/services/web_sockets_service.dart';
 
 import 'package:CoopeticoTaxiApp/screens/login_taxista.dart';
 import 'package:CoopeticoTaxiApp/screens/home.dart';
 
 class SeleccionadorHome {
 
+  static WebSocketsService ws = new WebSocketsService();
   /// Selecciona el widget con el que empieza la aplicación.
   ///
   /// Autor: Marco Venegas
@@ -25,6 +27,7 @@ class SeleccionadorHome {
       if (existeTokenValido) { //Si hay un token guardado
         bool estado = await _getEstado(); //Igual se revisa si no ha sido suspendido.
         if (estado) { //Si no está suspendido
+          ws.connect();
           home = new Home();
         }else{
           TokenService.borrarToken(); //Se borra el token

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:CoopeticoTaxiApp/util/paleta.dart';
 import 'package:CoopeticoTaxiApp/services/token_service.dart';
-import 'package:CoopeticoTaxiApp/blocs/viajes_bloc.dart';
+//import 'package:CoopeticoTaxiApp/blocs/viajes_bloc.dart';
+import 'package:CoopeticoTaxiApp/services/web_sockets_service.dart';
 
 class DrawerCustom extends Drawer {
 
@@ -11,6 +12,7 @@ class DrawerCustom extends Drawer {
   String nombreCompleto = '';
 
   DrawerCustom(this.email, this.nombreCompleto);
+  WebSocketsService ws = new WebSocketsService();
 
   @override
   Widget build(BuildContext context) => new Drawer(
@@ -45,8 +47,10 @@ class DrawerCustom extends Drawer {
             trailing: new Icon(Icons.exit_to_app),
             onTap: () {
               TokenService.borrarToken();
-              ViajesBloc().dispose();
-              Navigator.pushNamed(context, '/login');
+              //ViajesBloc().dispose();
+              ws.disconect();
+              //Popeo tod0 en el navigator y dejo solo el login screen.
+              Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
             },
           ),
         ],

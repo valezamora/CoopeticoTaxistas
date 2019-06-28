@@ -15,24 +15,24 @@ class WebSocketsService {
   static const URL_BACKEND = "ws://18.220.131.173:8080/ws-flutter";
   StompClient client = new StompClient(urlBackend: URL_BACKEND);
 
-  bool listened = false;
   /// Metodo para conectarse al web socket
   ///
+  /// Solamente se llama una vez al abrirse el app si el usuario ya está loggeado
+  /// o al hacer login exitoso.
+  ///
   /// Autor: Valeria Zamora
+  /// Modificado: Marco Venegas
   connect() {
-    if(!listened) {
-      listened = true;
-      client.general.stream.listen((message) {
-        // handling of the incoming messages
-        print(message);
-        //messageReceieved(message);
-      }, onError: (error, StackTrace stackTrace) {
-        // error handling
-      }, onDone: () {
-        // communication has been closed
-      });
+//      client.general.stream.listen((message) {
+//        // handling of the incoming messages
+//        print(message);
+//        //messageReceieved(message);
+//      }, onError: (error, StackTrace stackTrace) {
+//        // error handling
+//      }, onDone: () {
+//        // communication has been closed
+//      });
       client.connectWithToken(token: TokenService.getToken());
-    }
   }
 
   /// Metodo para desconectarse de un endpoint

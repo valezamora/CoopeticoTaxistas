@@ -132,7 +132,7 @@ class TokenService {
 
     if (subT != null && nombreT != null && apellido1T != null && telefonoT != null &&
         fotoUrlT != null && permisosT != null && rolT != null && iatT != null && expT != null &&
-        DateTime.fromMillisecondsSinceEpoch((expT * 1000)).isAfter(DateTime.now())) {
+        DateTime.fromMillisecondsSinceEpoch((expT * 1000)).isAfter(DateTime.now()) && token != '') {
       //Si existe un token y no ha expirado.
       existeTokenValido = true;
     }
