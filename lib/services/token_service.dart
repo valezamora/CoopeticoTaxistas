@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// el token de login para que el taxista no tenga que autenticarse
 /// cada vez que abre la aplicación.
 class TokenService {
-  static String token = '';
   /// Se ejecuta cuando un taxista hace un log in exitoso.
   ///
   /// Autor: Marco Venegas
@@ -34,8 +33,6 @@ class TokenService {
       return justificacionT;
     }
 
-    token = respuesta;
-
     String subT = respuestaJSON['sub'];
     String nombreT = respuestaJSON['nombre'];
     String apellido1T = respuestaJSON['apellido1'];
@@ -46,6 +43,7 @@ class TokenService {
     int iatT = respuestaJSON['iat'];
     int expT = respuestaJSON['exp'];
 
+    await preferences.setString('token', respuesta);
     await preferences.setString('subT', subT);
     await preferences.setString('nombreT', nombreT);
     await preferences.setString('apellido1T', apellido1T);
@@ -91,6 +89,7 @@ class TokenService {
   /// Autor: Marco Venegas
   static void borrarToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.remove('token');
     await preferences.remove('subT');
     await preferences.remove('nombreT');
     await preferences.remove('apellido1T');
@@ -101,13 +100,13 @@ class TokenService {
     await preferences.remove('rolT');
     await preferences.remove('iatT');
     await preferences.remove('expT');
-    token = '';
   }
 
   /// Metodo que devuelve el token actual
   /// Autor: Valeria Zamora
-  static String getToken() {
-    return token;
+  static Future<String> getToken() async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getString('token');
   }
 
   /// Método devuelve true si existe un token en el dispositivo con una fecha
@@ -119,6 +118,7 @@ class TokenService {
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
+    String token = preferences.getString('token');
     String subT = preferences.getString('subT');
     String nombreT = preferences.getString('nombreT');
     String apellido1T = preferences.getString('apellido1T'); //Con solo uno de los dos apellidos basta
@@ -129,10 +129,9 @@ class TokenService {
     int iatT = preferences.getInt('iatT');
     int expT = preferences.getInt('expT');
 
-
     if (subT != null && nombreT != null && apellido1T != null && telefonoT != null &&
         fotoUrlT != null && permisosT != null && rolT != null && iatT != null && expT != null &&
-        DateTime.fromMillisecondsSinceEpoch((expT * 1000)).isAfter(DateTime.now()) && token != '') {
+        DateTime.fromMillisecondsSinceEpoch((expT * 1000)).isAfter(DateTime.now()) && token != null) {
       //Si existe un token y no ha expirado.
       existeTokenValido = true;
     }
