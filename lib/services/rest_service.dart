@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:CoopeticoTaxiApp/services/network_service.dart';
 import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
+import 'package:CoopeticoTaxiApp/services/token_service.dart';
 
 
 /// Autor: Marco Venegas.
@@ -195,7 +196,7 @@ class RestService {
   ///
   /// Autor: Valeria Zamora
   respuestaViaje (bool respuesta, ViajeComenzando datos) {
-    String urlRespuesta = URL_VIAJES +  '/viajes/aceptar-rechazar?respuesta=' + respuesta.toString();
+    String urlRespuesta = URL_VIAJES +  '/aceptar-rechazar?respuesta=' + respuesta.toString();
     String body = jsonEncode({
       "correoCliente": datos.correoCliente,
       "origen": datos.origen,
@@ -206,8 +207,22 @@ class RestService {
     });
     Map<String, String> header = {
       "Accept": "application/json",
-      "content-type": "application/json"
+      "content-type": "application/json",
+      "authorization": "Bearer " + TokenService.getToken()
     };
-    _networkService.httpPost(urlRespuesta, body: body, header: header);
+    _networkService.httpPost(urlRespuesta, body: body, header: header).then((dynamic res) {
+      final int codigo = res.statusCode;
+
+      String resultado = res.body;
+
+      switch (codigo) {
+        case 200:
+          resultado = "ok";
+          break;
+      }
+      print(resultado);
+      return resultado;
+    }
+    );
   }
 }
