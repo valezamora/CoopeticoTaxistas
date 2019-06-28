@@ -12,7 +12,9 @@ class ViajeComenzando {
     this.correoCliente,
     this.origen,
     this.destino,
-    this.taxistasQueRechazaron
+    this.taxistasQueRechazaron,
+    this.datafono,
+    this.tipo
   );
 
 

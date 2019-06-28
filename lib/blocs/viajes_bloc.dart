@@ -42,7 +42,9 @@ class ViajesBloc {
         viajeComenzando['correoCliente'],
         viajeComenzando['origen'],
         viajeComenzando['destino'],
-        viajeComenzando['taxistasQueRechazaron']
+        viajeComenzando['taxistasQueRechazaron'],
+        viajeComenzando['datafono'],
+        viajeComenzando['tipo']
     );
     print(viaje.correoCliente);
   }
