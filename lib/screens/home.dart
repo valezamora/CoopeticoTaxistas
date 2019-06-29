@@ -295,7 +295,7 @@ class _HomeState extends State<Home> {
   /// Autor: Valeria Zamora
   void mostrarAlertaViaje(data){
     ViajesBloc().recibeViaje(data);
-    RecibeViaje.mostrarAlerta(context, ViajesBloc().infoViajeString);
+    RecibeViaje.mostrarAlerta(context, ViajesBloc().viaje);
   }
 
   /// Metodo que

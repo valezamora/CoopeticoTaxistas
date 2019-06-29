@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:CoopeticoTaxiApp/services/network_service.dart';
 import 'package:CoopeticoTaxiApp/models/viaje_comenzando.dart';
+import 'package:CoopeticoTaxiApp/services/token_service.dart';
 
 
 /// Autor: Marco Venegas.
@@ -197,16 +198,35 @@ class RestService {
   /// Envia la respuesta a una solicitud de viaje
   ///
   /// Autor: Valeria Zamora
-  respuestaViaje (bool respuesta, String datos) {
-    String urlRespuesta = '/viajes/aceptar-rechazar?respuesta=' + respuesta.toString();
+  respuestaViaje (bool respuesta, ViajeComenzando datos) {
+    String urlRespuesta = URL_VIAJES +  '/aceptar-rechazar?respuesta=' + respuesta.toString();
     String body = jsonEncode({
-      "datosViaje": datos
+      "correoCliente": datos.correoCliente,
+      "origen": datos.origen,
+      "destino": datos.destino,
+      "datafono": datos.datafono,
+      "tipo": datos.tipo,
+      "taxistasQueRechazaron": datos.taxistasQueRechazaron
     });
     Map<String, String> header = {
       "Accept": "application/json",
-      "content-type": "application/json"
+      "content-type": "application/json",
+      "authorization": "Bearer " + TokenService.getToken()
     };
-    _networkService.httpPost(urlRespuesta, body: body, header: header);
+    _networkService.httpPost(urlRespuesta, body: body, header: header).then((dynamic res) {
+      final int codigo = res.statusCode;
+
+      String resultado = res.body;
+
+      switch (codigo) {
+        case 200:
+          resultado = "ok";
+          break;
+      }
+      print(resultado);
+      return resultado;
+    }
+    );
   }
 
   /// Finaliza un viaje, utilizando la [placa] y [fechaInicio], 

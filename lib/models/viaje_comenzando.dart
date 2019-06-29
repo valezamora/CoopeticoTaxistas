@@ -6,13 +6,15 @@ class ViajeComenzando {
   String destino;
   String tipo;
   bool datafono = false;
-  List<String> taxistasQueRechazaron;
+  List taxistasQueRechazaron;
 
   ViajeComenzando(
     this.correoCliente,
     this.origen,
     this.destino,
-    this.taxistasQueRechazaron
+    this.taxistasQueRechazaron,
+    this.datafono,
+    this.tipo
   );
 
 
