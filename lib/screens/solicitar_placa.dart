@@ -54,6 +54,7 @@ class _SolicitarPlacaState extends State<SolicitarPlaca> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   String _placa = "";
+  String _correo = "";
 
   /// Definición de ventana Login Usuario
   @override
@@ -118,6 +119,11 @@ class _SolicitarPlacaState extends State<SolicitarPlaca> {
       ///------------------------------------------------------------------
       /// se guarda la placa
       TokenService.setPlacaTaxi(this._placa);
+      ///------------------------------------------------------------------
+      TokenService.getnombreCompleto().then( (val) => setState(() {
+        this._correo = val;
+      }));
+      this._restService.enviarPlaca(this._correo, this._placa);
       ///------------------------------------------------------------------
       /// Redirecciona a la pantalla debida
       Navigator.of(context)
