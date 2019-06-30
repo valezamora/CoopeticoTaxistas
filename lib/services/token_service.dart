@@ -251,4 +251,30 @@ class TokenService {
     await preferences.setString('telefonoT', telefonoT);
   }
   ///--------------------------------------------------------------------------
+
+  ///--------------------------------------------------------------------------
+  /// Método que escribe en el token la placa del taxista
+  /// Autor: Joseph Rementería
+  /// Fecha: 04-06-2019
+  static void setPlacaTaxi (String placaTaxi) async {
+    ///------------------------------------------------------------------------
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    ///------------------------------------------------------------------------
+    await preferences.setString('placaTaxi', placaTaxi);
+    ///------------------------------------------------------------------------
+  }
+  ///--------------------------------------------------------------------------
+
+  ///--------------------------------------------------------------------------
+  /// Método que retorna la placa del taxi en el token.
+  /// Autor: Joseph Rementería
+  /// Fecha: 04-06-2019
+  static Future<String> getPlacaTaxi () async {
+    ///------------------------------------------------------------------------
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    ///------------------------------------------------------------------------
+    return preferences.getString('placaTaxi');
+    ///------------------------------------------------------------------------
+  }
+  ///--------------------------------------------------------------------------
 }

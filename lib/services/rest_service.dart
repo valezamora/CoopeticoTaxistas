@@ -149,6 +149,7 @@ class RestService {
             break;
         }
         return resultado;
+      ///----------------------------------------------------------------------
       }
     );
   }
@@ -180,6 +181,7 @@ class RestService {
         body: body,
         header: header
     ).then((dynamic res) {
+      ///----------------------------------------------------------------------
       //final String respuesta = res.body;
       final int codigo = res.statusCode;
 
@@ -191,6 +193,7 @@ class RestService {
           break;
       }
       return resultado;
+      ///----------------------------------------------------------------------
     }
     );
   }
@@ -272,4 +275,34 @@ class RestService {
       return respuesta;
     });
   }
+  ///--------------------------------------------------------------------------
+  Future<String> enviarPlaca(String correo, String placa) {
+    ///------------------------------------------------------------------------
+    /// Creación del "header" del "request"
+    Map<String, String> header = {
+      "Accept": "application/json",
+      "content-type": "application/json"
+    };
+    ///------------------------------------------------------------------------
+    return _networkService.httpPost(
+        URL_TAXISTAS,
+        header: header
+    ).then((dynamic res) {
+      ///----------------------------------------------------------------------
+      //final String respuesta = res.body;
+      final int codigo = res.statusCode;
+
+      String resultado = "error";
+
+      switch (codigo) {
+        case 200:
+          resultado = "ok";
+          break;
+      }
+      return resultado;
+
+      ///----------------------------------------------------------------------
+    });
+  }
+  ///--------------------------------------------------------------------------
 }

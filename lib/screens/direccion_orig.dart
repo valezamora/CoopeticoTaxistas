@@ -308,8 +308,10 @@ class _DireccionOrigenState extends State<DireccionOrigen> {
   Future _comenzarViaje() async {
     ///------------------------------------------------------------------------
     /// Acá se recopilian los datos para crear la tupla.
-    /// TODO: la placa para este sprint no es algo que se pueda obtener.
-    String placa = "AAA111";
+    String placa = '';
+    TokenService.getPlacaTaxi().then((val) => setState((){
+      placa = val;
+    }));
     var timestamp = DateTime.now().toString().split(' ');
     String fechaInicio = timestamp[0] + " " + timestamp[1].split(".")[0];
     String origen = this.datosIniciales.origen;
