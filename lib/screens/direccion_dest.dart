@@ -364,7 +364,7 @@ class _DireccionDestinoState extends State<DireccionDestino> {
         onPressed: () {
           enviarMonto(context, placaTaxi, fechaInicio, int.parse(valueMonto));
         },
-        dismissable: true
+        dismissable: false
     );
   }
 
