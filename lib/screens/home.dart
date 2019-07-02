@@ -34,6 +34,9 @@ import 'package:CoopeticoTaxiApp/util/paleta.dart';
 
 import 'package:web_socket_channel/io.dart';
 
+//Screens
+import 'package:CoopeticoTaxiApp/screens/direccion_orig.dart';
+
 /// Widget que contiene el appbar, el ridepicker, el car picker y el payment picker.
 ///
 /// Autor: Paulo Barrantes
@@ -89,6 +92,8 @@ class _HomeState extends State<Home> {
     TokenService.getnombreCompleto().then( (val) => setState(() {
       nombreCompleto = val;
     }));
+    Timer.periodic(Duration(seconds: REFRESHING_RATIO),
+            (Timer t) => _actualizarUbicacion());
     ViajesBloc().connectStream();
     ViajesBloc().viajeStream.listen((data) => mostrarAlertaViaje(data));
   }
@@ -296,6 +301,9 @@ class _HomeState extends State<Home> {
   void mostrarAlertaViaje(data){
     ViajesBloc().recibeViaje(data);
     RecibeViaje.mostrarAlerta(context, ViajesBloc().viaje);
+    Navigator.pushReplacement(context, new MaterialPageRoute(
+        builder: (BuildContext context) =>
+        new DireccionOrigen(ViajesBloc().viaje)));
   }
 
   /// Metodo que
