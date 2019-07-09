@@ -19,7 +19,7 @@ class WebSocketsService {
   /// Metodo para conectarse al web socket
   ///
   /// Autor: Valeria Zamora
-  connect() {
+  connect() async{
     if(!listened) {
       listened = true;
       client.general.stream.listen((message) {
@@ -31,7 +31,9 @@ class WebSocketsService {
       }, onDone: () {
         // communication has been closed
       });
-      client.connectWithToken(token: TokenService.getToken());
+      String token = await TokenService.getToken();
+      print("Imprimiendo: " + token);
+      client.connectWithToken(token: token);
     }
   }
 

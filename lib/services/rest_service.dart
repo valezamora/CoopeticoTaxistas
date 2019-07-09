@@ -201,7 +201,7 @@ class RestService {
   /// Envia la respuesta a una solicitud de viaje
   ///
   /// Autor: Valeria Zamora
-  respuestaViaje (bool respuesta, ViajeComenzando datos) {
+  respuestaViaje (bool respuesta, ViajeComenzando datos) async{
     String urlRespuesta = URL_VIAJES +  '/aceptar-rechazar?respuesta=' + respuesta.toString();
     String body = jsonEncode({
       "correoCliente": datos.correoCliente,
@@ -214,7 +214,7 @@ class RestService {
     Map<String, String> header = {
       "Accept": "application/json",
       "content-type": "application/json",
-      "authorization": "Bearer " + TokenService.getToken()
+      "authorization": "Bearer " + await TokenService.getToken()
     };
     _networkService.httpPost(urlRespuesta, body: body, header: header).then((dynamic res) {
       final int codigo = res.statusCode;

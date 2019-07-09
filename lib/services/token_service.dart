@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// el token de login para que el taxista no tenga que autenticarse
 /// cada vez que abre la aplicación.
 class TokenService {
-  static String token = '';
   /// Se ejecuta cuando un taxista hace un log in exitoso.
   ///
   /// Autor: Marco Venegas
@@ -34,7 +33,7 @@ class TokenService {
       return justificacionT;
     }
 
-    token = respuesta;
+    String token = respuesta;
 
     String subT = respuestaJSON['sub'];
     String nombreT = respuestaJSON['nombre'];
@@ -56,6 +55,7 @@ class TokenService {
     await preferences.setString('rolT', rolT);
     await preferences.setInt('iatT', iatT);
     await preferences.setInt('expT', expT);
+    await preferences.setString('token', token);
 
     return 'OK';
   }
@@ -101,13 +101,14 @@ class TokenService {
     await preferences.remove('rolT');
     await preferences.remove('iatT');
     await preferences.remove('expT');
-    token = '';
+    await preferences.remove('token');
   }
 
   /// Metodo que devuelve el token actual
-  /// Autor: Valeria Zamora
-  static String getToken() {
-    return token;
+  /// Autor: Valeria Zamora y Marco Venegas
+  static Future<String> getToken() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getString('token');
   }
 
   /// Método devuelve true si existe un token en el dispositivo con una fecha
